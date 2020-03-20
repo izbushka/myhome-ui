@@ -10,5 +10,16 @@
   ],
   "include": [
     "src/**/*.d.ts"
-  ]
+  ],
+  "compilerOptions": {
+      "baseUrl": "./",
+      "paths": {
+        "@app/*": ["src/app/*"],
+        "@config/*": ["src/app/config/*"],
+        "@myComponents/*": ["src/app/components/*"],
+        "@myServices/*": ["src/app/services/*"],
+        "@myInterfaces/*": ["src/app/interfaces/*"],
+        "@myModules/*": ["src/app/modules/*"]
+      }
+  }
 }

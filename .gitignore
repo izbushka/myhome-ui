@@ -32,6 +32,7 @@ speed-measure-plugin*.json
 .history/*
 
 # misc
+.*.swp
 /.sass-cache
 /connect.lock
 /coverage
