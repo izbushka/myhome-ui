@@ -1,0 +1,19 @@
+::ng-deep {
+    .my-flex {
+        display: flex;
+        flex-flow: row;
+        flex-wrap: wrap;
+    }
+
+    .my-flex-half {
+        flex-basis: 50%;
+        white-space: nowrap;
+    }
+
+    .my-color-red {
+        color: red;
+    }
+    .my-color-grey {
+        color: grey;
+    }
+}

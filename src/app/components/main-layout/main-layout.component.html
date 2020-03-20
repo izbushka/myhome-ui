@@ -1,7 +1,7 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches" *ngIf="shouldRun">
   <mat-toolbar color="primary" class="example-toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    <h1 class="example-app-name">Responsive App</h1>
+    <h1 class="example-app-name">{{pageProps.title}}</h1>
   </mat-toolbar>
 
   <mat-sidenav-container class="example-sidenav-container"
@@ -15,7 +15,7 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
-      <app-dashboard></app-dashboard>
+      <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

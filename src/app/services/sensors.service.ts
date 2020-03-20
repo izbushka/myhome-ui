@@ -15,11 +15,12 @@ interface ServerSensorsData {
 })
 
 export class SensorsService {
-  private sensorsUrl = 'http://11.230.0.2/sensors/states?'; // URL to web api  
+  private sensorsUrl = 'http://11.230.0.2/sensors/states?'; // URL to web api
   private lastUpdate: Date;
   private sensorsSubject: BehaviorSubject<Sensor[]> = new BehaviorSubject([]);
   private groupsSubject: BehaviorSubject<SensorGroups> = new BehaviorSubject({});
 
+  private lastChange: string;
 
   constructor(
     private http: HttpClient
@@ -39,6 +40,23 @@ export class SensorsService {
   groups(): BehaviorSubject <SensorGroups> {
     return this.groupsSubject;
   }
+
+  getGroupIcon(name: string): string {
+    const icons = {
+      lock: 'lock',
+      'light-switch': 'lightbulb_outline',
+      'power-switch': 'power',
+      'light-btn': 'wb_incandescent',
+      alarm: 'security',
+      motion: 'remove_red_eye',
+      sensors: 'filter_tilt_shift',
+
+      default: 'security'
+
+    };
+    return (icons[name]) ? icons[name] : icons.default;
+  }
+
   _monitorSensors(): void {
     this._getSensors().subscribe(
       data => this._processSensorsData(data)
@@ -54,17 +72,28 @@ export class SensorsService {
   }
 
   _processSensorsData(data: Sensor[]): void {
-    let groups = {};
-    
-    for (let sensor of data) {
-      if (!groups[sensor.group]) groups[sensor.group] = [];
-      groups[sensor.group].push(sensor);
+    let changed = false;
+    for (const s of data) {
+      if (!this.lastChange || this.lastChange < s.last_change) {
+        this.lastChange = s.last_change;
+        changed = true;
+      }
     }
-    for (let group in groups) {
-      groups[group].sort(function(a, b) { return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0); });
+    if (changed) {
+      const groups: SensorGroups = {};
+      for (const sensor of data) {
+        if (!groups[sensor.group]) {
+          groups[sensor.group] = [];
+        }
+        groups[sensor.group].push(sensor);
+      }
+      for (const group in groups) {
+        groups[group].sort((a, b) => {
+          return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
+        });
+      }
+      this.groupsSubject.next(groups);
+      this.sensorsSubject.next(data);
     }
-    this.groupsSubject.next(groups);
-    console.log(groups);
-    this.sensorsSubject.next(data);
   }
 }

@@ -2,13 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { DashboardComponent } from '@myComponents/dashboard/dashboard.component';
-import { SensorsGroupComponent } from '@myComponents/sensors-group/sensors-group.component';
-import { MainLayoutComponent } from '@myComponents/main-layout/main-layout.component';
+import {SensorsListComponent} from '../../components/sensors-list/sensors-list.component';
 
 const routes: Routes = [
-  { path: 'home', component: MainLayoutComponent },
+  { path: 'home', component: DashboardComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'test', component: SensorsGroupComponent },
+  { path: 'list', component: SensorsListComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 

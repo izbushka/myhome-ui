@@ -1,11 +1,14 @@
-<p>Sensors</p>
-<div *ngFor="let group of groups | keyvalue">
-    
-    <h3>{{group.key}}</h3>
-    
-        <div *ngFor="let sensor of group.value">
-            {{sensor.last_change}}
-        </div>
-    
-</div>
-<app-sensors-group></app-sensors-group>
+<!--<div *ngFor="let group of groups | keyvalue">-->
+<!--    -->
+<!--    <h3>{{group.key}}</h3>-->
+<!--    -->
+<!--        <div *ngFor="let sensor of group.value">-->
+<!--            {{sensor.last_change}}-->
+<!--        </div>-->
+<!--    -->
+<!--</div>-->
+<mat-grid-list cols="3" rowHeight="180px" gutterSize="20px">
+    <mat-grid-tile *ngFor="let group of groups | keyvalue">
+        <app-sensors-group-summary [group]="group"></app-sensors-group-summary>
+    </mat-grid-tile>
+</mat-grid-list>

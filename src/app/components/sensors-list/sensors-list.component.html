@@ -1,0 +1,9 @@
+<div *ngFor="let group of groups | keyvalue">
+    {{group.key}}
+
+    <mat-grid-list cols="3" rowHeight="80px" gutterSize="20px">
+        <mat-grid-tile *ngFor="let sensor of group.value">
+            {{sensor.name}}
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>
