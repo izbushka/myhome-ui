@@ -18,6 +18,7 @@ import { SensorsListItemComponent } from './components/sensors-list-item/sensors
 import { TimeAgo } from './modules/utils.pipe';
 import { SensorDetailsComponent } from './components/sensor-details/sensor-details.component';
 
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { SensorDetailsComponent } from './components/sensor-details/sensor-detai
     // MatSliderModule,
     // MatToolbarModule,
     // MatIconModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

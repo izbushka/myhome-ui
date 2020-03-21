@@ -1,5 +1,25 @@
-{{sensor.name}}
+<div *ngIf="hasGraph">
+    <nav mat-tab-nav-bar>
+        <a mat-tab-link
+           *ngFor="let link of ['day', 'week', 'month', 'year']"
+           (click)="getGraph(link)"
+           [active]="link === curGraph">
+            {{link | titlecase}}
+        </a>
+    </nav>
 
+    <div class="chart-wrapper">
+        <canvas baseChart
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartType"
+                [plugins]="lineChartPlugins">
+        </canvas>
+    </div>
+</div>
 <table mat-table [dataSource]="sensor.logs" class="mat-elevation-z8">
 
     <!-- Date Column -->

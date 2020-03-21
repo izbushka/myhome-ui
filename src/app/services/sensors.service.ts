@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, interval } from 'rxjs';
 import { map, pluck, tap } from 'rxjs/operators';​
 
-import { Sensor, SensorGroups } from '../interfaces/sensor';
+import { Sensor, SensorGroups, SensorGraphPoint } from '../interfaces/sensor';
 
 interface ServerSensorsData {
     timestamp: number;
@@ -39,6 +39,10 @@ export class SensorsService {
   }
   details(id: number): Observable <Sensor> {
     return this.http.get<Sensor>(this.sensorsUrl + '/' + id);
+  }
+  graph(id: number, period: string): Observable <SensorGraphPoint[]>  {
+    // https://rpi.xvv.be/sensors/81/graph/day?
+    return this.http.get<SensorGraphPoint[]>(this.sensorsUrl + '/../' + id + '/graph/' + period);
   }
   getGroupIcon(name: string): string {
     const icons = {

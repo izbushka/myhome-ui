@@ -14,3 +14,10 @@ export interface Sensor {
 export interface SensorGroups {
   [index: string]: Sensor[];
 }
+
+export interface SensorGraphPoint {
+  sensor_id: string;
+  time: string;
+  date: string;
+  value: number;
+}

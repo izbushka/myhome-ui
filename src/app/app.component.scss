@@ -27,9 +27,6 @@ $tablet-width: 768px;
 }
 
 ::ng-deep {
-    .my-nowrap {
-        white-space: nowrap;
-    }
     .my-flex-nowrap,
     .my-flex {
         display: flex;
@@ -49,13 +46,6 @@ $tablet-width: 768px;
     .my-flex-half {
         flex-basis: 50%;
         white-space: nowrap;
-    }
-
-    .my-color-red {
-        color: red;
-    }
-    .my-color-grey {
-        color: grey;
     }
 
     .my-grid {
@@ -79,6 +69,17 @@ $tablet-width: 768px;
             }
 
         }
+    }
+
+    .my-nowrap {
+        white-space: nowrap;
+    }
+
+    .my-color-red {
+        color: red;
+    }
+    .my-color-grey {
+        color: grey;
     }
 
     /* MATERIALes DESIGN */
