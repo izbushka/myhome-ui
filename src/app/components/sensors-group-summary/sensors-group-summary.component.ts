@@ -30,8 +30,6 @@ export class SensorsGroupSummaryComponent implements OnInit {
     this.stat.on = this.group.value.filter(i => i.state === 'ON').length;
     this.stat.off = this.stat.num - this.stat.on;
     this.stat.ok = this.group.value.filter(i => i.state === i.normal_state || !i.normal_state).length;
-    console.debug(this.group);
-
   }
 
 }

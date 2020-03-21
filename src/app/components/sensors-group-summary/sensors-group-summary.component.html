@@ -5,7 +5,7 @@
                 {{group.key}}
             </mat-card-title>
             <mat-card-subtitle>
-                Sensors Group ({{stat.num}} members)
+                Sensors Group <span class="my-nowrap">({{stat.num}} members)</span>
             </mat-card-subtitle>
     </mat-card-title-group>
     <mat-card-content>
@@ -20,10 +20,10 @@
                 </span>
             </span>
             <span class="my-flex-half my-color-grey">
-                <mat-icon>check_box</mat-icon> {{stat.on}} switched on
+                <mat-icon>check_box</mat-icon> {{stat.on}} is ON
             </span>
             <span class="my-flex-half my-color-grey">
-                <mat-icon>check_box_outline_blank</mat-icon> {{stat.off}} switched off<br>
+                <mat-icon>check_box_outline_blank</mat-icon> {{stat.off}} is OFF<br>
             </span>
         </div>
     </mat-card-content>

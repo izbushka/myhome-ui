@@ -8,6 +8,7 @@ export interface Sensor {
   normal_state: string;
   name: string;
   type: string;
+  logs?: [{state: string, change_time: string}];
 }
 
 export interface SensorGroups {

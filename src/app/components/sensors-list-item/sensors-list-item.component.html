@@ -1,0 +1,19 @@
+<mat-card role="group">
+    <mat-card-content>
+        <div class="my-flex-nowrap">
+            <div class="my-flex-grow my-flex-nowrap"  [routerLink]="['/details', sensor.sensor_id]">
+                <mat-icon class>{{sensorService.getGroupIcon(sensor.group)}}</mat-icon>
+                <div  class="my-flex-shrink">
+                    {{sensor.name}}
+                </div>
+            </div>
+            <div>
+                <mat-slide-toggle [(ngModel)]="isOn" (change)="toggle()" ></mat-slide-toggle>
+            </div>
+        </div>
+        <div class="down-right">
+            {{sensor.last_change|timeAgo}}
+        </div>
+    </mat-card-content>
+</mat-card>
+

@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { of , Observable, BehaviorSubject, interval } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, BehaviorSubject, interval } from 'rxjs';
 import { map, pluck, tap } from 'rxjs/operators';​
 
-import { Sensor,SensorGroups } from '@myInterfaces/sensor';
+import { Sensor, SensorGroups } from '../interfaces/sensor';
 
 interface ServerSensorsData {
-    timestamp: number,
-    sensors: Sensor[]
+    timestamp: number;
+    sensors: Sensor[];
 }
 
 @Injectable({
@@ -15,7 +15,7 @@ interface ServerSensorsData {
 })
 
 export class SensorsService {
-  private sensorsUrl = 'http://11.230.0.2/sensors/states?'; // URL to web api
+  private sensorsUrl = 'http://11.230.0.2/sensors/states'; // URL to web api
   private lastUpdate: Date;
   private sensorsSubject: BehaviorSubject<Sensor[]> = new BehaviorSubject([]);
   private groupsSubject: BehaviorSubject<SensorGroups> = new BehaviorSubject({});
@@ -26,21 +26,20 @@ export class SensorsService {
     private http: HttpClient
   ) {
     this.update();
-    interval(3000).subscribe(() => this.update());
+    // interval(3000).subscribe(() => this.update());
   }
-
   update(): void {
     this._monitorSensors();
   }
-
   sensors(): BehaviorSubject < Sensor[] > {
     return this.sensorsSubject;
   }
-
   groups(): BehaviorSubject <SensorGroups> {
     return this.groupsSubject;
   }
-
+  details(id: number): Observable <Sensor> {
+    return this.http.get<Sensor>(this.sensorsUrl + '/' + id);
+  }
   getGroupIcon(name: string): string {
     const icons = {
       lock: 'lock',
@@ -60,13 +59,17 @@ export class SensorsService {
   _monitorSensors(): void {
     this._getSensors().subscribe(
       data => this._processSensorsData(data)
-    )
+    );
   }
 
   _getSensors(): Observable < Sensor[] > {
     return this.http.get<ServerSensorsData>(this.sensorsUrl).pipe(
       // map(({ sensors }) => sensors) - same as pluck
-      tap(data => { if (data.timestamp) this.lastUpdate = new Date(data.timestamp * 1000) }),
+      tap(data => {
+        if (data.timestamp) {
+          this.lastUpdate = new Date(data.timestamp * 1000);
+        }
+      }),
       pluck('sensors')
     );
   }
@@ -88,9 +91,11 @@ export class SensorsService {
         groups[sensor.group].push(sensor);
       }
       for (const group in groups) {
-        groups[group].sort((a, b) => {
-          return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
-        });
+        if (groups.hasOwnProperty(group)) {
+          groups[group].sort((a, b) => {
+            return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
+          });
+        }
       }
       this.groupsSubject.next(groups);
       this.sensorsSubject.next(data);

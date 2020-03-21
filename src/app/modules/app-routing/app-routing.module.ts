@@ -3,11 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { DashboardComponent } from '@myComponents/dashboard/dashboard.component';
 import {SensorsListComponent} from '../../components/sensors-list/sensors-list.component';
+import {SensorDetailsComponent} from '../../components/sensor-details/sensor-details.component';
 
 const routes: Routes = [
   { path: 'home', component: DashboardComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'list', component: SensorsListComponent },
+  { path: 'list/:group', component: SensorsListComponent },
+  { path: 'details/:id', component: SensorDetailsComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 

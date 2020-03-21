@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,6 +13,10 @@ import { SensorsGroupSummaryComponent } from '@myComponents/sensors-group-summar
 
 import { AllMaterialModules } from './all-material-modules';
 import { SensorsListComponent } from './components/sensors-list/sensors-list.component';
+import { SensorsListItemComponent } from './components/sensors-list-item/sensors-list-item.component';
+
+import { TimeAgo } from './modules/utils.pipe';
+import { SensorDetailsComponent } from './components/sensor-details/sensor-details.component';
 
 
 @NgModule({
@@ -20,10 +25,14 @@ import { SensorsListComponent } from './components/sensors-list/sensors-list.com
     DashboardComponent,
     MainLayoutComponent,
     SensorsGroupSummaryComponent,
-    SensorsListComponent
+    SensorsListComponent,
+    SensorsListItemComponent,
+    TimeAgo,
+    SensorDetailsComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
