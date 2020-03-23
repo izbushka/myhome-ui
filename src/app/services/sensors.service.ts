@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable, BehaviorSubject, interval} from 'rxjs';
-import { map, pluck, tap } from 'rxjs/operators';
-import {Sensor, SensorGroups, SensorGraphPoint, SensorData} from '../interfaces/sensor';
+import {Observable, BehaviorSubject, interval, EMPTY, of, Subject} from 'rxjs';
+import {distinctUntilChanged, map, pluck, repeatWhen, skipWhile, switchMap, tap} from 'rxjs/operators';
+import {Sensor, SensorGroups, SensorGraphPoint, SensorData, SensorIcon} from '../interfaces/sensor';
 import { environment } from '../../environments/environment';
+import {VisibilityApiService} from './visibility-api.service';
 
 interface ServerSensorsData {
   timestamp: number;
@@ -16,7 +17,6 @@ interface ServerSensorsData {
 
 export class SensorsService {
   private sensorsUrl = environment.apiUrl + '/sensors/states'; // URL to web api
-  // private sensorsUrl = 'http://11.230.0.2/sensors/states'; // URL to web api
   private lastUpdate: Date;
   private sensorsSubject: BehaviorSubject<Sensor[]> = new BehaviorSubject([]);
   private groupsSubject: BehaviorSubject<SensorGroups> = new BehaviorSubject({});
@@ -24,10 +24,15 @@ export class SensorsService {
   private lastChange: string;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private visibilityApi: VisibilityApiService
   ) {
     this.update();
-    interval(3000).subscribe(() => this.update());
+
+    const timer = interval(2000); // update sensors every interval (ms)
+    this.visibilityApi.changes().pipe(
+        switchMap(pageVisible => pageVisible ? timer : EMPTY)
+    ).subscribe(() => this.update());
   }
 
   update(): void {
@@ -61,21 +66,7 @@ export class SensorsService {
   }
 
   getGroupIcon(name: string): string {
-    const icons = {
-      lock: 'lock',
-      'light-switch': 'lightbulb_outline',
-      'power-switch': 'power',
-      'light-btn': 'wb_incandescent',
-      'air-conditioner': 'ac_unit',
-      'air-purifier': 'toys',
-      alarm: 'security',
-      motion: 'remove_red_eye',
-      sensors: 'filter_tilt_shift',
-
-      default: 'policy'
-
-    };
-    return (icons[name]) ? icons[name] : icons.default;
+    return (new SensorIcon()).get(name);
   }
 
   _monitorSensors(): void {
@@ -94,8 +85,8 @@ export class SensorsService {
           this.lastUpdate = new Date(data.timestamp * 1000);
         }
       }),
-      pluck('sensors'),
-      map(data => data.map(sensor => new Sensor(sensor)))
+      // pluck('sensors'),
+      map(data => data.sensors.map(sensor => new Sensor(sensor)))
     );
   }
 

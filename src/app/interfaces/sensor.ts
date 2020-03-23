@@ -43,21 +43,36 @@ export class Sensor implements SensorData {
     if (input) {
       for (const key of Object.keys(input)) {
         this[key] = input[key];
-        // if (this.hasOwnProperty(key)) {
-        //   this[key] = input[key];
-        //   console.log(key);
-        // }
       }
       this.id = this.sensor_id;
     }
   }
   isMutable(): boolean {
-    return this.group === 'light-switch';
+    return ['light-switch', 'power-switch'].indexOf(this.group) !== -1;
   }
   isOn(): boolean {
     return this.state === 'ON' || this.state === 'PON';
   }
   isWarn(): boolean {
     return this.normal_state && this.state !== this.normal_state;
+  }
+}
+
+export class SensorIcon {
+  icons = {
+    lock: 'lock',
+    'light-switch': 'lightbulb_outline',
+    'power-switch': 'power',
+    'light-btn': 'wb_incandescent',
+    'air-conditioner': 'ac_unit',
+    'air-purifier': 'toys',
+    alarm: 'security',
+    motion: 'remove_red_eye',
+    sensors: 'filter_tilt_shift',
+
+    default: 'policy'
+  };
+  get(group: string): string {
+    return (this.icons[group]) ? this.icons[group] : this.icons.default;
   }
 }
