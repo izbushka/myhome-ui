@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, interval } from 'rxjs';
-import { map, pluck, tap } from 'rxjs/operators';​
-
-import { Sensor, SensorGroups, SensorGraphPoint } from '../interfaces/sensor';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable, BehaviorSubject, interval} from 'rxjs';
+import { map, pluck, tap } from 'rxjs/operators';
+import {Sensor, SensorGroups, SensorGraphPoint, SensorData} from '../interfaces/sensor';
+import { environment } from '../../environments/environment';
 
 interface ServerSensorsData {
-    timestamp: number;
-    sensors: Sensor[];
+  timestamp: number;
+  sensors: SensorData[];
 }
 
 @Injectable({
@@ -15,7 +15,8 @@ interface ServerSensorsData {
 })
 
 export class SensorsService {
-  private sensorsUrl = 'http://11.230.0.2/sensors/states'; // URL to web api
+  private sensorsUrl = environment.apiUrl + '/sensors/states'; // URL to web api
+  // private sensorsUrl = 'http://11.230.0.2/sensors/states'; // URL to web api
   private lastUpdate: Date;
   private sensorsSubject: BehaviorSubject<Sensor[]> = new BehaviorSubject([]);
   private groupsSubject: BehaviorSubject<SensorGroups> = new BehaviorSubject({});
@@ -26,35 +27,52 @@ export class SensorsService {
     private http: HttpClient
   ) {
     this.update();
-    // interval(3000).subscribe(() => this.update());
+    interval(3000).subscribe(() => this.update());
   }
+
   update(): void {
     this._monitorSensors();
   }
-  sensors(): BehaviorSubject < Sensor[] > {
+
+  sensors(): BehaviorSubject<Sensor[]> {
     return this.sensorsSubject;
   }
-  groups(): BehaviorSubject <SensorGroups> {
+
+  groups(): BehaviorSubject<SensorGroups> {
     return this.groupsSubject;
   }
-  details(id: number): Observable <Sensor> {
-    return this.http.get<Sensor>(this.sensorsUrl + '/' + id);
+
+  details(id: number): Observable<Sensor> {
+    return this.http.get<SensorData>(this.sensorsUrl + '/' + id)
+      .pipe(map(data => new Sensor(data)));
   }
-  graph(id: number, period: string): Observable <SensorGraphPoint[]>  {
+
+  switch(id: number, state: boolean): void {
+    const sensor = id;
+    const newState = state ? 'ON' : 'OFF';
+    this.http.get<any>(this.sensorsUrl + '/../../zwave/' + id + '/' + newState).subscribe(
+      () => this.update()
+    );
+  }
+
+  graph(id: number, period: string): Observable<SensorGraphPoint[]> {
     // https://rpi.xvv.be/sensors/81/graph/day?
     return this.http.get<SensorGraphPoint[]>(this.sensorsUrl + '/../' + id + '/graph/' + period);
   }
+
   getGroupIcon(name: string): string {
     const icons = {
       lock: 'lock',
       'light-switch': 'lightbulb_outline',
       'power-switch': 'power',
       'light-btn': 'wb_incandescent',
+      'air-conditioner': 'ac_unit',
+      'air-purifier': 'toys',
       alarm: 'security',
       motion: 'remove_red_eye',
       sensors: 'filter_tilt_shift',
 
-      default: 'security'
+      default: 'policy'
 
     };
     return (icons[name]) ? icons[name] : icons.default;
@@ -66,15 +84,18 @@ export class SensorsService {
     );
   }
 
-  _getSensors(): Observable < Sensor[] > {
-    return this.http.get<ServerSensorsData>(this.sensorsUrl).pipe(
-      // map(({ sensors }) => sensors) - same as pluck
+  _getSensors(): Observable<Sensor[]> {
+    // TODO: Incremental updates
+    // const url = this.sensorsUrl + (this.lastUpdate ? '?' + (this.lastUpdate.getTime() / 1000) : '');
+    const url = this.sensorsUrl;
+    return this.http.get<ServerSensorsData>(url).pipe(
       tap(data => {
         if (data.timestamp) {
           this.lastUpdate = new Date(data.timestamp * 1000);
         }
       }),
-      pluck('sensors')
+      pluck('sensors'),
+      map(data => data.map(sensor => new Sensor(sensor)))
     );
   }
 

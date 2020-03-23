@@ -1,34 +1,69 @@
-.example-container {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+@import 'mixins';
+//@import "../../../src/app/scss/mixins";
+
+.mdContainer {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    &-toolbar {
+        height: 56px;
+        @include phone {
+            position: fixed;
+            z-index: 2;
+        }
+    }
+    &-title {
+        margin-left: 8px;
+    }
+    &-side {
+        /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+           causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+        flex: 1;
+        @include phone {
+            /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+               `<body>` to be our scrolling element for mobile layouts. */
+            flex: 1 0 auto;
+            margin-top: 56px;
+            padding-top: 0;
+        }
+        @include desktop {
+            margin-top: 0;
+            padding-top: 0;
+        }
+        @include tablet {
+            margin-top: 0;
+            padding-top: 0;
+        }
+        mat-sidenav {
+            width: 250px;
+            //overflow: hidden;
+            //margin-top: 56px;
+            .subquote {
+                padding-left: 15px;
+                box-sizing: border-box;
+            }
+            mat-list-item {
+                &:hover,
+                &:active,
+                &:focus {
+                    border: none !important;
+                }
+                mat-icon {
+                    vertical-align: bottom;
+                    margin-right: 2px;
+                    font-size: 18px;
+                }
+
+            }
+        }
+    }
 }
 
-.example-is-mobile .example-toolbar {
-  position: fixed;
-  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
-  z-index: 2;
-}
-
-h1.example-app-name {
-  margin-left: 8px;
-}
-
-.example-sidenav-container {
-  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
-     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
-  flex: 1;
-}
-
-.example-is-mobile .example-sidenav-container {
-  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
-     `<body>` to be our scrolling element for mobile layouts. */
-  flex: 1 0 auto;
-}
-.mat-sidenav {
-  width: 200px;
+mat-sidenav-content {
+    padding: 20px 20px;
+    margin-bottom: 20px;
 }

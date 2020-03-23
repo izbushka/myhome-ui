@@ -1,8 +1,9 @@
-import {MediaMatcher} from '@angular/cdk/layout';
-import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
-import {PageProperties} from '@myInterfaces/page-properties';
-import {PagePropertiesService} from '@myServices/page-properties.service';
-
+import { Component, OnDestroy, OnInit} from '@angular/core';
+import {PageProperties} from '../../interfaces/page-properties';
+import {PagePropertiesService} from '../../services/page-properties.service';
+import {SensorGroups} from '../../interfaces/sensor';
+import {SensorsService} from '../../services/sensors.service';
+import {takeWhile} from 'rxjs/operators';
 
 /** @title Responsive sidenav */
 @Component({
@@ -10,21 +11,28 @@ import {PagePropertiesService} from '@myServices/page-properties.service';
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.scss'],
 })
-export class MainLayoutComponent implements OnDestroy {
+export class MainLayoutComponent implements OnDestroy, OnInit {
+  alive = true;
   pageProps: PageProperties = {title: ''};
-  mobileQuery: MediaQueryList;
-
+  groups: SensorGroups;
   constructor(
-      changeDetectorRef: ChangeDetectorRef,
-      media: MediaMatcher,
-      private pagePropertyService: PagePropertiesService
+      private pagePropertyService: PagePropertiesService,
+      public sensorsService: SensorsService
   ) { }
+
+  slideMode(): string {
+    const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    return width > 1200 ? 'side' : 'over';
+  }
 
   ngOnInit(): void {
     this.pagePropertyService.get().subscribe(data => this.pageProps = data);
+    this.sensorsService.groups()
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(data => this.groups = data);
   }
   ngOnDestroy(): void {
+    this.alive = false;
   }
 
-  shouldRun = true;
 }

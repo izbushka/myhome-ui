@@ -7,9 +7,19 @@
                     {{sensor.name}}
                 </div>
             </div>
-            <div>
-                <mat-slide-toggle [(ngModel)]="isOn" (change)="toggle()" ></mat-slide-toggle>
+            <div *ngIf="sensor.isMutable(); else immutable">
+                <mat-slide-toggle [checked]="sensor.isOn()" (change)="toggle()" ></mat-slide-toggle>
             </div>
+            <ng-template #immutable>
+                <div>
+                    <ng-template  [ngIf]="sensor.state.length < 5" [ngIfElse]="jsonState">
+                        {{sensor.state}}
+                    </ng-template>
+                    <ng-template #jsonState>
+                        long
+                    </ng-template>
+                </div>
+            </ng-template>
         </div>
         <div class="down-right">
             {{sensor.last_change|timeAgo}}

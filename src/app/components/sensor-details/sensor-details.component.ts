@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SensorsService} from '../../services/sensors.service';
 import { ActivatedRoute } from '@angular/router';
 import { Sensor, SensorGraphPoint } from '../../interfaces/sensor';
@@ -13,7 +13,7 @@ import {PagePropertiesService} from '../../services/page-properties.service';
   templateUrl: './sensor-details.component.html',
   styleUrls: ['./sensor-details.component.scss']
 })
-export class SensorDetailsComponent implements OnInit {
+export class SensorDetailsComponent implements OnInit, OnDestroy {
   id: number;
   sensor: Sensor;
   graphData: SensorGraphPoint[];
@@ -27,8 +27,17 @@ export class SensorDetailsComponent implements OnInit {
   lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June'];
 
 
-  lineChartOptions = {
+  lineChartOptions = { // https://www.chartjs.org/docs/latest/configuration/elements.html#point-styles
     responsive: true,
+    elements: {
+      point: {
+        pointStyle: 'dash',
+        borderWidth: 0
+      },
+      line: {
+        borderWidth: 1,
+      }
+    }
   };
 
   lineChartColors: Color[] = [
@@ -61,6 +70,19 @@ export class SensorDetailsComponent implements OnInit {
       .subscribe(graph => this.prepareGraph(graph));
   }
 
+  toggle() {
+    this.sensor.state = this.sensor.isOn() ? 'OFF' : 'ON';
+    this.sensorsService.switch(this.sensor.id, this.sensor.isOn());
+    setTimeout(() => this.update(), 1000);
+  }
+  update() {
+    this.sensorsService.details(this.id)
+      .subscribe(sensor => {
+        this.sensor = sensor;
+        this.pagePropertyService.set('title', sensor.name);
+      });
+    this.getGraph('day');
+  }
   constructor(
     private sensorsService: SensorsService,
     private pagePropertyService: PagePropertiesService,
@@ -72,12 +94,9 @@ export class SensorDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.id = +params.get('id');
-      this.sensorsService.details(this.id)
-        .subscribe(sensor => {
-          this.sensor = sensor;
-          this.pagePropertyService.set('title', sensor.name);
-        });
-      this.getGraph('day');
+      this.update();
     });
+  }
+  ngOnDestroy(): void {
   }
 }

@@ -1,10 +1,16 @@
 <div *ngFor="let group of groups | keyvalue">
-    {{group.key}}
-
-    <div class="my-grid">
-        <div class="my-grid-cell" *ngFor="let sensor of group.value">
-            <app-sensors-list-item [sensor]="sensor"></app-sensors-list-item>
+    <ng-template [ngIf]="!curGroup || group.key == curGroup">
+        <mat-toolbar>
+            <span class="my-flex-grow">{{group.key}}</span>
+            <span>
+                <mat-icon style="float:right">{{sensorsService.getGroupIcon(group.key)}}</mat-icon>
+            </span>
+        </mat-toolbar>
+        <div class="my-grid my-margin-bottom">
+            <div class="my-grid-cell" *ngFor="let sensor of group.value">
+                <app-sensors-list-item [sensor]="sensor"></app-sensors-list-item>
+            </div>
         </div>
-    </div>
+    </ng-template>
 </div>
 

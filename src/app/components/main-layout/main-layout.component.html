@@ -1,21 +1,37 @@
-<div class="example-container" [class.example-is-mobile]="mobileQuery.matches" *ngIf="shouldRun">
-  <mat-toolbar color="primary" class="example-toolbar">
-    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    <h1 class="example-app-name">{{pageProps.title}}</h1>
-  </mat-toolbar>
+<div class="mdContainer">
+    <mat-toolbar color="primary" class="mdContainer-toolbar">
+        <button mat-icon-button (click)="snav.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <h1 class="mdContainer-title">{{pageProps.title}}</h1>
+    </mat-toolbar>
 
-  <mat-sidenav-container class="example-sidenav-container"
-                         [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
-                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-      <mat-nav-list>
-        <a [routerLink]="['/']">Home</a><br>
-        <a [routerLink]="['/dashboard']">Dash</a>
-      </mat-nav-list>
-    </mat-sidenav>
+    <mat-sidenav-container class="mdContainer-side">
+        <!--[style.marginTop.px]="mobileQuery.matches ? 56 : 0">-->
+        <mat-sidenav #snav [mode]="slideMode()" [opened]="slideMode() === 'side'">
+            <!--<mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"-->
+            <!--[fixedInViewport]="mobileQuery.matches" fixedTopGap="56">-->
+            <mat-list>
 
-    <mat-sidenav-content>
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+                <mat-list-item [routerLink]="['/dashboard']" (click)="slideMode() === 'side' || snav.toggle()">
+                    <mat-icon>home</mat-icon>
+                    Dashboard
+                </mat-list-item>
+                <mat-list-item [routerLink]="['/list']" (click)="slideMode() === 'side' ||  snav.toggle()">
+                    <mat-icon>list</mat-icon>
+                    All Sensors
+                </mat-list-item>
+                <ng-template ngFor let-group [ngForOf]="groups | keyvalue">
+                    <mat-list-item class="subquote" [routerLink]="['/list', group.key]" (click)="slideMode() === 'side' || snav.toggle()">
+                        <mat-icon>{{sensorsService.getGroupIcon(group.key)}}</mat-icon>
+                        {{group.key | titlecase}}
+                    </mat-list-item>
+                </ng-template>
+            </mat-list>
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
 </div>
