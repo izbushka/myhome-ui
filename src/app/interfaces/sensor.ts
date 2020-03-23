@@ -54,7 +54,7 @@ export class Sensor implements SensorData {
     return this.state === 'ON' || this.state === 'PON';
   }
   isWarn(): boolean {
-    return this.normal_state && this.state !== this.normal_state;
+    return (this.normal_state && this.state !== this.normal_state) || this.state === 'ERR';
   }
 }
 

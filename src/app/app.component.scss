@@ -1,4 +1,5 @@
 @import 'mixins';
+@import '~@angular/material/theming';
 
 ::ng-deep {
     .my-flex-nowrap,
@@ -51,12 +52,21 @@
     .my-nowrap {
         white-space: nowrap;
     }
+    //$theme: $mat-pink;
+    $primary: mat-palette($mat-purple);
+    $accent:  mat-palette($mat-purple, A200, A100, A400);
+    $theme: mat-light-theme($primary, $accent);
+
+
 
     .my-color-red {
-        color: red;
+        color: mat-color(map-get($theme, accent));
     }
     .my-color-grey {
         color: grey;
+    }
+    .my-color-warn {
+        color: #FFCB68;
     }
 
     /* MATERIALes DESIGN */

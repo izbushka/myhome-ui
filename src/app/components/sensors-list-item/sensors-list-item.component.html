@@ -2,7 +2,7 @@
     <mat-card-content>
         <div class="my-flex-nowrap">
             <div class="my-flex-grow my-flex-nowrap"  [routerLink]="['/details', sensor.sensor_id]">
-                <mat-icon class>{{sensorService.getGroupIcon(sensor.group)}}</mat-icon>
+                <mat-icon  [class.my-color-red]="sensor.isWarn()">{{sensorService.getGroupIcon(sensor.group)}}</mat-icon>
                 <div  class="my-flex-shrink">
                     {{sensor.name}}
                 </div>
@@ -11,7 +11,7 @@
                 <mat-slide-toggle [checked]="sensor.isOn()" (change)="toggle()" ></mat-slide-toggle>
             </div>
             <ng-template #immutable>
-                <div>
+                <div [class.my-color-red]="sensor.isWarn()">
                     <ng-template  [ngIf]="sensor.state.length < 5" [ngIfElse]="jsonState">
                         {{sensor.state}}
                     </ng-template>
