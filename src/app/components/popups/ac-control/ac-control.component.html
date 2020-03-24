@@ -1,17 +1,79 @@
-<div mat-dialog-content>
-    <p>{{data.name}}</p>
-    <mat-form-field>
-        <mat-label>Favorite Animal</mat-label>
-        <input matInput [(ngModel)]="data.state">
+<div mat-dialog-content [formGroup]="acForm">
+    <h1 class="my-flex-nowrap">
+        <span class="my-flex-grow">
+            {{sensor.name}}
+        </span>
+        <span class="my-flexa">
+            <mat-slide-toggle [checked]="sensor.isOn()"></mat-slide-toggle>
+        </span>
+    </h1>
 
-    </mat-form-field><br>
-    <mat-radio-group aria-label="AC Mode">
-        <mat-radio-button *ngFor="let i of modes " [value]="i" [checked]="i === state.mode">
-            {{i | titlecase}} &nbsp;&nbsp;&nbsp;&nbsp;
-        </mat-radio-button><br><br><br>
+    <!--    <mat-radio-group aria-label="AC Mode">-->
+    <!--        <mat-label>Mode</mat-label><br>-->
+    <!--        <mat-radio-button *ngFor="let i of modes " [value]="i" [checked]="i === state.mode">-->
+    <!--            {{i | titlecase}} &nbsp;&nbsp;&nbsp;&nbsp;-->
+    <!--        </mat-radio-button><br><br><br>-->
+    <!--    </mat-radio-group>-->
+
+    <div class="temperature">
+        <span class="border">
+            <mat-label>{{acForm.get('temperature').value}}</mat-label>
+        </span>
+    </div>
+
+    <mat-slider thumbLabel tickInterval="1" min="16" max="30"
+        formControlName="temperature"
+        [displayWith]="acTemperatureFormat"
+        [style.width]="'100%'"
+        (input)="onTemperature Change($event)"
+    ></mat-slider>
+
+    <mat-radio-group aria-label="Mode" formControlName="mode">
+        <div class="my-grid">
+            <div class="ac-modes" *ngFor="let i of modes">
+                <mat-radio-button [value]="i">{{i | titlecase}}</mat-radio-button>
+            </div>
+        </div>
     </mat-radio-group>
+
+
+    <div class="my-grid my-align-center">
+        <div class="my-flex-half">
+            <mat-form-field>
+                <mat-label>Fan speed</mat-label>
+                <mat-select [value]="state.fan" formControlName="fan">
+                    <mat-option *ngFor="let i of fan" [value]="i">
+                        {{i | titlecase}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            Turbo
+            <mat-slide-toggle [checked]="sensor.isOn()"></mat-slide-toggle>
+        </div>
+
+        <div class="my-flex-half">
+            <mat-form-field>
+                <mat-label>Swing</mat-label>
+                <mat-select [value]="state.swing" formControlName="swing">
+                    <mat-option *ngFor="let i of swing" [value]="i">
+                        {{i | titlecase}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+    </div>
 </div>
+
+
 <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">No Thanks</button>
-    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+    <div class="my-flex my-align-center my-width-100">
+        <div class="my-flex-half">
+            <button mat-button [mat-dialog-close]="sensor" cdkFocusInitial>Ok</button>
+        </div>
+        <div class="my-flex-half">
+            <button mat-button (click)="onNoClick()">Cancel</button>
+        </div>
+    </div>
 </div>

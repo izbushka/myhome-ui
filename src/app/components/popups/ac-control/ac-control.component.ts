@@ -1,6 +1,8 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {AcState, Sensor, AcMode} from '../../../interfaces/sensor';
+import {AcState, Sensor, AcMode, AcSwing, AcFan} from '../../../interfaces/sensor';
+import { FormControl, FormGroup } from '@angular/forms';
+import {MatSliderChange} from '@angular/material/slider';
 
 
 @Component({
@@ -9,11 +11,22 @@ import {AcState, Sensor, AcMode} from '../../../interfaces/sensor';
   styleUrls: ['./ac-control.component.scss']
 })
 export class AcControlComponent implements OnInit {
+  acForm = new FormGroup({
+    state: new FormControl(''),
+    temperature: new FormControl(''),
+    mode: new FormControl(''),
+    fan: new FormControl(''),
+    swing: new FormControl(''),
+    turbo: new FormControl(''),
+  });
+
   state: AcState;
   modes: any;
+  swing: any;
+  fan: any;
   constructor(
     public dialogRef: MatDialogRef<AcControlComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Sensor
+    @Inject(MAT_DIALOG_DATA) public sensor: Sensor
   ) {
   }
 
@@ -23,15 +36,26 @@ export class AcControlComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.state = JSON.parse(this.data.state);
-    // for(const i of Object.keys(AcMode)) {
-    //   console.log(i);
-    // }
-    this.modes = Object.keys(AcMode);
-    this.modes = this.modes.filter(i => isNaN(i));
-    for(let i of this.modes) {
-      if( i === this.state.mode )console.log(i + ' SELSCTED');
-    }
+    this.state = JSON.parse(this.sensor.state);
+
+    this.swing = this.createList(AcSwing);
+    this.modes = this.createList(AcMode);
+    this.fan = this.createList(AcFan);
+
+
+    this.acForm.patchValue(this.state);
+
   }
 
+  createList(tpl: object): Array<string> {
+    const names: any = Object.keys(tpl);
+    return names.filter(i => isNaN(i));
+  }
+
+  onTemperatureChange(event: MatSliderChange): void {
+    this.acForm.patchValue({temperature: event.value});
+  }
+  acTemperatureFormat(v: number): string {
+    return v + '°C';
+  }
 }

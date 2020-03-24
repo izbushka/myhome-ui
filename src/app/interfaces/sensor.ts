@@ -28,9 +28,9 @@ export interface SensorLog {
 }
 
 export enum SwOnOff {on, off}
-export enum AcSwing {auto, off, on}
-export enum AcFan {s1, s2, s3, auto}
-export enum AcMode {cool, hot, dry, fan, auto}
+export enum AcSwing {auto, off, top, middle, bottom}
+export enum AcFan {auto, s1, s2, s3}
+export enum AcMode {auto, cool, hot, dry, fan}
 
 export interface AcState {
   change_time: string;

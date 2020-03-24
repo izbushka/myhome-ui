@@ -27,7 +27,7 @@ export class SensorsListItemComponent implements OnInit {
 
   openAcControl(): void {
     const dialogRef = this.dialog.open(AcControlComponent, {
-      width: '450px',
+      width: '500px',
       height: 'fit',
       data: this.sensor
     });

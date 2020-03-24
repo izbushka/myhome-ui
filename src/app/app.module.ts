@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,6 +14,7 @@ import { SensorsGroupSummaryComponent } from '@myComponents/sensors-group-summar
 import { AllMaterialModules } from './all-material-modules';
 import { SensorsListComponent } from './components/sensors-list/sensors-list.component';
 import { SensorsListItemComponent } from './components/sensors-list-item/sensors-list-item.component';
+
 
 import { TimeAgo } from './modules/utils.pipe';
 import { SensorDetailsComponent } from './components/sensor-details/sensor-details.component';
@@ -36,6 +37,7 @@ import { AcControlComponent } from './components/popups/ac-control/ac-control.co
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
