@@ -29,6 +29,9 @@ export class AcControlComponent implements OnInit {
     // }
     this.modes = Object.keys(AcMode);
     this.modes = this.modes.filter(i => isNaN(i));
+    for(let i of this.modes) {
+      if( i === this.state.mode )console.log(i + ' SELSCTED');
+    }
   }
 
 }
