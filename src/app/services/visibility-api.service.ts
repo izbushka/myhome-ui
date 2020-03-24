@@ -16,12 +16,12 @@ export class VisibilityApiService {
     if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
       this.visibilityProp = 'hidden';
       this.visibilityEvent = 'visibilitychange';
-    } else if (typeof document.msHidden !== 'undefined') {
-      this.visibilityProp = 'msHidden';
-      this.visibilityEvent = 'msvisibilitychange';
-    } else if (typeof document.webkitHidden !== 'undefined') {
-      this.visibilityProp = 'webkitHidden';
-      this.visibilityEvent = 'webkitvisibilitychange';
+    // } else if (typeof document.msHidden !== 'undefined') {
+    //   this.visibilityProp = 'msHidden';
+    //   this.visibilityEvent = 'msvisibilitychange';
+    // } else if (typeof document.webkitHidden !== 'undefined') {
+    //   this.visibilityProp = 'webkitHidden';
+    //   this.visibilityEvent = 'webkitvisibilitychange';
     }
 
     if (typeof document.addEventListener === 'undefined' || this.visibilityProp === null) {

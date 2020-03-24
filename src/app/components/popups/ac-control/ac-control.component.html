@@ -1,0 +1,17 @@
+<div mat-dialog-content>
+    <p>{{data.name}}</p>
+    <mat-form-field>
+        <mat-label>Favorite Animal</mat-label>
+        <input matInput [(ngModel)]="data.state">
+    </mat-form-field>
+    <mat-radio-group aria-label="AC Mode">
+        <mat-radio-button *ngFor="let i of modes " value="i" [checked]="i === state.mode">
+            {{i | titlecase}} {{state.mode}}
+        </mat-radio-button><br>
+
+    </mat-radio-group>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">No Thanks</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>

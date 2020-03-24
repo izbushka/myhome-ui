@@ -19,6 +19,7 @@ import { TimeAgo } from './modules/utils.pipe';
 import { SensorDetailsComponent } from './components/sensor-details/sensor-details.component';
 
 import { ChartsModule } from 'ng2-charts';
+import { AcControlComponent } from './components/popups/ac-control/ac-control.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ChartsModule } from 'ng2-charts';
     SensorsListComponent,
     SensorsListItemComponent,
     TimeAgo,
-    SensorDetailsComponent
+    SensorDetailsComponent,
+    AcControlComponent
   ],
   imports: [
     BrowserModule,

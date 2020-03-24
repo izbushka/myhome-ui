@@ -27,6 +27,21 @@ export interface SensorLog {
   change_time: string;
 }
 
+export enum SwOnOff {on, off}
+export enum AcSwing {auto, off, on}
+export enum AcFan {s1, s2, s3, auto}
+export enum AcMode {cool, hot, dry, fan, auto}
+
+export interface AcState {
+  change_time: string;
+  temperature: number;
+  swing: AcSwing;
+  mode: AcMode;
+  turbo: SwOnOff;
+  fan: AcFan;
+  state: SwOnOff;
+}
+
 export class Sensor implements SensorData {
   id: number;
   pending: number;
@@ -76,3 +91,4 @@ export class SensorIcon {
     return (this.icons[group]) ? this.icons[group] : this.icons.default;
   }
 }
+
