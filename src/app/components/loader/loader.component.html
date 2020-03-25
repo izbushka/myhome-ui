@@ -1,0 +1,8 @@
+<div class="overlay" *ngIf="isLoading" [class.modal-loader]="isModal">
+    <mat-progress-spinner *ngIf="isModal" class="spinner" [color]="color" mode="indeterminate">
+    </mat-progress-spinner>
+
+    <mat-progress-bar *ngIf="!isModal" mode="query" [color]="color"></mat-progress-bar>
+</div>
+
+<!--<div class="overlay"-->

@@ -29,7 +29,7 @@ export class SensorsService {
   ) {
     this.update();
 
-    const timer = interval(2000); // update sensors every interval (ms)
+    const timer = interval(20000); // update sensors every interval (ms)
     this.visibilityApi.changes().pipe(
         switchMap(pageVisible => pageVisible ? timer : EMPTY)
     ).subscribe(() => this.update());
@@ -85,6 +85,7 @@ export class SensorsService {
     // TODO: Incremental updates
     // const url = this.sensorsUrl + (this.lastUpdate ? '?' + (this.lastUpdate.getTime() / 1000) : '');
     const url = this.sensorsUrl;
+    console.debug('getting data from sergeert');
     return this.http.get<ServerSensorsData>(url).pipe(
       tap(data => {
         if (data.timestamp) {

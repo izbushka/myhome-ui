@@ -21,6 +21,8 @@ import { SensorDetailsComponent } from './components/sensor-details/sensor-detai
 
 import { ChartsModule } from 'ng2-charts';
 import { AcControlComponent } from './components/popups/ac-control/ac-control.component';
+import {httpInterceptorProviders} from './http-interceptors';
+import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { AcControlComponent } from './components/popups/ac-control/ac-control.co
     SensorsListItemComponent,
     TimeAgo,
     SensorDetailsComponent,
-    AcControlComponent
+    AcControlComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,9 @@ import { AcControlComponent } from './components/popups/ac-control/ac-control.co
     // MatIconModule,
     ChartsModule
   ],
-  providers: [],
+  providers: [
+      httpInterceptorProviders
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

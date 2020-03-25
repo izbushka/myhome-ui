@@ -1,0 +1,30 @@
+//::ng-deep {
+//    app-loader {
+//        width: 10px;
+//        height: 10px;
+//        top: 20px;
+//        left: 20px;
+//        position: absolute;
+//        z-index: 10;
+//    }
+//}
+.overlay {
+    width: 100vw;
+    height: 4px;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    z-index: 10;
+
+    &.modal-loader {
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        position: absolute;
+        z-index: 10;
+        margin: 30vh auto 0;
+    }
+
+
+}
