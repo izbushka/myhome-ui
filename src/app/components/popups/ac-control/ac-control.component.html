@@ -4,7 +4,7 @@
             {{sensor.name}}
         </span>
         <span class="my-flexa">
-            <mat-slide-toggle [checked]="sensor.isOn()"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="acForm.get('state').value === 'on'" (change)="toggle()"></mat-slide-toggle>
         </span>
     </h1>
 
@@ -70,7 +70,7 @@
 <div mat-dialog-actions>
     <div class="my-flex my-align-center my-width-100">
         <div class="my-flex-half">
-            <button mat-button [mat-dialog-close]="sensor" cdkFocusInitial>Ok</button>
+            <button mat-button (click)="onOkClick()" cdkFocusInitial>Ok</button>
         </div>
         <div class="my-flex-half">
             <button mat-button (click)="onNoClick()">Cancel</button>

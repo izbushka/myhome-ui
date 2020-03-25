@@ -57,15 +57,16 @@
     .my-nowrap {
         white-space: nowrap;
     }
+    //
+
+
     //$theme: $mat-pink;
-    $primary: mat-palette($mat-purple);
-    $accent:  mat-palette($mat-purple, A200, A100, A400);
-    $theme: mat-light-theme($primary, $accent);
-
-
-
+    //$primary: mat-palette($mat-purple);
+    //$accent:  mat-palette($mat-purple, A200, A100, A400);
+    //$theme: mat-light-theme($primary, $accent);
     .my-color-red {
-        color: mat-color(map-get($theme, accent));
+        //color: mat-color(map-get($theme, accent));
+        color: #7b1fa2;
     }
     .my-color-grey {
         color: grey;

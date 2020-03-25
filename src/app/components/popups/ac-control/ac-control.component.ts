@@ -1,9 +1,10 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {AcState, Sensor, AcMode, AcSwing, AcFan} from '../../../interfaces/sensor';
-import { FormControl, FormGroup } from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import {MatSliderChange} from '@angular/material/slider';
-
+import {UtilsService} from '../../../modules/utils.service';
+import {SensorsService} from '../../../services/sensors.service';
 
 @Component({
   selector: 'app-ac-control',
@@ -24,14 +25,24 @@ export class AcControlComponent implements OnInit {
   modes: any;
   swing: any;
   fan: any;
+
   constructor(
     public dialogRef: MatDialogRef<AcControlComponent>,
+    private sensorsService: SensorsService,
     @Inject(MAT_DIALOG_DATA) public sensor: Sensor
   ) {
   }
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  onOkClick(): void {
+    if (!UtilsService.compareObjects(this.acForm.value, this.state)) {
+      // alert('chandeg');
+      this.sensorsService.saveState(this.sensor.id, this.acForm.value);
+    }
+    this.dialogRef.close(this.sensor);
   }
 
 
@@ -55,7 +66,14 @@ export class AcControlComponent implements OnInit {
   onTemperatureChange(event: MatSliderChange): void {
     this.acForm.patchValue({temperature: event.value});
   }
+
   acTemperatureFormat(v: number): string {
     return v + '°C';
+  }
+
+  toggle() {
+    const prevState = this.acForm.get('state').value;
+    const newState = prevState === 'off' ? 'on' : 'off';
+    this.acForm.patchValue({state: newState});
   }
 }

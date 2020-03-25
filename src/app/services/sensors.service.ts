@@ -59,6 +59,12 @@ export class SensorsService {
       () => this.update()
     );
   }
+  saveState(id: number, state: object): void {
+    const sensor = id;
+    this.http.post<any>(this.sensorsUrl + '/' + id, state).subscribe(
+      () => this.update()
+    );
+  }
 
   graph(id: number, period: string): Observable<SensorGraphPoint[]> {
     // https://rpi.xvv.be/sensors/81/graph/day?
