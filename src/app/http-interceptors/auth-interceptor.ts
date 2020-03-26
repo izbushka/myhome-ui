@@ -9,7 +9,7 @@ import {catchError, finalize} from 'rxjs/operators';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // console.log('intercepting');
+    console.log('intercepting AUTH',req);
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
         let data = {};
@@ -18,7 +18,7 @@ export class AuthInterceptor implements HttpInterceptor {
           status: error.status
         };
         console.debug(data);
-        // alert('Error00');
+        alert('Error00');
 
         return throwError(error);
       })
