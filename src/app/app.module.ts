@@ -6,10 +6,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 
-import { AppRoutingModule } from '@myModules/app-routing/app-routing.module';
-import { DashboardComponent } from '@myComponents/dashboard/dashboard.component';
-import { MainLayoutComponent } from '@myComponents/main-layout/main-layout.component';
-import { SensorsGroupSummaryComponent } from '@myComponents/sensors-group-summary/sensors-group-summary.component';
+import { AppRoutingModule } from './modules/app-routing/app-routing.module';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { MainLayoutComponent } from './components/main-layout/main-layout.component';
+import { SensorsGroupSummaryComponent } from './components/sensors-group-summary/sensors-group-summary.component';
 
 import { AllMaterialModules } from './all-material-modules';
 import { SensorsListComponent } from './components/sensors-list/sensors-list.component';
@@ -23,6 +23,8 @@ import { ChartsModule } from 'ng2-charts';
 import { AcControlComponent } from './components/popups/ac-control/ac-control.component';
 import {httpInterceptorProviders} from './http-interceptors';
 import { LoaderComponent } from './components/loader/loader.component';
+import {APP_BASE_HREF} from '@angular/common';
+import {environment} from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -51,8 +53,10 @@ import { LoaderComponent } from './components/loader/loader.component';
     ChartsModule
   ],
   providers: [
-      httpInterceptorProviders
+    httpInterceptorProviders,
+    { provide: APP_BASE_HREF, useValue: environment.appBase }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

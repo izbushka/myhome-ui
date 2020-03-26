@@ -3,10 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  // apiUrl: 'http://127.0.0.1:8080'
-  apiUrl: 'http://11.230.0.2',
-  mockHttp: false,
+  production: true,
+  apiUrl: 'https://rpi.xvv.be',
+  mockHttp: true,
   appBase: '/',
 };
 

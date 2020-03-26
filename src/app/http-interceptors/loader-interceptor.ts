@@ -8,7 +8,6 @@ import {LoaderService} from '../services/loader.service';
 @Injectable()
 export class LoaderInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
         const loaderTimeout = setTimeout(() => {
             this.loaderService.show();
         }, 1000);

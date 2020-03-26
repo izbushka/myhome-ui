@@ -16,7 +16,12 @@ interface ServerSensorsData {
 })
 
 export class SensorsService {
-  private sensorsUrl = environment.apiUrl + '/sensors/states'; // URL to web api
+  private sensorsUrl = environment.apiUrl + '/sensors/'; // URL to web api
+  // https://rpi.xvv.be/sensors/states
+  // https://rpi.xvv.be/sensors/52/ON|OFF
+  // https://rpi.xvv.be/sensors/52 [post json]
+  // https://rpi.xvv.be/sensors/52/graph
+  // https://rpi.xvv.be/sensors/states/52
   private lastUpdate: Date;
   private sensorsSubject: BehaviorSubject<Sensor[]> = new BehaviorSubject([]);
   private groupsSubject: BehaviorSubject<SensorGroups> = new BehaviorSubject({});
@@ -29,7 +34,7 @@ export class SensorsService {
   ) {
     this.update();
 
-    const timer = interval(20000); // update sensors every interval (ms)
+    const timer = interval(3000); // update sensors every interval (ms)
     this.visibilityApi.changes().pipe(
         switchMap(pageVisible => pageVisible ? timer : EMPTY)
     ).subscribe(() => this.update());
@@ -48,27 +53,28 @@ export class SensorsService {
   }
 
   details(id: number): Observable<Sensor> {
-    return this.http.get<SensorData>(this.sensorsUrl + '/' + id)
+    return this.http.get<SensorData>(this.sensorsUrl + 'states/' + id)
+    // return this.http.get<SensorData>(this.sensorsUrl + '../401/' + id)
       .pipe(map(data => new Sensor(data)));
   }
 
   switch(id: number, state: boolean): void {
     const sensor = id;
     const newState = state ? 'ON' : 'OFF';
-    this.http.get<any>(this.sensorsUrl + '/../../zwave/' + id + '/' + newState).subscribe(
+    this.http.get<any>(this.sensorsUrl + id + '/' + newState).subscribe(
       () => this.update()
     );
   }
   saveState(id: number, state: object): void {
     const sensor = id;
-    this.http.post<any>(this.sensorsUrl + '/' + id, state).subscribe(
+    this.http.post<any>(this.sensorsUrl + id, state).subscribe(
       () => this.update()
     );
   }
 
   graph(id: number, period: string): Observable<SensorGraphPoint[]> {
     // https://rpi.xvv.be/sensors/81/graph/day?
-    return this.http.get<SensorGraphPoint[]>(this.sensorsUrl + '/../' + id + '/graph/' + period);
+    return this.http.get<SensorGraphPoint[]>(this.sensorsUrl + id + '/graph/' + period);
   }
 
   getGroupIcon(name: string): string {
@@ -84,8 +90,7 @@ export class SensorsService {
   _getSensors(): Observable<Sensor[]> {
     // TODO: Incremental updates
     // const url = this.sensorsUrl + (this.lastUpdate ? '?' + (this.lastUpdate.getTime() / 1000) : '');
-    const url = this.sensorsUrl;
-    console.debug('getting data from sergeert');
+    const url = this.sensorsUrl + 'states';
     return this.http.get<ServerSensorsData>(url).pipe(
       tap(data => {
         if (data.timestamp) {
