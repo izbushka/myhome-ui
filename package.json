@@ -2,7 +2,7 @@
   "name": "angular",
   "version": "0.0.0",
   "scripts": {
-	"deploy": "node ./deploy.js",
+	"deploy": "ng build --prod='true' --base-href='/new/' && node ./deploy.js",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

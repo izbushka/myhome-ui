@@ -44,9 +44,11 @@ export class MainLayoutComponent implements OnDestroy, OnInit {
       }
     });
     this.pagePropertyService.get().subscribe(data => this.pageProps = data);
-    this.sensorsService.groups()
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(data => this.groups = data);
+	if (this.isAuthorized) {
+		this.sensorsService.groups()
+		  .pipe(takeWhile(() => this.alive && this.isAuthorized))
+		  .subscribe(data => this.groups = data);
+	}
   }
   ngOnDestroy(): void {
     this.alive = false;
