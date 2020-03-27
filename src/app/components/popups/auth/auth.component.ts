@@ -1,10 +1,7 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {AcState, Sensor, AcMode, AcSwing, AcFan} from '../../../interfaces/sensor';
 import {FormControl, FormGroup} from '@angular/forms';
-import {MatSliderChange} from '@angular/material/slider';
-import {UtilsService} from '../../../modules/utils.service';
-import {SensorsService} from '../../../services/sensors.service';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -12,10 +9,25 @@ import {SensorsService} from '../../../services/sensors.service';
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
+  authForm = new FormGroup({
+    login: new FormControl(''),
+    password: new FormControl('')
+  });
 
-  constructor() { }
+  constructor(
+    private authService: AuthService,
+    public dialogRef: MatDialogRef<AuthComponent>
+  ) { }
 
   ngOnInit(): void {
   }
 
+  doLogin(): void {
+    this.dialogRef.close();
+    this.authService.doLogin(
+      this.authForm.get('login').value,
+      this.authForm.get('password').value
+    );
+
+  }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ export class AuthService {
   isAuthorized: BehaviorSubject<boolean> = new BehaviorSubject(true);
   token: string = null;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   authorized(state: boolean) {
     this.isAuthorized.next(state);
@@ -22,6 +23,20 @@ export class AuthService {
     return this.token && this.token.length > 0;
   }
 
+  doLogin(username: string, password: string): void {
+    if (username.length > 2 && password.length > 2) {
+      this.makeToken(username, password);
+      this.authorized(true);
+    }
+    // this.router.navigate(['/pocetna'], { queryParams: { 'refresh': 1 } });
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      this.router.navigate(['/dashboard']);
+    });
+    // this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+    //   this.router.navigate([currentUrl]);
+    // });
+  }
   makeToken(username: string, password: string): string {
     const token = btoa(username + ':' + password);
     this.setToken(token);

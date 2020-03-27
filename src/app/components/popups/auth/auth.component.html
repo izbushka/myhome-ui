@@ -1,4 +1,4 @@
-<div mat-dialog-content>
+<form mat-dialog-content [formGroup]="authForm" (ngSubmit)="doLogin()">
     <h1 class="my-flex-nowrap">
         <span class="my-flex-grow">
             Authorization
@@ -8,14 +8,14 @@
     <div class="example-container">
         <mat-form-field appearance="fill">
             <mat-label>Username</mat-label>
-            <input matInput>
+            <input matInput formControlName="login">
         </mat-form-field>
         <br>
         <mat-form-field appearance="fill">
             <mat-label>Password</mat-label>
-            <input matInput>
+            <input matInput formControlName="password">
         </mat-form-field>
         <br>
-        <button mat-button>Login</button>
+        <button mat-button type="submit">Login</button>
     </div>
-</div>
+</form>
