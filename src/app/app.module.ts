@@ -25,6 +25,7 @@ import {httpInterceptorProviders} from './http-interceptors';
 import { LoaderComponent } from './components/loader/loader.component';
 import {APP_BASE_HREF} from '@angular/common';
 import {environment} from '../environments/environment';
+import {AuthComponent} from './components/popups/auth/auth.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {environment} from '../environments/environment';
     TimeAgo,
     SensorDetailsComponent,
     AcControlComponent,
-    LoaderComponent
+    LoaderComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,

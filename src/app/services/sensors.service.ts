@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable, BehaviorSubject, interval, EMPTY, of, Subject} from 'rxjs';
+import {Observable, BehaviorSubject, interval, EMPTY, of, Subject, combineLatest, timer} from 'rxjs';
 import {distinctUntilChanged, map, pluck, repeatWhen, skipWhile, switchMap, tap} from 'rxjs/operators';
 import {Sensor, SensorGroups, SensorGraphPoint, SensorData, SensorIcon} from '../interfaces/sensor';
 import { environment } from '../../environments/environment';
 import {VisibilityApiService} from './visibility-api.service';
+import {AuthService} from './auth.service';
 
 interface ServerSensorsData {
   timestamp: number;
@@ -30,14 +31,18 @@ export class SensorsService {
 
   constructor(
     private http: HttpClient,
-    private visibilityApi: VisibilityApiService
+    private visibilityApi: VisibilityApiService,
+    private authService: AuthService
   ) {
     this.update();
 
-    const timer = interval(3000); // update sensors every interval (ms)
-    this.visibilityApi.changes().pipe(
-        switchMap(pageVisible => pageVisible ? timer : EMPTY)
+    const updateInterval = interval(3000); // update sensors every interval (ms)
+
+    combineLatest([this.visibilityApi.changes(), this.authService.isAuthorized]).pipe(
+        map(data => data[0] && data[1]),
+        switchMap(pageVisible => pageVisible ? updateInterval : EMPTY)
     ).subscribe(() => this.update());
+
   }
 
   update(): void {

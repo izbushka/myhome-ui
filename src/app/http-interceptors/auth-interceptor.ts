@@ -1,29 +1,35 @@
-
 import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse} from '@angular/common/http';
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 
 import {Observable, throwError} from 'rxjs';
-import {catchError, finalize} from 'rxjs/operators';
-// import {LoaderService} from '../services/loader.service';
+import {catchError} from 'rxjs/operators';
+// import {AppRoutingModule} from '../modules/app-routing/app-routing.module';
+import {Router} from '@angular/router';
+import {AuthService} from '../services/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('intercepting AUTH',req);
-    return next.handle(req).pipe(
-      catchError((error: HttpErrorResponse) => {
-        let data = {};
-        data = {
-          reason: error && error.error.reason ? error.error.reason : '',
-          status: error.status
-        };
-        console.debug(data);
-        alert('Error00');
 
-        return throwError(error);
-      })
+      const reqNew = !this.authService.hasToken() ? req : req.clone({
+          setHeaders: {
+              Authorization: this.authService.getAuthHeader()
+          }
+      });
+
+      return next.handle(reqNew).pipe(
+          catchError((error: HttpErrorResponse) => {
+              if (error.status === 403 || error.status === 401) {
+                  this.authService.authorized(false);
+              }
+              return throwError(error);
+          })
     );
   }
 
-  constructor() {}
+    constructor(
+        private router: Router,
+        private authService: AuthService
+    ) {
+    }
 }
