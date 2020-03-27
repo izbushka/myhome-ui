@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PageProperties} from '../../interfaces/page-properties';
 import {PagePropertiesService} from '../../services/page-properties.service';
 import {SensorGroups} from '../../interfaces/sensor';
@@ -44,11 +44,7 @@ export class MainLayoutComponent implements OnDestroy, OnInit {
       }
     });
     this.pagePropertyService.get().subscribe(data => this.pageProps = data);
-	if (this.isAuthorized) {
-		this.sensorsService.groups()
-		  .pipe(takeWhile(() => this.alive && this.isAuthorized))
-		  .subscribe(data => this.groups = data);
-	}
+    this.sensorsService.groups().subscribe(data => this.groups = data);
   }
   ngOnDestroy(): void {
     this.alive = false;
@@ -62,6 +58,9 @@ export class MainLayoutComponent implements OnDestroy, OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (!this.isAuthorized) {
+        this.openAuthPopup();
+      }
       console.log('The dialog was closed', result);
     });
   }
