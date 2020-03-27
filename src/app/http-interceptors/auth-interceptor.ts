@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 
-import {Observable, throwError} from 'rxjs';
+import {Observable, throwError, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 // import {AppRoutingModule} from '../modules/app-routing/app-routing.module';
 import {Router} from '@angular/router';
@@ -19,8 +19,9 @@ export class AuthInterceptor implements HttpInterceptor {
 
       return next.handle(reqNew).pipe(
           catchError((error: HttpErrorResponse) => {
-              if (error.status === 403 || error.status === 401) {
+              if (error.status === 403 || error.status === 401 || error.status === 0) {
                   this.authService.authorized(false);
+				  return of(null);
               }
               return throwError(error);
           })
