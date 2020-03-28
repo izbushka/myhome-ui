@@ -7,7 +7,7 @@ const options = {
 	privateKeyFile: '/home/mirage/.ssh/id_rsa',
 //    password: 'password',
     deployPath: '/home/scripts/nginx/www/',
-	currentReleaseLink: 'new',
+	currentReleaseLink: 'app',
 	onBeforeLink: context => `chmod 644 ${context.release.path}/*`
 };
  

@@ -16,7 +16,9 @@
                         {{sensor.state}}
                     </ng-template>
                     <ng-template #jsonState>
-                        <span (click)="openAcControl()">long</span>
+                        <span (click)="openAcControl()">
+                            <mat-icon>flip_to_front</mat-icon>
+                        </span>
                     </ng-template>
                 </div>
             </ng-template>

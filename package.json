@@ -2,7 +2,7 @@
   "name": "angular",
   "version": "0.0.0",
   "scripts": {
-	"deploy": "ng build --prod='true' --base-href='/new/' && node ./deploy.js",
+    "deploy": "ng build --prod='true' --base-href='/app/' && node ./deploy.js",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -24,6 +24,7 @@
     "@angular/router": "~9.0.6",
     "chart.js": "^2.9.3",
     "ng2-charts": "^2.3.0",
+    "ngx-webstorage": "^5.0.0",
     "rxjs": "~6.5.4",
     "ssh-deploy-release": "^3.0.4",
     "tslib": "^1.10.0",

@@ -26,6 +26,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import {APP_BASE_HREF} from '@angular/common';
 import {environment} from '../environments/environment';
 import {AuthComponent} from './components/popups/auth/auth.component';
+import {NgxWebstorageModule} from 'ngx-webstorage';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import {AuthComponent} from './components/popups/auth/auth.component';
     HttpClientModule,
     BrowserAnimationsModule,
     AllMaterialModules,
+    NgxWebstorageModule.forRoot(),
     // MatSliderModule,
     // MatToolbarModule,
     // MatIconModule,

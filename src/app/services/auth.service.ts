@@ -1,18 +1,34 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import { Router } from '@angular/router';
+import {AppStorageService} from './app-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  isAuthorized: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  token: string = null;
+  private authorizedSubject: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  private token: string = null;
+  private lastUsername: string = null;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private appStorageService: AppStorageService
+  ) {
+    this.token = this.appStorageService.get('session', 'token');
+    this.lastUsername = this.appStorageService.get('local', 'username') || '';
+  }
 
   authorized(state: boolean) {
-    this.isAuthorized.next(state);
+    this.authorizedSubject.next(state);
+  }
+
+  monitor(): BehaviorSubject<boolean> {
+   return this.authorizedSubject;
+  }
+
+  isAuthorized(): boolean {
+    return this.authorizedSubject.getValue();
   }
 
   setToken(token: string): void {
@@ -25,14 +41,16 @@ export class AuthService {
 
   doLogin(username: string, password: string): void {
     if (username.length > 2 && password.length > 2) {
+      this.lastUsername = username;
+      this.appStorageService.set('local', 'username', username);
       this.makeToken(username, password);
       this.authorized(true);
+      this.appStorageService.set('session', 'token', this.token, 600);
     }
-    // this.router.navigate(['/pocetna'], { queryParams: { 'refresh': 1 } });
-    const currentUrl = this.router.url;
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate(['/dashboard']);
     });
+    // const currentUrl = this.router.url;
     // this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
     //   this.router.navigate([currentUrl]);
     // });
@@ -45,5 +63,9 @@ export class AuthService {
 
   getAuthHeader(): string {
     return 'Basic ' + this.token;
+  }
+
+  getUsername(): string {
+    return this.lastUsername;
   }
 }

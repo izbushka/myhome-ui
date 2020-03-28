@@ -38,9 +38,9 @@ export class SensorsService {
     // update sensors every interval (ms)
     const updateInterval = interval(3000).pipe(startWith(0));
 
-    combineLatest([this.visibilityApi.changes(), this.authService.isAuthorized]).pipe(
+    combineLatest([this.visibilityApi.monitor(), this.authService.monitor()]).pipe(
         map(data => data[0] && data[1]),
-        switchMap(pageVisible => pageVisible ? updateInterval : EMPTY)
+        switchMap(updateAllowed => updateAllowed ? updateInterval : EMPTY)
     ).subscribe(() => this.update());
 
   }
@@ -59,7 +59,6 @@ export class SensorsService {
 
   details(id: number): Observable<Sensor> {
     return this.http.get<SensorData>(this.sensorsUrl + 'states/' + id)
-    // return this.http.get<SensorData>(this.sensorsUrl + '../401/' + id)
       .pipe(map(data => new Sensor(data)));
   }
 
@@ -97,13 +96,13 @@ export class SensorsService {
     // const url = this.sensorsUrl + (this.lastUpdate ? '?' + (this.lastUpdate.getTime() / 1000) : '');
     const url = this.sensorsUrl + 'states';
     return this.http.get<ServerSensorsData>(url).pipe(
-      tap(data => {
+      map(data => {
         if (data.timestamp) {
           this.lastUpdate = new Date(data.timestamp * 1000);
         }
+        return data.sensors;
       }),
-      // pluck('sensors'),
-      map(data => data.sensors.map(sensor => new Sensor(sensor)))
+      map(sensors => sensors.map(sensor => new Sensor(sensor)))
     );
   }
 

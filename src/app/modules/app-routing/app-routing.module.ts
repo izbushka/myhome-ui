@@ -6,12 +6,12 @@ import {SensorsListComponent} from '../../components/sensors-list/sensors-list.c
 import {SensorDetailsComponent} from '../../components/sensor-details/sensor-details.component';
 
 const routes: Routes = [
-  { path: 'home', component: DashboardComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'list/:group', component: SensorsListComponent },
   { path: 'list', component: SensorsListComponent },
   { path: 'details/:id', component: SensorDetailsComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '**', redirectTo: '/dashboard', pathMatch: 'full' },
 ];
 
 

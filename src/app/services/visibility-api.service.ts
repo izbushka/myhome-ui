@@ -38,7 +38,7 @@ export class VisibilityApiService {
       this.isVisible.next(true);
     }
   }
-  changes(): BehaviorSubject<boolean> {
+  monitor(): BehaviorSubject<boolean> {
     return this.isVisible;
   }
 }

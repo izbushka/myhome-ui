@@ -41,7 +41,7 @@ interface UrlData {
 }
 
 
-const host = 'http://11.230.0.2';
+const host = 'https://rpi.xvv.be';
 const urls: UrlData[] = [
   {
     url: 'https://jsonplaceholder.typicode.com/users',

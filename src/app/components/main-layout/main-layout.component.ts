@@ -37,7 +37,8 @@ export class MainLayoutComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.isAuthorized.subscribe(state => {
+    this.isSideBarOpened = this.slideMode() === 'side';
+    this.authService.monitor().subscribe(state => {
       this.isAuthorized = state;
       if (!state) {
         this.openAuthPopup();
