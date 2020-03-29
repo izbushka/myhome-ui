@@ -22,7 +22,7 @@ export class SensorsListItemComponent implements OnInit {
 
   toggle() {
     // this.sensor.state = this.sensor.isOn() ? 'OFF' : 'ON';
-    this.sensorService.switch(this.sensor.id, this.sensor.isOn());
+    this.sensorService.switch(this.sensor.id, !this.sensor.isOn());
   }
 
   openAcControl(): void {

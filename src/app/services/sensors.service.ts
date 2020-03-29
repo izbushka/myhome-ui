@@ -63,7 +63,6 @@ export class SensorsService {
   }
 
   switch(id: number, state: boolean): void {
-    const sensor = id;
     const newState = state ? 'ON' : 'OFF';
     this.http.get<any>(this.sensorsUrl + id + '/' + newState).subscribe(
       () => this.update()

@@ -1,9 +1,15 @@
 .my-flex-nowrap > .my-flex-shrink {
-    padding-left: 10px;
+    padding-left: 8px;
 }
 .down-right {
     position: absolute;
     bottom: -2px;
     right: 7px;
     font-size: 10px;
+}
+.sensor-state {
+    padding-left: 10px;
+}
+.mat-card {
+    padding-left: 8px;
 }

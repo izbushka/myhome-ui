@@ -10,3 +10,7 @@ table {
 .my-grid div {
     padding: 5px;
 }
+
+td.mat-cell:last-of-type {
+    word-break: break-all;
+}
