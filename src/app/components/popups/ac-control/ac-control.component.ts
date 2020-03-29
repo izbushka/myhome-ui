@@ -47,7 +47,9 @@ export class AcControlComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.state = JSON.parse(this.sensor.state);
+    // console.debug(this.sensor.extraState);
+    this.state = this.sensor.extraState;
+    // console.debug(this.sensor.extraState, this.state);
 
     this.swing = this.createList(AcSwing);
     this.modes = this.createList(AcMode);

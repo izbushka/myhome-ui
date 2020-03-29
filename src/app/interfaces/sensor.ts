@@ -28,8 +28,11 @@ export interface SensorLog {
 }
 
 export enum SwOnOff {on, off}
+
 export enum AcSwing {auto, off, top, middle, bottom}
+
 export enum AcFan {auto, s1, s2, s3}
+
 export enum AcMode {auto, cool, hot, dry, fan}
 
 export interface AcState {
@@ -54,20 +57,31 @@ export class Sensor implements SensorData {
   normal_state: string;
   sensor_id: number;
   logs?: [{ state: string, change_time: string }];
+  extraState: any;
+
   constructor(input?: SensorData) {
     if (input) {
       for (const key of Object.keys(input)) {
         this[key] = input[key];
       }
       this.id = this.sensor_id;
+      if (this.state.indexOf('{') === 0) { // JSON
+        this.extraState = JSON.parse(this.state);
+        if (this.extraState.state) {
+          this.state = this.extraState.state.toUpperCase();
+        }
+      }
     }
   }
+
   isMutable(): boolean {
     return ['light-switch', 'power-switch'].indexOf(this.group) !== -1;
   }
+
   isOn(): boolean {
     return this.state === 'ON' || this.state === 'PON';
   }
+
   isWarn(): boolean {
     return (this.normal_state && this.state !== this.normal_state) || this.state === 'ERR';
   }
@@ -87,6 +101,7 @@ export class SensorIcon {
 
     default: 'policy'
   };
+
   get(group: string): string {
     return (this.icons[group]) ? this.icons[group] : this.icons.default;
   }

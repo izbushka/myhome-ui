@@ -57,6 +57,9 @@
     .my-nowrap {
         white-space: nowrap;
     }
+    .my-hidden {
+        display: none;
+    }
     //
 
 
@@ -70,6 +73,9 @@
     }
     .my-color-grey {
         color: grey;
+    }
+    .my-color-green {
+        color: #69f0ae;
     }
     .my-color-warn {
         color: #FFCB68;

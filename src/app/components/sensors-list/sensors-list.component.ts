@@ -15,6 +15,8 @@ export class SensorsListComponent implements OnInit, OnDestroy {
   curGroup: string;
   groups: SensorGroups;
   alive = true;
+  searchFocused = false;
+  search = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -32,5 +34,11 @@ export class SensorsListComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.alive = false;
+  }
+  searchFocus(state: boolean): void {
+    this.searchFocused = state;
+  }
+  resetSearch(): void {
+    this.search = '';
   }
 }

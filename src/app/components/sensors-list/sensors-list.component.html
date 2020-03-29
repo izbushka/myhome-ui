@@ -1,3 +1,8 @@
+<mat-form-field appearance="outline" class="app-search-sticker" (dblclick)="resetSearch()" [class.app-folded]="!searchFocused && !search.length">
+    <input matInput [(ngModel)]="search" (focus)="searchFocus(true)" (blur)="searchFocus(false)">
+    <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
+
 <div *ngFor="let group of groups | keyvalue">
     <ng-template [ngIf]="!curGroup || group.key == curGroup">
         <mat-toolbar>
@@ -7,7 +12,8 @@
             </span>
         </mat-toolbar>
         <div class="my-grid my-margin-bottom">
-            <div class="my-grid-cell" *ngFor="let sensor of group.value">
+            <div class="my-grid-cell" *ngFor="let sensor of group.value"
+                 [class.my-hidden]="search && sensor.name.toLowerCase().indexOf(search.toLowerCase()) < 0">
                 <app-sensors-list-item [sensor]="sensor"></app-sensors-list-item>
             </div>
         </div>

@@ -21,7 +21,7 @@ export class SensorsListItemComponent implements OnInit {
   }
 
   toggle() {
-    this.sensor.state = this.sensor.isOn() ? 'OFF' : 'ON';
+    // this.sensor.state = this.sensor.isOn() ? 'OFF' : 'ON';
     this.sensorService.switch(this.sensor.id, this.sensor.isOn());
   }
 
@@ -33,9 +33,8 @@ export class SensorsListItemComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
+      // console.log('The dialog was closed', result);
       if (result) {
-        console.log('Data saved');
         this.sensor = result;
       }
     });

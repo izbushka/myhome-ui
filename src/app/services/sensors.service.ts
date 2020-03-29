@@ -38,7 +38,7 @@ export class SensorsService {
     // update sensors every interval (ms)
     const updateInterval = interval(3000).pipe(startWith(0));
 
-    combineLatest([this.visibilityApi.monitor(), this.authService.monitor()]).pipe(
+    combineLatest(this.visibilityApi.monitor(), this.authService.monitor()).pipe(
         map(data => data[0] && data[1]),
         switchMap(updateAllowed => updateAllowed ? updateInterval : EMPTY)
     ).subscribe(() => this.update());
