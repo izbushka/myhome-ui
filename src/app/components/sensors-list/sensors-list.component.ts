@@ -41,4 +41,24 @@ export class SensorsListComponent implements OnInit, OnDestroy {
   resetSearch(): void {
     this.search = '';
   }
+  getAutocomplete() {
+    const auto = {};
+    for (const i in this.groups) {
+      if (this.curGroup && i !== this.curGroup) {
+        continue;
+      }
+      for (const sensor of this.groups[i]) {
+        const text = sensor.name.split(' ')[0];
+        auto[text] = 1 + (auto[text] || 0);
+      }
+    }
+    // console.debug(auto);
+    return Object.keys(auto)
+      .sort((a, b) => auto[a] < auto[b] ? 1 : (auto[a] > auto[b] ? -1 : 0))
+      .slice(0, 4)
+    ;
+    // return Object.keys(auto).sort((a, b) => auto[a] > auto[b] ? 1 : -1).slice(0, 5);
+    // return ['Table', 'Living'];
+
+  }
 }

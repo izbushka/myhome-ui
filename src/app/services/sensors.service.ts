@@ -1,7 +1,20 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable, BehaviorSubject, interval, EMPTY, of, Subject, combineLatest, timer} from 'rxjs';
-import {distinctUntilChanged, map, pluck, repeatWhen, skipWhile, startWith, switchMap, tap} from 'rxjs/operators';
+import {Observable, BehaviorSubject, interval, EMPTY, of, Subject, combineLatest, timer, ReplaySubject} from 'rxjs';
+import {
+  delay,
+  distinctUntilChanged,
+  filter,
+  map,
+  mapTo, mergeAll, mergeMap,
+  pluck,
+  repeatWhen,
+  skipWhile,
+  startWith,
+  switchMap,
+  take,
+  tap
+} from 'rxjs/operators';
 import {Sensor, SensorGroups, SensorGraphPoint, SensorData, SensorIcon} from '../interfaces/sensor';
 import { environment } from '../../environments/environment';
 import {VisibilityApiService} from './visibility-api.service';
@@ -10,6 +23,11 @@ import {AuthService} from './auth.service';
 interface ServerSensorsData {
   timestamp: number;
   sensors: SensorData[];
+}
+interface IconsData {
+  type: string;
+  key: string | number;
+  icon: string;
 }
 
 @Injectable({
@@ -26,6 +44,7 @@ export class SensorsService {
   private lastUpdate: Date;
   private sensorsSubject: BehaviorSubject<Sensor[]> = new BehaviorSubject([]);
   private groupsSubject: BehaviorSubject<SensorGroups> = new BehaviorSubject({});
+  private icons: IconsData[];
 
   private lastChange: string;
 
@@ -38,11 +57,22 @@ export class SensorsService {
     // update sensors every interval (ms)
     const updateInterval = interval(3000).pipe(startWith(0));
 
-    combineLatest(this.visibilityApi.monitor(), this.authService.monitor()).pipe(
-        map(data => data[0] && data[1]),
-        switchMap(updateAllowed => updateAllowed ? updateInterval : EMPTY)
+    combineLatest([this.visibilityApi.monitor(), this.authService.monitor()]).pipe(
+        filter(data => data[0] && data[1]),
+        mergeMap(() => updateInterval),
+        // map(data => data[0] && data[1]),
+        // switchMap(updateAllowed => updateAllowed ? updateInterval : EMPTY)
     ).subscribe(() => this.update());
 
+    this.sensorsSubject.pipe(
+      filter(data => data.length > 0),
+      mergeMap(() => this._getIcons()),
+      take(1)
+    ).subscribe(
+    data => this.icons = data
+    );
+
+    this._getIcons();
   }
 
   update(): void {
@@ -82,6 +112,31 @@ export class SensorsService {
 
   getGroupIcon(name: string): string {
     return (new SensorIcon()).get(name);
+  }
+  getSensorIcon(sensor: Sensor): Observable<string> {
+    let res = '';
+    if (sensor.name.toLowerCase().indexOf('table') > 0) {
+      res = 'wb_iridescent';
+    } else if (sensor.name.toLowerCase().indexOf('main') > 0) {
+      res = 'wb_incandescent';
+    } else {
+      res = (new SensorIcon()).get(sensor.group);
+    }
+    return of(res);
+  }
+
+  _getIcons(): Observable<IconsData[]> {
+    return this.http.get<IconsData[]>(this.sensorsUrl + '/icons').pipe(delay(2));
+  }
+  getIcon(type: string, key: string) {
+    if (this.icons) {
+      const icon = this.icons.filter(x => x.type === type && x.key === key);
+      if (icon[0]) {
+        return icon[0].icon;
+      } else {
+        return 'policy';
+      }
+    }
   }
 
   _monitorSensors(): void {

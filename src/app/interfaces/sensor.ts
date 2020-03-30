@@ -106,4 +106,3 @@ export class SensorIcon {
     return (this.icons[group]) ? this.icons[group] : this.icons.default;
   }
 }
-
