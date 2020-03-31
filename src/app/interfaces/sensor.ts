@@ -14,6 +14,12 @@ export interface SensorData {
 export interface SensorGroups {
   [index: string]: Sensor[];
 }
+export interface Sensors {
+  [index: number]: Sensor[];
+}
+export interface Groups {
+  [index: number]: Array<number>;
+}
 
 export interface SensorGraphPoint {
   sensor_id: string;
