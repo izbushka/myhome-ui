@@ -2,7 +2,7 @@
     <mat-card-content>
         <div class="my-flex-nowrap">
             <div class="my-flex-grow my-flex-nowrap app-sensor-name"  [routerLink]="['/details', sensor.sensor_id]">
-                <mat-icon  [class.my-color-red]="sensor.isWarn()">{{sensorService.getIcon('group', sensor.group)}}</mat-icon>
+                <mat-icon  [class.my-color-red]="sensor.isWarn()">{{sensorService.getSensorIcon(sensor)}}</mat-icon>
                 <div  class="my-flex-shrink">
                     {{sensor.name}}
                 </div>

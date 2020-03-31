@@ -1,8 +1,8 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 
-import {SensorsService} from '@myServices/sensors.service';
+import {SensorsService} from '../../services/sensors.service';
 import {SensorGroups} from '../../interfaces/sensor';
-import {PagePropertiesService} from '@myServices/page-properties.service';
+import {PagePropertiesService} from '../../services/page-properties.service';
 import {ActivatedRoute} from '@angular/router';
 import {takeWhile} from 'rxjs/operators';
 
