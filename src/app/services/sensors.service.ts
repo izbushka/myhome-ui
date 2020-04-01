@@ -23,11 +23,11 @@ interface IconsData {
 })
 export class SensorsService {
   private sensorsUrl = environment.apiUrl + '/sensors/'; // URL to web api
-  // https://rpi.xvv.be/sensors/states
-  // https://rpi.xvv.be/sensors/52/ON|OFF
-  // https://rpi.xvv.be/sensors/52 [post json]
-  // https://rpi.xvv.be/sensors/52/graph
-  // https://rpi.xvv.be/sensors/states/52
+  // https://my-server/sensors/states
+  // https://my-server/sensors/52/ON|OFF
+  // https://my-server/sensors/52 [post json]
+  // https://my-server/sensors/52/graph
+  // https://my-server/sensors/states/52
   private lastUpdate: Date;
   private sensorsData: Sensors = Object.create(null);
   private groupsData: Groups = Object.create(null);
@@ -103,7 +103,7 @@ export class SensorsService {
   }
 
   graph(id: number, period: string): Observable<SensorGraphPoint[]> {
-    // https://rpi.xvv.be/sensors/81/graph/day?
+    // https://my-server/sensors/81/graph/day?
     return this.http.get<SensorGraphPoint[]>(this.sensorsUrl + id + '/graph/' + period);
   }
 
