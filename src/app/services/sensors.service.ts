@@ -104,12 +104,7 @@ export class SensorsService {
   }
 
   _getIconsFromServer(): Observable<IconsData[]> {
-    return this.http.get<IconsData[]>(this.sensorsUrl + '/icons')
-      // .pipe(
-      //   delay(2000),
-      //   tap(_ => console.debug(this.groupsData))
-      // )
-      ;
+    return this.http.get<IconsData[]>(this.sensorsUrl + '/icons');
   }
 
   getIcon(type: string, key: string, fallbackToDefault?: boolean): string {
@@ -135,7 +130,6 @@ export class SensorsService {
     if (!icon) {
       icon = this.getIcon('group', sensor.group);
     }
-    // console.debug('getting icon', icon, sensor.id);
     return icon;
   }
 
@@ -144,10 +138,11 @@ export class SensorsService {
   }
 
   _getSensors(): Observable<Sensor[]> {
-    // TODO: Incremental updates
-    // const url = this.sensorsUrl + (this.lastUpdate ? '?' + (this.lastUpdate.getTime() / 1000) : '');
-    const url = this.sensorsUrl + 'states';
+    // Incremental updates
+    const url = this.sensorsUrl + 'states' + (this.lastUpdate ? '?' + (this.lastUpdate.getTime() / 1000) : '');
+    // const url = this.sensorsUrl + 'states'; // non-incremental updates
     return this.http.get<ServerSensorsData>(url).pipe(
+      filter(data => data.sensors.length > 0),
       map(data => {
         if (data.timestamp) {
           this.lastUpdate = new Date(data.timestamp * 1000);
@@ -167,35 +162,11 @@ export class SensorsService {
       }
     }
     if (created) {
-      // const groups = Object.assign(null);
-      // this.groupsData.forEach((value, key) => {groups[key] = value});
       const groups = Array.from(this.groupsData.entries()).reduce(
         (main, [key, value]) => ({...main, [key]: value}), {}
       );
       this.groupsData$.next(groups);
     }
-    // if (changed) {
-    //   const groups: SensorGroups = {};
-    //   for (const sensor of data) {
-    //     if (!groups[sensor.group]) {
-    //       groups[sensor.group] = [];
-    //     }
-    //     groups[sensor.group].push(sensor);
-    //   }
-    //   const sensorGroups = {};
-    //   for (const group in groups) {
-    //     if (groups.hasOwnProperty(group)) {
-    //       groups[group].sort((a, b) => {
-    //         return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
-    //       });
-    //       sensorGroups[group] = groups[group].map(sensor => sensor.id);
-    //     }
-    //   }
-    //   this.groupsData = sensorGroups;
-    //
-    //   this.groupsSubject.next(groups);
-    //   this.sensorsSubject.next(data);
-    // }
   }
 
   _updateSensor(sensor: Sensor): boolean {
@@ -204,7 +175,7 @@ export class SensorsService {
       const oldState = this.sensors$.get(sensor.id).getValue();
       if (oldState.last_change < sensor.last_change) {
         // updating sensor
-        console.log('updating sensor ', sensor.id);
+        // console.log('updating sensor ', sensor.id);
         this.sensors$.get(sensor.id).next(sensor);
       }
     } else {
