@@ -4,22 +4,25 @@
     bottom: -2px;
     right: 15px;
     z-index: 10;
-    .app-clear {
-      display: inline-block;
-      background: none;
-      border: 1px solid red;
-      position: absolute;
-      right: 10px;
-      top: 5px;
-      width: 15px;
-      height: 15px;
-      z-index: 1;
+    //.app-clear {
+    //  display: inline-block;
+    //  background: none;
+    //  border: 1px solid red;
+    //  position: absolute;
+    //  right: 10px;
+    //  top: 5px;
+    //  width: 15px;
+    //  height: 15px;
+    //  z-index: 1;
+    //}
+    .mat-form-field-infix {
+      transition: width 0.2s;
     }
     &.app-folded {
-      .app-clear {
-        display: none;
-      }
       bottom: 8px;
+      //.app-clear {
+      //  display: none;
+      //}
       .mat-form-field-wrapper {
         margin: 0 !important;
       }
@@ -60,7 +63,11 @@
   .mat-input-element {
     caret-color: white!important;
   }
-
+  .cdk-overlay-pane
+  {
+    width: 200px;
+    right: 100px
+  }
 }
 
 

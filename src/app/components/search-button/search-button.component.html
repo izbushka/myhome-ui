@@ -9,7 +9,7 @@
          [matAutocomplete]="auto">
   <mat-icon matSuffix>search</mat-icon>
 </mat-form-field>
-<mat-autocomplete #auto="matAutocomplete">
+<mat-autocomplete #auto="matAutocomplete" panelWidth="220px">
   <ng-template [ngIf]="!searchFolded">
     <mat-option *ngFor="let option of autoCompleteList" [value]="option">{{option}}</mat-option>
   </ng-template>

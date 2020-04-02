@@ -4,7 +4,7 @@ import {SensorsService} from '../../services/sensors.service';
 import {Groups} from '../../interfaces/sensor';
 import {PagePropertiesService} from '../../services/page-properties.service';
 import {ActivatedRoute} from '@angular/router';
-import {takeWhile} from 'rxjs/operators';
+import {filter, takeWhile} from 'rxjs/operators';
 
 @Component({
   selector: 'app-sensors-list',
@@ -24,12 +24,17 @@ export class SensorsListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => this.curGroup = params.get('group'));
+    this.route.paramMap.subscribe(params => {
+      this.curGroup = params.get('group') === 'all' ? '' : params.get('group');
+    });
     this.sensorsService.groups()
       .pipe(takeWhile(() => this.alive))
       .subscribe(data => this.groups = data);
 
-    setTimeout(() => this.pagePropertyService.set('title', 'Sensors List'));
+    setTimeout(() => {
+      const title = 'Sensors List' + (this.curGroup ? `: ${this.curGroup}` : '');
+      return this.pagePropertyService.set('title', title);
+    });
   }
   ngOnDestroy(): void {
     this.alive = false;

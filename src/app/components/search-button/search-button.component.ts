@@ -24,6 +24,7 @@ export class SearchButtonComponent implements OnInit {
   searchFolded = true;
   debouncer: Subject<boolean> = new Subject();
   autoCompleteList: Array<string>;
+  sensorNamesList: SensorName[] = [];
 
   @Output() searchEvent = new EventEmitter<Array<number>>();
   @Input() group: string;
@@ -44,8 +45,10 @@ export class SearchButtonComponent implements OnInit {
 
     this.debouncer.pipe(debounceTime(20)).subscribe(state => {
       if (!this.searchFocused && state) {
-        this.getAutocomplete();
         this.resetSearch();
+        setTimeout(() => this.getAutocomplete(), 300);
+      } else {
+        this.autoCompleteList = [];
       }
       this.searchFocused = state;
       this.searchFolded = !this.searchFocused && this.searchForm.get('text').value.length === 0;
@@ -53,16 +56,17 @@ export class SearchButtonComponent implements OnInit {
   }
 
   getSensorsNames(): SensorName[] {
-    const sensors = [];
-    for (const sensor$ of this.sensorsService.getAllSensors()) {
-      const sensor = sensor$.getValue();
-      sensors.push({
-        id: sensor.id,
-        name: sensor.name,
-        group: sensor.group
-      });
+    if (!this.sensorNamesList.length) {
+      for (const sensor$ of this.sensorsService.getAllSensors()) {
+        const sensor = sensor$.getValue();
+        this.sensorNamesList.push({
+          id: sensor.id,
+          name: sensor.name,
+          group: sensor.group
+        });
+      }
     }
-    return sensors;
+    return this.sensorNamesList;
   }
 
   searchSensorNames(text): Array<number> {
