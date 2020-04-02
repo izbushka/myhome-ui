@@ -34,7 +34,7 @@ export class SearchButtonComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchForm.valueChanges.pipe(
-      debounceTime(500),
+      debounceTime(200),
       pluck('text')
     ).subscribe(
       text => {

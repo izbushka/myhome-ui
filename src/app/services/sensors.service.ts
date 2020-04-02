@@ -165,6 +165,15 @@ export class SensorsService {
       const groups = Array.from(this.groupsData.entries()).reduce(
         (main, [key, value]) => ({...main, [key]: value}), {}
       );
+
+      // sort by sensor name
+      for (const group in groups) {
+        groups[group] = groups[group].sort((n1, n2) => {
+          const s1name = this.sensors$.get(n1).getValue().name;
+          const s2name = this.sensors$.get(n2).getValue().name;
+          return s1name > s2name ? 1 : -1;
+        });
+      }
       this.groupsData$.next(groups);
     }
   }

@@ -1,5 +1,10 @@
 <mat-toolbar *ngIf="sensor">
-    <span class="my-flex-grow">{{sensor.name}}</span>
+    <span class="my-flex-grow">
+      {{sensor.name}}
+      <span class="my-small">
+        id: {{sensor.sensor_id}}
+      </span>
+    </span>
     <span>
         <ng-template [ngIf]="sensor.isMutable()">
             <mat-slide-toggle [checked]="sensor.isOn()" (change)="toggle()" ></mat-slide-toggle>
@@ -54,3 +59,4 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 </ng-template>
+
