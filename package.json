@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "deploy": "ng build --prod='true' --base-href='/app/' && node ./deploy.js",
+    "buildprod": "ng build --prod='true' --base-href='/app/'",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
