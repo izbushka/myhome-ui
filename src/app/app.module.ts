@@ -27,6 +27,7 @@ import {APP_BASE_HREF} from '@angular/common';
 import {environment} from '../environments/environment';
 import {AuthComponent} from './components/popups/auth/auth.component';
 import {NgxWebstorageModule} from 'ngx-webstorage';
+import { SearchButtonComponent } from './components/search-button/search-button.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {NgxWebstorageModule} from 'ngx-webstorage';
     SensorDetailsComponent,
     AcControlComponent,
     LoaderComponent,
-    AuthComponent
+    AuthComponent,
+    SearchButtonComponent
   ],
   imports: [
     BrowserModule,

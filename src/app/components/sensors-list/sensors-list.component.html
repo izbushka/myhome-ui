@@ -1,12 +1,4 @@
-<mat-form-field appearance="outline" class="app-search-sticker" (dblclick)="resetSearch()" [class.app-folded]="!searchFocused && !search.length">
-    <input matInput [(ngModel)]="search" (focus)="searchFocus(true)" (blur)="searchFocus(false)" autocomplete="off" [matAutocomplete]="auto">
-    <mat-icon matSuffix>search</mat-icon>
-</mat-form-field>
-<mat-autocomplete #auto="matAutocomplete">
-    <mat-option *ngFor="let option of ['Table']" [value]="option">{{option}}</mat-option>
-    <mat-option *ngFor="let option of getAutocomplete()" [value]="option">{{option}}</mat-option>
-</mat-autocomplete>
-
+<app-search-button [group]="curGroup" (searchEvent)="onSearch($event)"></app-search-button>
 <div *ngFor="let group of groups | keyvalue">
     <ng-template [ngIf]="!curGroup || group.key == curGroup">
         <mat-toolbar>
@@ -16,9 +8,9 @@
             </span>
         </mat-toolbar>
         <div class="my-grid my-margin-bottom">
-            <div class="my-grid-cell" *ngFor="let sensor of group.value"
-                 [class.my-hidden]="search && sensor.name.toLowerCase().indexOf(search.toLowerCase()) < 0">
-                <app-sensors-list-item [sensor]="sensor"></app-sensors-list-item>
+            <div class="my-grid-cell" *ngFor="let id of group.value"
+                 [class.my-hidden]="visibleSensors && visibleSensors.indexOf(id) === -1">
+                <app-sensors-list-item [id]="id"></app-sensors-list-item>
             </div>
         </div>
     </ng-template>

@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, combineLatest, interval, Observable} from 'rxjs';
-import {delay, filter, map, mergeMap, startWith, take, tap} from 'rxjs/operators';
-import {Groups, Sensor, SensorData, SensorGraphPoint, SensorGroups, Sensors} from '../interfaces/sensor';
+import {filter, map, mergeMap, skip, startWith, switchMapTo, take} from 'rxjs/operators';
+import {Groups, Sensor, SensorData, SensorGraphPoint} from '../interfaces/sensor';
 import {environment} from '../../environments/environment';
 import {VisibilityApiService} from './visibility-api.service';
 import {AuthService} from './auth.service';
@@ -29,11 +29,10 @@ export class SensorsService {
   // https://my-server/sensors/52/graph
   // https://my-server/sensors/states/52
   private lastUpdate: Date;
-  private sensorsData: Sensors = Object.create(null);
-  private groupsData: Groups = Object.create(null);
+  private sensors$: Map<number, BehaviorSubject<Sensor>> = new Map();
+  private groupsData: Map<string, Array<number>> = new Map();
+  private groupsData$: BehaviorSubject<Groups> = new BehaviorSubject({});
 
-  private sensorsSubject: BehaviorSubject<Sensor[]> = new BehaviorSubject([]);
-  private groupsSubject: BehaviorSubject<SensorGroups> = new BehaviorSubject({});
   private icons: IconsData[];
 
   private lastChange: string;
@@ -47,14 +46,16 @@ export class SensorsService {
     // update sensors every interval (ms)
     const updateInterval = interval(3000).pipe(startWith(0));
 
+    // get sensors data
     combineLatest([this.visibilityApi.monitor(), this.authService.monitor()]).pipe(
-        filter(data => data[0] && data[1]),
-        mergeMap(() => updateInterval),
+      filter(data => data[0] && data[1]),
+      mergeMap(() => updateInterval),
     ).subscribe(() => this.update());
 
-    this.sensorsSubject.pipe(
-      filter(data => data.length > 0),
-      mergeMap(() => this._getIconsFromServer()),
+    // get icons data when first sensors arrive
+    this.groupsData$.pipe(
+      skip(1), // skip initial BehaviorSubject value
+      switchMapTo(this._getIconsFromServer()),
       take(1)
     ).subscribe(
       icons => this.icons = icons
@@ -67,20 +68,16 @@ export class SensorsService {
     );
   }
 
-  sensors(): BehaviorSubject<Sensor[]> {
-    return this.sensorsSubject;
+  groups(): BehaviorSubject<Groups> {
+    return this.groupsData$;
   }
 
-  groups(): BehaviorSubject<SensorGroups> {
-    return this.groupsSubject;
+  getSensor(id: number): BehaviorSubject<Sensor> {
+    return this.sensors$.get(id);
   }
 
-  getGroups(): Groups {
-    return this.groupsData;
-  }
-
-  getSensor(id: number): Sensor {
-    return this.sensorsData[id.toString()];
+  getAllSensors(): Array<BehaviorSubject<Sensor>> {
+    return [...this.sensors$.values()];
   }
 
   details(id: number): Observable<Sensor> {
@@ -96,7 +93,6 @@ export class SensorsService {
   }
 
   saveState(id: number, state: object): void {
-    const sensor = id;
     this.http.post<any>(this.sensorsUrl + id, state).subscribe(
       () => this.update()
     );
@@ -139,6 +135,7 @@ export class SensorsService {
     if (!icon) {
       icon = this.getIcon('group', sensor.group);
     }
+    // console.debug('getting icon', icon, sensor.id);
     return icon;
   }
 
@@ -162,43 +159,63 @@ export class SensorsService {
   }
 
   _processSensorsData(data: Sensor[]): void {
-    let changed = false;
-    // const groups = [];
+    let created = false;
     for (const sensor of data) {
-      const sensorId = sensor.id.toString();
-      // groups.push(sensor.group);
-      if (!this.sensorsData
-        || !this.sensorsData[sensorId]
-        || this.sensorsData[sensorId].last_change < sensor.last_change) {
-        this.sensorsData[sensor.id.toString()] = sensor;
-        // this.groupsData[sensor.id.toString()].push(sensorId);
-      }
+      created = this._updateSensor(sensor) || created;
       if (!this.lastChange || this.lastChange < sensor.last_change) {
         this.lastChange = sensor.last_change;
-        changed = true;
       }
     }
-    if (changed) {
-      const groups: SensorGroups = {};
-      for (const sensor of data) {
-        if (!groups[sensor.group]) {
-          groups[sensor.group] = [];
-        }
-        groups[sensor.group].push(sensor);
-      }
-      const sensorGroups = {};
-      for (const group in groups) {
-        if (groups.hasOwnProperty(group)) {
-          groups[group].sort((a, b) => {
-            return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
-          });
-          sensorGroups[group] = groups[group].map(sensor => sensor.id);
-        }
-      }
-      this.groupsData = sensorGroups;
+    if (created) {
+      // const groups = Object.assign(null);
+      // this.groupsData.forEach((value, key) => {groups[key] = value});
+      const groups = Array.from(this.groupsData.entries()).reduce(
+        (main, [key, value]) => ({...main, [key]: value}), {}
+      );
+      this.groupsData$.next(groups);
+    }
+    // if (changed) {
+    //   const groups: SensorGroups = {};
+    //   for (const sensor of data) {
+    //     if (!groups[sensor.group]) {
+    //       groups[sensor.group] = [];
+    //     }
+    //     groups[sensor.group].push(sensor);
+    //   }
+    //   const sensorGroups = {};
+    //   for (const group in groups) {
+    //     if (groups.hasOwnProperty(group)) {
+    //       groups[group].sort((a, b) => {
+    //         return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
+    //       });
+    //       sensorGroups[group] = groups[group].map(sensor => sensor.id);
+    //     }
+    //   }
+    //   this.groupsData = sensorGroups;
+    //
+    //   this.groupsSubject.next(groups);
+    //   this.sensorsSubject.next(data);
+    // }
+  }
 
-      this.groupsSubject.next(groups);
-      this.sensorsSubject.next(data);
+  _updateSensor(sensor: Sensor): boolean {
+    let created = false;
+    if (this.sensors$.has(sensor.id)) {
+      const oldState = this.sensors$.get(sensor.id).getValue();
+      if (oldState.last_change < sensor.last_change) {
+        // updating sensor
+        console.log('updating sensor ', sensor.id);
+        this.sensors$.get(sensor.id).next(sensor);
+      }
+    } else {
+      created = true;
+      this.sensors$.set(sensor.id, new BehaviorSubject(sensor));
+      if (this.groupsData.has(sensor.group)) {
+        this.groupsData.set(sensor.group, [...this.groupsData.get(sensor.group), sensor.id]);
+      } else {
+        this.groupsData.set(sensor.group, [sensor.id]);
+      }
     }
+    return created;
   }
 }

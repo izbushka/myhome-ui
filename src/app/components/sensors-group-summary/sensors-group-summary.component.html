@@ -1,8 +1,8 @@
 <mat-card role="group">
     <mat-card-title-group>
-            <mat-icon>{{sensorsService.getGroupIcon(group.key)}}</mat-icon>
+            <mat-icon>{{sensorsService.getGroupIcon(name)}}</mat-icon>
             <mat-card-title>
-                {{group.key}}
+                {{name}}
             </mat-card-title>
             <mat-card-subtitle>
                 Sensors Group <span class="my-nowrap">({{stat.num}} members)</span>
@@ -11,16 +11,16 @@
     <mat-card-content>
         <div class="my-flex">
             <span class="my-flex-half">
-                <mat-icon>done_all</mat-icon> OK: {{stat.ok}}
+                <mat-icon>done_all</mat-icon> OK: {{stat.ok.size}}
             </span>
             <span class="my-flex-half">
-                <span  *ngIf="stat.ok < stat.num" class="my-color-red">
+                <span  *ngIf="stat.ok.size < stat.num" class="my-color-red">
                     <mat-icon>error_outline</mat-icon>
-                    Warn: {{stat.num - stat.ok}}
+                    Warn: {{stat.num - stat.ok.size}}
                 </span>
             </span>
             <span class="my-flex-half my-color-grey">
-                <mat-icon>check_box</mat-icon> {{stat.on}} is ON
+                <mat-icon>check_box</mat-icon> {{stat.on.size}} is ON
             </span>
             <span class="my-flex-half my-color-grey">
                 <mat-icon>check_box_outline_blank</mat-icon> {{stat.off}} is OFF<br>

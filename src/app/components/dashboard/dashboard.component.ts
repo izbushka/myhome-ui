@@ -3,6 +3,7 @@ import { SensorsService } from '@myServices/sensors.service';
 import { Sensor, SensorGroups } from '@myInterfaces/sensor';
 import {PagePropertiesService} from '@myServices/page-properties.service';
 import {takeWhile} from 'rxjs/operators';
+import {Groups} from '../../interfaces/sensor';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +12,7 @@ import {takeWhile} from 'rxjs/operators';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   sensors: Sensor[];
-  groups: SensorGroups;
+  groups: Groups;
   alive = true;
   constructor(
     private sensorsService: SensorsService,

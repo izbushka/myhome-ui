@@ -1,3 +1,5 @@
+import {BehaviorSubject} from 'rxjs';
+
 export interface SensorData {
   sensor_id?: number;
   last_change?: string;
@@ -14,6 +16,11 @@ export interface SensorData {
 export interface SensorGroups {
   [index: string]: Sensor[];
 }
+
+export interface Sensors$ {
+  [index: number]: BehaviorSubject<Sensor>;
+}
+
 export interface Sensors {
   [index: number]: Sensor[];
 }

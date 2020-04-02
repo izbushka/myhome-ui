@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PageProperties} from '../../interfaces/page-properties';
 import {PagePropertiesService} from '../../services/page-properties.service';
-import {SensorGroups} from '../../interfaces/sensor';
+import {Groups, SensorGroups} from '../../interfaces/sensor';
 import {SensorsService} from '../../services/sensors.service';
 import {takeWhile} from 'rxjs/operators';
 import {MatDrawerMode} from '@angular/material/sidenav';
@@ -20,7 +20,7 @@ export class MainLayoutComponent implements OnDestroy, OnInit {
   isAuthorized = false;
   isSideBarOpened = true;
   pageProps: PageProperties = {title: ''};
-  groups: SensorGroups;
+  groups: Groups;
   constructor(
       private pagePropertyService: PagePropertiesService,
       private authService: AuthService,
@@ -28,13 +28,6 @@ export class MainLayoutComponent implements OnDestroy, OnInit {
       public sensorsService: SensorsService
   ) { }
 
-  slideMode(): MatDrawerMode {
-    const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    return width > 1200 ? 'side' : 'over';
-  }
-  toggleSideBar() {
-    this.isSideBarOpened = !this.isSideBarOpened;
-  }
 
   ngOnInit(): void {
     this.isSideBarOpened = this.slideMode() === 'side';
@@ -49,6 +42,14 @@ export class MainLayoutComponent implements OnDestroy, OnInit {
   }
   ngOnDestroy(): void {
     this.alive = false;
+  }
+
+  slideMode(): MatDrawerMode {
+    const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    return width > 1200 ? 'side' : 'over';
+  }
+  toggleSideBar() {
+    this.isSideBarOpened = !this.isSideBarOpened;
   }
 
   openAuthPopup(): void {

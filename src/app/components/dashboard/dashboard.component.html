@@ -9,6 +9,6 @@
 <!--</div>-->
 <div class="my-grid">
     <div class="my-grid-cell" *ngFor="let group of groups | keyvalue">
-        <app-sensors-group-summary [group]="group" [routerLink]="['/list', group.key]"></app-sensors-group-summary>
+        <app-sensors-group-summary [name]="group.key" [sensors]="group.value" [routerLink]="['/list', group.key]"></app-sensors-group-summary>
     </div>
 </div>

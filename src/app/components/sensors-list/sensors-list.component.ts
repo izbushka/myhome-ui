@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 
 import {SensorsService} from '../../services/sensors.service';
-import {SensorGroups} from '../../interfaces/sensor';
+import {Groups} from '../../interfaces/sensor';
 import {PagePropertiesService} from '../../services/page-properties.service';
 import {ActivatedRoute} from '@angular/router';
 import {takeWhile} from 'rxjs/operators';
@@ -13,10 +13,9 @@ import {takeWhile} from 'rxjs/operators';
 })
 export class SensorsListComponent implements OnInit, OnDestroy {
   curGroup: string;
-  groups: SensorGroups;
+  groups: Groups;
   alive = true;
-  searchFocused = false;
-  search = '';
+  visibleSensors: Array<number>;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,30 +34,8 @@ export class SensorsListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.alive = false;
   }
-  searchFocus(state: boolean): void {
-    this.searchFocused = state;
-  }
-  resetSearch(): void {
-    this.search = '';
-  }
-  getAutocomplete() {
-    const auto = {};
-    for (const i in this.groups) {
-      if (this.curGroup && i !== this.curGroup) {
-        continue;
-      }
-      for (const sensor of this.groups[i]) {
-        const text = sensor.name.split(' ')[0];
-        auto[text] = 1 + (auto[text] || 0);
-      }
-    }
-    // console.debug(auto);
-    return Object.keys(auto)
-      .sort((a, b) => auto[a] < auto[b] ? 1 : (auto[a] > auto[b] ? -1 : 0))
-      .slice(0, 4)
-    ;
-    // return Object.keys(auto).sort((a, b) => auto[a] > auto[b] ? 1 : -1).slice(0, 5);
-    // return ['Table', 'Living'];
 
+  onSearch(data: Array<number>) {
+    this.visibleSensors = data;
   }
 }
