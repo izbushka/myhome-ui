@@ -23,10 +23,10 @@ export class SearchButtonComponent implements OnInit {
   searchFocused = false;
   searchFolded = true;
   debouncer: Subject<boolean> = new Subject();
-  autoCompleteList: Array<string>;
+  autoCompleteList: string[];
   sensorNamesList: SensorName[] = [];
 
-  @Output() searchEvent = new EventEmitter<Array<number>>();
+  @Output() searchEvent = new EventEmitter<number[]>();
   @Input() group: string;
 
   constructor(
@@ -69,7 +69,7 @@ export class SearchButtonComponent implements OnInit {
     return this.sensorNamesList;
   }
 
-  searchSensorNames(text): Array<number> {
+  searchSensorNames(text): number[] {
     const ids = [];
     for (const sensor of this.getSensorsNames()) {
       if (sensor.name.toLowerCase().indexOf(text.toLowerCase()) > -1) {

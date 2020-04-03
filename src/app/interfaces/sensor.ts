@@ -25,7 +25,7 @@ export interface Sensors {
   [index: number]: Sensor[];
 }
 export interface Groups {
-  [index: number]: Array<number>;
+  [index: number]: number[];
 }
 
 export interface SensorGraphPoint {

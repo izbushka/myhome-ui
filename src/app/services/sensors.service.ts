@@ -30,7 +30,7 @@ export class SensorsService {
   // https://my-server/sensors/states/52
   private lastUpdate: Date;
   private sensors$: Map<number, BehaviorSubject<Sensor>> = new Map();
-  private groupsData: Map<string, Array<number>> = new Map();
+  private groupsData: Map<string, number[]> = new Map();
   private groupsData$: BehaviorSubject<Groups> = new BehaviorSubject({});
 
   private icons: IconsData[];
@@ -76,7 +76,7 @@ export class SensorsService {
     return this.sensors$.get(id);
   }
 
-  getAllSensors(): Array<BehaviorSubject<Sensor>> {
+  getAllSensors(): BehaviorSubject<Sensor>[] {
     return [...this.sensors$.values()];
   }
 

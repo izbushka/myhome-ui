@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { DashboardComponent } from '@myComponents/dashboard/dashboard.component';
-import {SensorsListComponent} from '../../components/sensors-list/sensors-list.component';
-import {SensorDetailsComponent} from '../../components/sensor-details/sensor-details.component';
+import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
+import {SensorsListComponent} from '../../pages/sensors-list/sensors-list.component';
+import {SensorDetailsComponent} from '../../pages/sensor-details/sensor-details.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },

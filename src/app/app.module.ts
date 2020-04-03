@@ -7,17 +7,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from './modules/app-routing/app-routing.module';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { MainLayoutComponent } from './components/main-layout/main-layout.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { SensorsGroupSummaryComponent } from './components/sensors-group-summary/sensors-group-summary.component';
 
 import { AllMaterialModules } from './all-material-modules';
-import { SensorsListComponent } from './components/sensors-list/sensors-list.component';
+import { SensorsListComponent } from './pages/sensors-list/sensors-list.component';
 import { SensorsListItemComponent } from './components/sensors-list-item/sensors-list-item.component';
 
 
 import { TimeAgo } from './modules/utils.pipe';
-import { SensorDetailsComponent } from './components/sensor-details/sensor-details.component';
+import { SensorDetailsComponent } from './pages/sensor-details/sensor-details.component';
 
 import { ChartsModule } from 'ng2-charts';
 import { AcControlComponent } from './components/popups/ac-control/ac-control.component';

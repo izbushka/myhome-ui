@@ -7,7 +7,7 @@ import {takeWhile} from 'rxjs/operators';
 import {MatDrawerMode} from '@angular/material/sidenav';
 import {AuthService} from '../../services/auth.service';
 import {MatDialog} from '@angular/material/dialog';
-import {AuthComponent} from '../popups/auth/auth.component';
+import {AuthComponent} from '../../components/popups/auth/auth.component';
 
 /** @title Responsive sidenav */
 @Component({

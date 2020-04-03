@@ -19,7 +19,7 @@ import {BehaviorSubject, merge} from 'rxjs';
 })
 export class SensorsGroupSummaryComponent implements OnInit, OnDestroy {
   @Input() name: string;
-  @Input() sensors: Array<number>;
+  @Input() sensors: number[];
   stat = { num: 0, off: 0, on: new Map(), ok: new Map() };
   alive = true;
 
@@ -33,7 +33,7 @@ export class SensorsGroupSummaryComponent implements OnInit, OnDestroy {
   }
 
   getStatistic() {
-    const sensorSubjects: Array<BehaviorSubject<Sensor>> = [];
+    const sensorSubjects: BehaviorSubject<Sensor>[] = [];
     for (const sensorId of this.sensors) {
       sensorSubjects.push(this.sensorsService.getSensor(sensorId));
     }

@@ -60,7 +60,7 @@ export class AcControlComponent implements OnInit {
 
   }
 
-  createList(tpl: object): Array<string> {
+  createList(tpl: object): string[] {
     const names: any = Object.keys(tpl);
     return names.filter(i => isNaN(i));
   }

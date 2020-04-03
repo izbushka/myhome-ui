@@ -15,7 +15,7 @@ export class SensorsListComponent implements OnInit, OnDestroy {
   curGroup: string;
   groups: Groups;
   alive = true;
-  visibleSensors: Array<number>;
+  visibleSensors: number[];
 
   constructor(
     private route: ActivatedRoute,
@@ -40,7 +40,7 @@ export class SensorsListComponent implements OnInit, OnDestroy {
     this.alive = false;
   }
 
-  onSearch(data: Array<number>) {
+  onSearch(data: number[]) {
     this.visibleSensors = data;
   }
 }
