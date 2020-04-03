@@ -8,14 +8,18 @@ import {MatDrawerMode} from '@angular/material/sidenav';
 import {AuthService} from '../../services/auth.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AuthComponent} from '../popups/auth/auth.component';
+import {RouterOutlet} from '@angular/router';
+import { slideInAnimation } from '../../animations';
 
 /** @title Responsive sidenav */
 @Component({
   selector: 'app-main-layout',
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.scss'],
+  animations: [slideInAnimation],
 })
 export class MainLayoutComponent implements OnDestroy, OnInit {
+
   alive = true;
   isAuthorized = false;
   isSideBarOpened = true;
@@ -28,6 +32,9 @@ export class MainLayoutComponent implements OnDestroy, OnInit {
       public sensorsService: SensorsService
   ) { }
 
+  getAnimationData(outlet: RouterOutlet) {
+    return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
+  }
 
   ngOnInit(): void {
     this.isSideBarOpened = this.slideMode() === 'side';
