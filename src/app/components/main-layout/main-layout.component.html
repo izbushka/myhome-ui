@@ -32,9 +32,7 @@
             </mat-sidenav>
 
             <mat-sidenav-content>
-              <div [@routeAnimation]="getAnimationData(routerOutlet)">
-                <router-outlet #routerOutlet="outlet"></router-outlet>
-              </div>
+                <router-outlet></router-outlet>
             </mat-sidenav-content>
         </mat-sidenav-container>
     </ng-template>

@@ -42,7 +42,7 @@ import { SearchButtonComponent } from './components/search-button/search-button.
     AcControlComponent,
     LoaderComponent,
     AuthComponent,
-    SearchButtonComponent,
+    SearchButtonComponent
   ],
   imports: [
     BrowserModule,
