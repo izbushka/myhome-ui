@@ -42,13 +42,12 @@ import { SearchButtonComponent } from './components/search-button/search-button.
     AcControlComponent,
     LoaderComponent,
     AuthComponent,
-    SearchButtonComponent
+    SearchButtonComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
     AllMaterialModules,
@@ -56,7 +55,8 @@ import { SearchButtonComponent } from './components/search-button/search-button.
     // MatSliderModule,
     // MatToolbarModule,
     // MatIconModule,
-    ChartsModule
+    ChartsModule,
+    AppRoutingModule,
   ],
   providers: [
     httpInterceptorProviders,
@@ -64,5 +64,5 @@ import { SearchButtonComponent } from './components/search-button/search-button.
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule { }
+

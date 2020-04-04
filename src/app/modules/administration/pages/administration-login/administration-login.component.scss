@@ -1,0 +1,18 @@
+.login-container {
+  margin-top: 20px;
+
+  .mat-card {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  .mat-form-field {
+    width: 100%;
+  }
+}
+
+::ng-deep {
+  .mat-card-header-text {
+    margin: 0 !important;
+  }
+
+}
