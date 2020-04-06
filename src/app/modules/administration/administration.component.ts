@@ -1,12 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
-import {takeUntil, takeWhile} from 'rxjs/operators';
-import {FormControl, FormGroup} from '@angular/forms';
+import {takeWhile} from 'rxjs/operators';
+import {AdministrationService} from './administration.service';
 
 @Component({
   selector: 'app-administration',
   templateUrl: './administration.component.html',
-  styleUrls: ['./administration.component.scss']
+  styleUrls: ['./administration.component.scss'],
+  providers: [AdministrationService]
 })
 export class AdministrationComponent implements OnInit, OnDestroy {
   isAuthorized = false;
@@ -17,7 +18,7 @@ export class AdministrationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authService.isAdminAuthorized().pipe(
       takeWhile(() => this.alive)
-    ).subscribe( state => this.isAuthorized = state);
+    ).subscribe(state => this.isAuthorized = state);
   }
 
   ngOnDestroy(): void {

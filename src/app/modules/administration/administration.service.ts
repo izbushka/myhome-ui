@@ -5,9 +5,7 @@ import {AdministrationModule} from './administration.module';
 import {Observable} from 'rxjs';
 import {DbSensors} from './db-sensors';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AdministrationService {
   private baseUri = environment.apiUrl + '/configuration/'; // URL to web api
   constructor(private http: HttpClient) { }
