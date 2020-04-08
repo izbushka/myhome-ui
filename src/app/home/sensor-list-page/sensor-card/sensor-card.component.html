@@ -1,0 +1,32 @@
+<mat-card role="group">
+  <mat-card-content>
+    <div class="my-flex-nowrap">
+      <div class="my-flex-grow my-flex-nowrap app-sensor-name"  [routerLink]="['/sensor', sensor.sensor_id]">
+        <mat-icon [class]="'sensor-' + sensor.group" [class.sensor-on]="sensor.isOn()" [class.sensor-not-default]="sensor.isWarn()">{{sensorService.getSensorIcon(sensor)}}</mat-icon>
+        <div  class="my-flex-shrink">
+          {{sensor.name}}
+        </div>
+      </div>
+      <div class="sensor-state" *ngIf="sensor.isMutable(); else immutable">
+        <mat-slide-toggle [checked]="sensor.isOn()" (change)="toggle()" ></mat-slide-toggle>
+      </div>
+      <ng-template #immutable>
+        <div class="sensor-state" [class.my-color-red]="sensor.isWarn()">
+          <ng-template  [ngIf]="!sensor.extraState" [ngIfElse]="jsonState">
+            {{sensor.state}}
+          </ng-template>
+          <ng-template #jsonState>
+                        <span (click)="openAcControl()">
+                            <mat-icon>settings_power</mat-icon>
+                        </span>
+          </ng-template>
+        </div>
+      </ng-template>
+    </div>
+    <div class="down-right">
+      {{sensor.last_change|timeAgo}}
+    </div>
+  </mat-card-content>
+</mat-card>
+
+

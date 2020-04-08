@@ -1,0 +1,48 @@
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {PagePropertiesService} from '../../shared/services/page-properties.service';
+import {SensorsService} from '../../shared/services/sensors.service';
+import {ActivatedRoute} from '@angular/router';
+import {map, takeWhile} from 'rxjs/operators';
+import {Groups} from '../../shared/interfaces/sensor';
+
+@Component({
+  selector: 'app-sensor-list-page',
+  templateUrl: './sensor-list-page.component.html',
+  styleUrls: ['./sensor-list-page.component.scss']
+})
+export class SensorListPageComponent implements OnInit, OnDestroy {
+  isAlive = true;
+  currentGroup: string;
+  groups: Groups;
+  visibleSensors: number[];
+
+
+  constructor(
+    private route: ActivatedRoute,
+    public sensorsService: SensorsService,
+    private pagePropertyService: PagePropertiesService
+  ) { }
+
+  ngOnInit(): void {
+    this.route.paramMap.pipe(
+      map(params => params.get('group') === 'all' ? '' : params.get('group'))
+    ).subscribe(group => {
+      this.currentGroup = group;
+      const title = 'Sensors List' + (group ? `: ${group}` : '');
+      this.pagePropertyService.set('title', title);
+    });
+    // don't re-fetch groups on route changes - so no switchMap
+    this.sensorsService.groups().pipe(
+      takeWhile(() => this.isAlive),
+    ).subscribe(data => this.groups = data);
+  }
+
+  ngOnDestroy(): void {
+    this.isAlive = false;
+  }
+
+  onSearch(data: number[]) {
+    this.visibleSensors = data;
+  }
+
+}

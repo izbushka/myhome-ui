@@ -1,15 +1,14 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {PageProperties} from '../../interfaces/page-properties';
-import {PagePropertiesService} from '../../services/page-properties.service';
-import {Groups, SensorGroups} from '../../interfaces/sensor';
-import {SensorsService} from '../../services/sensors.service';
-import {takeWhile} from 'rxjs/operators';
+import {AfterViewChecked, Component, OnDestroy, OnInit} from '@angular/core';
+import {PageProperties} from '../../shared/interfaces/page-properties';
+import {PagePropertiesService} from '../../shared/services/page-properties.service';
+import {Groups} from '../../shared/interfaces/sensor';
+import {SensorsService} from '../../shared/services/sensors.service';
 import {MatDrawerMode} from '@angular/material/sidenav';
-import {AuthService} from '../../services/auth.service';
+import {AuthService} from '../../shared/services/auth.service';
 import {MatDialog} from '@angular/material/dialog';
-import {AuthComponent} from '../../components/popups/auth/auth.component';
+import {AuthComponent} from '../../shared/components/popups/auth/auth.component';
+import {delay} from 'rxjs/operators';
 
-/** @title Responsive sidenav */
 @Component({
   selector: 'app-main-layout',
   templateUrl: './main-layout.component.html',
@@ -19,10 +18,10 @@ export class MainLayoutComponent implements OnDestroy, OnInit {
   alive = true;
   isAuthorized = false;
   isSideBarOpened = true;
-  pageProps: PageProperties = {title: ''};
   groups: Groups;
+
   constructor(
-      private pagePropertyService: PagePropertiesService,
+      public pagePropertyService: PagePropertiesService,
       private authService: AuthService,
       public dialog: MatDialog,
       public sensorsService: SensorsService
@@ -37,9 +36,9 @@ export class MainLayoutComponent implements OnDestroy, OnInit {
         this.openAuthPopup();
       }
     });
-    this.pagePropertyService.get().subscribe(data => this.pageProps = data);
     this.sensorsService.groups().subscribe(data => this.groups = data);
   }
+
   ngOnDestroy(): void {
     this.alive = false;
   }
@@ -66,4 +65,5 @@ export class MainLayoutComponent implements OnDestroy, OnInit {
       console.log('The dialog was closed', result);
     });
   }
+
 }

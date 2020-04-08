@@ -1,0 +1,5 @@
+<div class="my-grid">
+  <div class="my-grid-cell" *ngFor="let group of groups | keyvalue">
+    <app-group-card [name]="group.key" [sensors]="group.value" [routerLink]="['/list', group.key]"></app-group-card>
+  </div>
+</div>

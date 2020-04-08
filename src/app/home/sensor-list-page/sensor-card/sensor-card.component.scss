@@ -1,0 +1,33 @@
+.my-flex-nowrap > .my-flex-shrink {
+  padding-left: 8px;
+}
+.down-right {
+  position: absolute;
+  bottom: -2px;
+  right: 7px;
+  font-size: 10px;
+}
+.sensor-state {
+  padding-left: 10px;
+}
+.mat-card {
+  padding-left: 8px;
+}
+.sensor-not-default {
+  color: #7b1fa2;
+  &.sensor-light-switch {
+    color: yellow;
+    text-shadow: yellow 0 0 10px;
+  }
+  &.sensor-lock,
+  &.sensor-alarm {
+    color: red;
+  }
+}
+.sensor-on {
+  &.sensor-power-switch,
+  &.sensor-air-purifier {
+    color: #2cbb1b;
+    text-shadow: 0 0 18px;
+  }
+}
