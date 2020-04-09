@@ -47,7 +47,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
   checkAdminLogin(url: string): boolean {
     if (this.authService.isAdminAuthorized().getValue()) { return true; }
 
-    console.log('not logged!');
+    // console.log('not logged!');
     // Store the attempted URL for redirecting
     // this.authService.redirectUrl = url;
 

@@ -8,7 +8,6 @@
   <style>
     body.loading div.loader {
       display: block;
-      /*background: red;*/
       width: 20px;
       height: 20px;
       position: relative;
@@ -17,32 +16,22 @@
       font-size: 60px;
       color: white;
     }
+
     body.loading {
       background: #303030;
     }
+
     div.loader {
       display: none;
     }
 
     @keyframes blink {
-      /**
-       * At the start of the animation the dot
-       * has an opacity of .2
-       */
       0% {
         opacity: .2;
       }
-      /**
-       * At 20% the dot is fully visible and
-       * then fades out slowly
-       */
       20% {
         opacity: 1;
       }
-      /**
-       * Until it reaches an opacity of .2 and
-       * the animation can start again
-       */
       100% {
         opacity: .2;
       }
@@ -64,13 +53,16 @@
     }
 
   </style>
-  <link  rel="manifest"  href="/app/assets/manifest.json">
+<!--  <link rel="manifest" href="/app/assets/manifest.json">-->
   <link rel="icon" type="image/png" href="/app/favicon.png">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&amp;display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#1976d2">
 </head>
 <body class="mat-typography loading">
-  <div class="loader"><span>.</span><span>.</span><span>.</span></div>
-  <app-root></app-root>
+<div class="loader"><span>.</span><span>.</span><span>.</span></div>
+<app-root></app-root>
+<noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>
 </html>

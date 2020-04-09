@@ -9,7 +9,7 @@ import {takeWhile} from 'rxjs/operators';
 })
 export class LoaderComponent implements OnInit, OnDestroy {
   isAlive = true;
-  color = 'normal';
+  color = 'primary';
   isModal = false;
   isLoading = false;
 

@@ -13,6 +13,8 @@ import {environment} from '../environments/environment';
 import {AuthComponent} from './shared/components/popups/auth/auth.component';
 import {HomeComponent} from './home/home.component';
 import {SharedModule} from './shared/shared.module';
+import {LoaderComponent} from './shared/components/loader/loader.component';
+import {ServiceWorkerModule} from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,7 @@ import {SharedModule} from './shared/shared.module';
     MainLayoutComponent,
     AuthComponent,
     HomeComponent,
+    LoaderComponent,
   ],
   imports: [
     SharedModule,
@@ -27,6 +30,8 @@ import {SharedModule} from './shared/shared.module';
     CommonModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    // https://github.com/angular/angular-cli/issues/13351#issuecomment-516342267
+    ServiceWorkerModule.register('./ngsw-worker.js', {enabled: environment.production}),
   ],
   providers: [
     httpInterceptorProviders,
