@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SensorsService} from '../../shared/services/sensors.service';
 import {PagePropertiesService} from '../../shared/services/page-properties.service';
 import {takeWhile} from 'rxjs/operators';
-import {Groups} from '../../shared/interfaces/sensor';
+import {Group} from '../../shared/interfaces/sensor';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -11,7 +11,7 @@ import {Groups} from '../../shared/interfaces/sensor';
 })
 export class DashboardPageComponent implements OnInit, OnDestroy {
   private isAlive = true;
-  groups: Groups;
+  groups: Group[];
 
   constructor(
     private sensorsService: SensorsService,

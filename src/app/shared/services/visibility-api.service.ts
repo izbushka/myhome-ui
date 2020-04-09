@@ -13,7 +13,7 @@ export class VisibilityApiService {
   }
 
   private setup(): void {
-    if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
+    if (typeof document.hidden !== 'undefined') { // Opera 12.10, Firefox 18 + support
       this.visibilityProp = 'hidden';
       this.visibilityEvent = 'visibilitychange';
     // } else if (typeof document.msHidden !== 'undefined') {
@@ -28,7 +28,7 @@ export class VisibilityApiService {
       console.log('ERROR! This Functional requires a browser, that supports the Page Visibility API.');
     } else {
       // Handle page visibility change
-      document.addEventListener(this.visibilityEvent, () => this.handler.apply(this), false);
+      document.addEventListener(this.visibilityEvent, () => this.handler.apply(this), {passive: true});
     }
   }
   private handler(): void {

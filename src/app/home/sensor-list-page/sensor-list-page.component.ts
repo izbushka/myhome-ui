@@ -2,8 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PagePropertiesService} from '../../shared/services/page-properties.service';
 import {SensorsService} from '../../shared/services/sensors.service';
 import {ActivatedRoute} from '@angular/router';
-import {map, takeWhile} from 'rxjs/operators';
-import {Groups} from '../../shared/interfaces/sensor';
+import {map, takeWhile, tap} from 'rxjs/operators';
+import {Group} from '../../shared/interfaces/sensor';
 
 @Component({
   selector: 'app-sensor-list-page',
@@ -13,7 +13,7 @@ import {Groups} from '../../shared/interfaces/sensor';
 export class SensorListPageComponent implements OnInit, OnDestroy {
   isAlive = true;
   currentGroup: string;
-  groups: Groups;
+  groups: Group[];
   visibleSensors: number[];
 
 
@@ -31,7 +31,9 @@ export class SensorListPageComponent implements OnInit, OnDestroy {
       const title = 'Sensors List' + (group ? `: ${group}` : '');
       this.pagePropertyService.set('title', title);
     });
-    // don't re-fetch groups on route changes - so no switchMap
+
+    // don't re-fetch groups on route changes
+    // so do not combine this with routeMap by switchMap
     this.sensorsService.groups().pipe(
       takeWhile(() => this.isAlive),
     ).subscribe(data => this.groups = data);

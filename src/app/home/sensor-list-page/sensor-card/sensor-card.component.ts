@@ -15,7 +15,7 @@ export class SensorCardComponent implements OnInit, OnDestroy {
   sensor: Sensor;
   isAlive = true;
   constructor(
-    public sensorService: SensorsService,
+    private sensorService: SensorsService,
     public dialog: MatDialog
   ) { }
 

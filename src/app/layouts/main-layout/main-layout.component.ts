@@ -1,13 +1,11 @@
-import {AfterViewChecked, Component, OnDestroy, OnInit} from '@angular/core';
-import {PageProperties} from '../../shared/interfaces/page-properties';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PagePropertiesService} from '../../shared/services/page-properties.service';
-import {Groups} from '../../shared/interfaces/sensor';
+import {Group} from '../../shared/interfaces/sensor';
 import {SensorsService} from '../../shared/services/sensors.service';
 import {MatDrawerMode} from '@angular/material/sidenav';
 import {AuthService} from '../../shared/services/auth.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AuthComponent} from '../../shared/components/popups/auth/auth.component';
-import {delay} from 'rxjs/operators';
 
 @Component({
   selector: 'app-main-layout',
@@ -18,7 +16,7 @@ export class MainLayoutComponent implements OnDestroy, OnInit {
   alive = true;
   isAuthorized = false;
   isSideBarOpened = true;
-  groups: Groups;
+  groups: Group[];
 
   constructor(
       public pagePropertyService: PagePropertiesService,

@@ -1,8 +1,8 @@
 <mat-card role="group">
   <mat-card-content>
     <div class="my-flex-nowrap">
-      <div class="my-flex-grow my-flex-nowrap app-sensor-name"  [routerLink]="['/sensor', sensor.sensor_id]">
-        <mat-icon [class]="'sensor-' + sensor.group" [class.sensor-on]="sensor.isOn()" [class.sensor-not-default]="sensor.isWarn()">{{sensorService.getSensorIcon(sensor)}}</mat-icon>
+      <div class="my-flex-grow my-flex-nowrap app-sensor-name"  [routerLink]="['../../sensor', sensor.sensor_id]">
+        <mat-icon [class]="'sensor-' + sensor.group" [class.sensor-on]="sensor.isOn()" [class.sensor-not-default]="sensor.isWarn()">{{sensor.icon}}</mat-icon>
         <div  class="my-flex-shrink">
           {{sensor.name}}
         </div>

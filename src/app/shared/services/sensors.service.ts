@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, combineLatest, interval, Observable} from 'rxjs';
-import {filter, map, mergeMap, skip, startWith, switchMapTo, take} from 'rxjs/operators';
-import {Groups, Sensor, SensorData, SensorGraphPoint} from '../interfaces/sensor';
+import {filter, map, startWith} from 'rxjs/operators';
+import {Group, Sensor, SensorData, SensorGraphPoint} from '../interfaces/sensor';
 import {environment} from '../../../environments/environment';
 import {VisibilityApiService} from './visibility-api.service';
 import {AuthService} from './auth.service';
+import {AppStorageService} from './app-storage.service';
 
 interface ServerSensorsData {
   timestamp: number;
@@ -31,7 +32,7 @@ export class SensorsService {
   private lastUpdate: Date;
   private sensors$: Map<number, BehaviorSubject<Sensor>> = new Map();
   private groupsData: Map<string, number[]> = new Map();
-  private groupsData$: BehaviorSubject<Groups> = new BehaviorSubject({});
+  private groupsData$: BehaviorSubject<Group[]> = new BehaviorSubject([]);
 
   private icons: IconsData[];
 
@@ -40,26 +41,41 @@ export class SensorsService {
   constructor(
     private http: HttpClient,
     private visibilityApi: VisibilityApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    private storage: AppStorageService
   ) {
 
-    // update sensors every interval (ms)
-    const updateInterval = interval(3000).pipe(startWith(0));
+    // icons cache
+    const iconsCacheTTL = 36000;
+    const iconsCacheKey = 'icons';
+    this.icons = this.storage.get('local', iconsCacheKey);
 
-    // get sensors data
-    combineLatest([this.visibilityApi.monitor(), this.authService.monitor()]).pipe(
-      filter(data => data[0] && data[1]),
-      mergeMap(() => updateInterval),
+    // to trigger interval out of turn (when we get icons)
+    const queueTrigger = new BehaviorSubject<boolean>(true);
+    let haveIcons = this.icons && this.icons.length > 0;
+
+    // get sensors data, but wait for icons first
+    combineLatest([
+      this.visibilityApi.monitor(),                 // visible
+      this.authService.monitor(),                   // authorized
+      interval(3000).pipe(startWith(0)),
+      queueTrigger,
+    ]).pipe(
+      filter(([visible, authorized]) => visible && authorized),
+      map(() => {
+        if (!haveIcons) { // get icons first
+          this._getIconsFromServer().subscribe(icons => {
+            this.icons = icons;
+            this.storage.set('local', iconsCacheKey, this.icons, iconsCacheTTL);
+            haveIcons = true;
+            queueTrigger.next(true);
+            queueTrigger.complete();
+          });
+        }
+        return haveIcons;
+      }),
+      filter(ok => ok),
     ).subscribe(() => this.update());
-
-    // get icons data when first sensors arrive
-    this.groupsData$.pipe(
-      skip(1), // skip initial BehaviorSubject value
-      switchMapTo(this._getIconsFromServer()),
-      take(1)
-    ).subscribe(
-      icons => this.icons = icons
-    );
   }
 
   update(): void {
@@ -68,7 +84,7 @@ export class SensorsService {
     );
   }
 
-  groups(): BehaviorSubject<Groups> {
+  groups(): BehaviorSubject<Group[]> {
     return this.groupsData$;
   }
 
@@ -149,7 +165,11 @@ export class SensorsService {
         }
         return data.sensors;
       }),
-      map(sensors => sensors.map(sensor => new Sensor(sensor)))
+      map(sensors => sensors.map(sensor => {
+        const s = new Sensor(sensor);
+        s.setIcon(this.getSensorIcon(s));
+        return s;
+      }))
     );
   }
 
@@ -162,17 +182,26 @@ export class SensorsService {
       }
     }
     if (created) {
-      const groups = Array.from(this.groupsData.entries()).reduce(
-        (main, [key, value]) => ({...main, [key]: value}), {}
-      );
+      // const groups = Array.from(this.groupsData.entries()).reduce(
+      //   (main, [key, value]) => ({...main, [key]: value}), {}
+      // );
+      const groups = [];
 
       // sort by sensor-card name
-      for (const group in groups) {
-        groups[group] = groups[group].sort((n1, n2) => {
+      for (const group of this.groupsData.keys()) {
+        const members = this.groupsData.get(group).sort((n1, n2) => {
           const s1name = this.sensors$.get(n1).getValue().name;
           const s2name = this.sensors$.get(n2).getValue().name;
           return s1name > s2name ? 1 : -1;
         });
+
+        groups.push({
+          name: group,
+          members,
+          icon: this.getGroupIcon(group)
+        });
+
+        groups.sort((a,b) => a.name.localeCompare(b.name));
       }
       this.groupsData$.next(groups);
     }
@@ -180,14 +209,13 @@ export class SensorsService {
 
   _updateSensor(sensor: Sensor): boolean {
     let created = false;
-    if (this.sensors$.has(sensor.id)) {
+    if (this.sensors$.has(sensor.id)) { // sensor exists - updating
       const oldState = this.sensors$.get(sensor.id).getValue();
       if (oldState.last_change < sensor.last_change) {
-        // updating sensor-card
-        // console.log('updating sensor-card ', sensor-card.id);
+        // console.log('updating sensor', sensor.id);
         this.sensors$.get(sensor.id).next(sensor);
       }
-    } else {
+    } else { // new sensor
       created = true;
       this.sensors$.set(sensor.id, new BehaviorSubject(sensor));
       if (this.groupsData.has(sensor.group)) {

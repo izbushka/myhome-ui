@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
+import {Injectable} from '@angular/core';
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 
 interface StorageItem {
   value: any;

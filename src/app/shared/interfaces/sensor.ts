@@ -17,8 +17,10 @@ export interface SensorGroups {
   [index: string]: Sensor[];
 }
 
-export interface Groups {
-  [index: string]: number[];
+export interface Group {
+  name: string;
+  members: number[];
+  icon?: string;
 }
 
 export interface SensorGraphPoint {
@@ -64,8 +66,13 @@ export class Sensor implements SensorData {
   sensor_id: number;
   logs?: [{ state: string, change_time: string }];
   extraState: any;
+  icon?: string;
 
-  constructor(input?: SensorData) {
+  private defaultIcon = 'more_horiz';
+
+  constructor(
+    input?: SensorData
+  ) {
     if (input) {
       for (const key of Object.keys(input)) {
         this[key] = input[key];
@@ -76,6 +83,9 @@ export class Sensor implements SensorData {
         if (this.extraState.state) {
           this.state = this.extraState.state.toUpperCase();
         }
+      }
+      if (!this.hasIcon()) {
+        this.icon = this.defaultIcon;
       }
     }
   }
@@ -90,6 +100,14 @@ export class Sensor implements SensorData {
 
   isWarn(): boolean {
     return (this.normal_state && this.state !== this.normal_state) || this.state === 'ERR';
+  }
+
+  setIcon(icon: string): void {
+    this.icon = icon;
+  }
+
+  hasIcon(): boolean {
+    return this.icon && this.icon !== this.defaultIcon;
   }
 }
 

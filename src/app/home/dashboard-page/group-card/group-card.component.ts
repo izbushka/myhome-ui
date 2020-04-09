@@ -10,20 +10,21 @@ import {takeWhile} from 'rxjs/operators';
   styleUrls: ['./group-card.component.scss'],
   // changeDetection: ChangeDetectionStrategy.Default,
 })
-export class GroupCardComponent implements OnInit, OnDestroy, OnChanges {
+export class GroupCardComponent implements OnInit, OnDestroy {
   @Input() name: string;
   @Input() sensors: number[];
+  icon: string;
 
   stat = { num: 0, off: 0, on: new Map(), ok: new Map() };
   isAlive = true;
 
   constructor(
-    public sensorsService: SensorsService,
-    // private ref: ChangeDetectorRef
+    private sensorsService: SensorsService,
   ) { }
 
   ngOnInit(): void {
     this.getStatistic();
+    this.icon = this.sensorsService.getGroupIcon(this.name);
   }
 
   ngOnDestroy(): void {
@@ -51,10 +52,6 @@ export class GroupCardComponent implements OnInit, OnDestroy, OnChanges {
           this.stat.ok.set(sensor.id, sensor.state);
         }
         this.stat.off = this.stat.num - this.stat.on.size;
-        // this.ref.detectChanges();
       });
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes detected');
   }
 }

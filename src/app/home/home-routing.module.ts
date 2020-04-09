@@ -13,7 +13,6 @@ const HomeRoutes: Routes = [
       {path: 'sensors', redirectTo: 'sensors/all', pathMatch: 'full'},
       {path: 'sensors/:group', component: SensorListPageComponent},
       {path: 'sensor/:id', component: SensorDetailsPageComponent},
-      {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
       {path: '**', redirectTo: 'dashboard', pathMatch: 'full'},
     ]
   }
