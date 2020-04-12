@@ -5,7 +5,7 @@
     "deploy": "ng build --prod='true' --base-href='/app/' && node ./deploy.js",
     "buildprod": "ng build --prod='true' --base-href='/app/'",
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --watch --poll=1000",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

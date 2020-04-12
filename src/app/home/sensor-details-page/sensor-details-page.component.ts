@@ -5,6 +5,7 @@ import {Color, Label} from 'ng2-charts';
 import {SensorsService} from '../../shared/services/sensors.service';
 import {PagePropertiesService} from '../../shared/services/page-properties.service';
 import {ActivatedRoute} from '@angular/router';
+import {takeWhile} from 'rxjs/operators';
 
 @Component({
   selector: 'app-sensor-details-page',
@@ -12,6 +13,7 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./sensor-details-page.component.scss']
 })
 export class SensorDetailsPageComponent implements OnInit, OnDestroy {
+  isAlive = true;
   id: number;
   sensor: Sensor;
   graphData: SensorGraphPoint[];
@@ -92,12 +94,15 @@ export class SensorDetailsPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.id = +params.get('id');
-      this.update();
-    });
+    this.route.paramMap
+      .pipe(takeWhile(() => this.isAlive))
+      .subscribe(params => {
+        this.id = +params.get('id');
+        this.update();
+      });
   }
 
   ngOnDestroy(): void {
+    this.isAlive = false;
   }
 }

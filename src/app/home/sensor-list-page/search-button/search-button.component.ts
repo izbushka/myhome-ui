@@ -57,14 +57,13 @@ export class SearchButtonComponent implements OnInit {
 
   getSensorsNames(): SensorName[] {
     if (!this.sensorNamesList.length) {
-      for (const sensor$ of this.sensorsService.getAllSensors()) {
-        const sensor = sensor$.getValue();
+      this.sensorsService.getAllSensors(true).forEach(sensor =>
         this.sensorNamesList.push({
           id: sensor.id,
           name: sensor.name,
           group: sensor.group
-        });
-      }
+        })
+      );
     }
     return this.sensorNamesList;
   }

@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 import {AppStorageService} from './app-storage.service';
-import {delay, tap} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +26,8 @@ export class AuthService {
     this.authorized$.next(state);
   }
 
-  monitor(): BehaviorSubject<boolean> {
-   return this.authorized$;
+  monitor(): Observable<boolean> {
+   return this.authorized$.asObservable();
   }
 
   isAuthorized(): boolean {
@@ -74,17 +74,18 @@ export class AuthService {
 
   doAdminLogin(password: string): Observable<boolean> {
     let success = false;
-    if (password.split('').map(a => parseInt(a)).reduce((a,b) => a + b) === 32) {
+    if (password.split('').map(a => +a).reduce((a, b) => a + b) === 32) {
       this.adminPassword = password;
       success = true;
     }
-    // setTimeout(_=>this.adminAuthorized$.next(false),4000);
     return of(success).pipe(
       tap(val => this.adminAuthorized$.next(val))
     );
   }
-  isAdminAuthorized(): BehaviorSubject<boolean> {
-    // return new BehaviorSubject<boolean>(true);
-    return this.adminAuthorized$;
+  isAdminAuthorized(snapshot?: boolean): boolean | Observable<boolean> {
+    if (snapshot === true) {
+      return this.adminAuthorized$.getValue();
+    }
+    return this.adminAuthorized$.asObservable();
   }
 }

@@ -84,16 +84,19 @@ export class SensorsService {
     );
   }
 
-  groups(): BehaviorSubject<Group[]> {
-    return this.groupsData$;
+  groups(): Observable<Group[]> {
+    return this.groupsData$.asObservable();
   }
 
-  getSensor(id: number): BehaviorSubject<Sensor> {
-    return this.sensors$.get(id);
+  getSensor(id: number): Observable<Sensor> {
+    return this.sensors$.get(id).asObservable();
   }
 
-  getAllSensors(): BehaviorSubject<Sensor>[] {
-    return [...this.sensors$.values()];
+  getAllSensors(snapshot?: boolean): Observable<Sensor>[] | Sensor[] {
+    if (snapshot) {
+      return [...this.sensors$.values()].map(i => i.getValue());
+    }
+    return [...this.sensors$.values()].map(i => i.asObservable());
   }
 
   details(id: number): Observable<Sensor> {
@@ -201,7 +204,7 @@ export class SensorsService {
           icon: this.getGroupIcon(group)
         });
 
-        groups.sort((a,b) => a.name.localeCompare(b.name));
+        groups.sort((a, b) => a.name.localeCompare(b.name));
       }
       this.groupsData$.next(groups);
     }

@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PagePropertiesService} from '../../shared/services/page-properties.service';
 import {SensorsService} from '../../shared/services/sensors.service';
 import {ActivatedRoute} from '@angular/router';
-import {map, takeWhile, tap} from 'rxjs/operators';
+import {map, takeWhile} from 'rxjs/operators';
 import {Group} from '../../shared/interfaces/sensor';
 
 @Component({
@@ -25,6 +25,7 @@ export class SensorListPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.paramMap.pipe(
+      takeWhile(() => this.isAlive),
       map(params => params.get('group') === 'all' ? '' : params.get('group'))
     ).subscribe(group => {
       this.currentGroup = group;

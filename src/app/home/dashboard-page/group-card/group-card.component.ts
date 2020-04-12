@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {BehaviorSubject, merge} from 'rxjs';
+import {BehaviorSubject, merge, Observable} from 'rxjs';
 import {Sensor} from '../../../shared/interfaces/sensor';
 import {SensorsService} from '../../../shared/services/sensors.service';
 import {takeWhile} from 'rxjs/operators';
@@ -32,13 +32,13 @@ export class GroupCardComponent implements OnInit, OnDestroy {
   }
 
   getStatistic(): void {
-    const sensorSubjects: BehaviorSubject<Sensor>[] = [];
+    const sensors$: Observable<Sensor>[] = [];
     for (const sensorId of this.sensors) {
-      sensorSubjects.push(this.sensorsService.getSensor(sensorId));
+      sensors$.push(this.sensorsService.getSensor(sensorId));
     }
     this.stat.num = this.sensors.length;
 
-    merge(...sensorSubjects)
+    merge(...sensors$)
       .pipe(takeWhile(() => this.isAlive))
       .subscribe(sensor => {
         if (sensor.isOn()) {
