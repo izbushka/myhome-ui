@@ -22,7 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(reqNew).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 403 || error.status === 401 || error.status === 0) {
+        if (error.status === 403 || error.status === 401) {
           this.authService.authorized(false);
           return of(null);
         }
