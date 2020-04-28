@@ -12,7 +12,6 @@ import {NgxWebstorageModule} from 'ngx-webstorage';
   ],
   exports: [
     TimeAgo,
-
     AllMaterialModules,
     FormsModule,
     ReactiveFormsModule,

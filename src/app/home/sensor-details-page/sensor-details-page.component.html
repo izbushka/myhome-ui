@@ -35,7 +35,7 @@
   </div>
 </div>
 
-<ng-template [ngIf]="sensor && sensor.logs">
+<ng-template [ngIf]="sensor?.logs">
   <table mat-table [dataSource]="sensor.logs" class="mat-elevation-z8">
     <!-- Date Column -->
     <ng-container matColumnDef="change_time">

@@ -9,7 +9,7 @@
     </mat-toolbar>
     <div class="my-grid my-margin-bottom">
       <div class="my-grid-cell" *ngFor="let id of group.members"
-           [class.my-hidden]="visibleSensors && visibleSensors.indexOf(id) === -1">
+           [class.my-hidden]="visibleSensors?.indexOf(id) === -1">
         <app-sensor-card [id]="id"></app-sensor-card>
       </div>
     </div>

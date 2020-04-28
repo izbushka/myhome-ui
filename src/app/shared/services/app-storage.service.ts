@@ -1,3 +1,7 @@
+/*
+Add to you app.module to make it work:
+import: NgxWebstorageModule.forRoot()
+ */
 import {Injectable} from '@angular/core';
 import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 
