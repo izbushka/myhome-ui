@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +38,7 @@ export class VisibilityApiService {
       this.isVisible.next(true);
     }
   }
-  monitor(): BehaviorSubject<boolean> {
-    return this.isVisible;
+  monitor(): Observable<boolean> {
+    return this.isVisible.asObservable();
   }
 }

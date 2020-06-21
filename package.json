@@ -6,6 +6,7 @@
     "buildprod": "ng build --prod='true' --base-href='/app/'",
     "ng": "ng",
     "start": "ng serve --watch --poll=1000",
+    "proxy": "ng serve --watch --poll=1000 --proxy-config proxy.conf.json -c proxy",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

@@ -77,6 +77,14 @@
                   "with": "src/environments/environment.mock.ts"
                 }
               ]
+            },
+            "proxy": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.proxy.ts"
+                }
+              ]
             }
           }
         },
@@ -91,6 +99,9 @@
             },
             "mock": {
               "browserTarget": "angular:build:mock"
+            },
+            "proxy": {
+              "browserTarget": "angular:build:proxy"
             }
           }
         },

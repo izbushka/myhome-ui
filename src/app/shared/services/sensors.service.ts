@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, combineLatest, interval, Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, interval, Observable, timer} from 'rxjs';
 import {filter, map, startWith} from 'rxjs/operators';
 import {Group, Sensor, SensorData, SensorGraphPoint} from '../interfaces/sensor';
 import {environment} from '../../../environments/environment';
@@ -58,7 +58,7 @@ export class SensorsService {
     combineLatest([
       this.visibilityApi.monitor(),                 // visible
       this.authService.monitor(),                   // authorized
-      interval(3000).pipe(startWith(0)),
+      timer(0, 3000),
       queueTrigger,
     ]).pipe(
       filter(([visible, authorized]) => visible && authorized),
@@ -123,7 +123,7 @@ export class SensorsService {
   }
 
   _getIconsFromServer(): Observable<IconsData[]> {
-    return this.http.get<IconsData[]>(this.sensorsUrl + '/icons');
+    return this.http.get<IconsData[]>(this.sensorsUrl + 'icons');
   }
 
   getIcon(type: string, key: string, fallbackToDefault?: boolean): string {
