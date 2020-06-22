@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, combineLatest, interval, Observable, timer} from 'rxjs';
-import {filter, map, startWith} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
+import {catchError, delay, filter, map, repeat, retry, retryWhen, switchMap, switchMapTo, take} from 'rxjs/operators';
 import {Group, Sensor, SensorData, SensorGraphPoint} from '../interfaces/sensor';
 import {environment} from '../../../environments/environment';
 import {VisibilityApiService} from './visibility-api.service';
@@ -23,6 +23,8 @@ interface IconsData {
   providedIn: 'root'
 })
 export class SensorsService {
+  private readonly refreshInterval = 3000;
+
   private sensorsUrl = environment.apiUrl + '/sensors/'; // URL to web api
   // https://my-server/sensors/states
   // https://my-server/sensors/52/ON|OFF
@@ -50,35 +52,46 @@ export class SensorsService {
     const iconsCacheKey = 'icons';
     this.icons = this.storage.get('local', iconsCacheKey);
 
-    // to trigger interval out of turn (when we get icons)
-    const queueTrigger = new BehaviorSubject<boolean>(true);
-    let haveIcons = this.icons && this.icons.length > 0;
-
-    // get sensors data, but wait for icons first
-    combineLatest([
-      this.visibilityApi.monitor(),                 // visible
-      this.authService.monitor(),                   // authorized
-      timer(0, 3000),
-      queueTrigger,
-    ]).pipe(
-      filter(([visible, authorized]) => visible && authorized),
-      map(() => {
-        if (!haveIcons) { // get icons first
-          this._getIconsFromServer().subscribe(icons => {
+    // get icons
+    const getIcons$: Observable<boolean> = this.icons?.length > 0 // get icons if empty
+      ? of(true)
+      : this._getIconsFromServer().pipe(
+        map(icons => {
             this.icons = icons;
             this.storage.set('local', iconsCacheKey, this.icons, iconsCacheTTL);
-            haveIcons = true;
-            queueTrigger.next(true);
-            queueTrigger.complete();
-          });
-        }
-        return haveIcons;
-      }),
-      filter(ok => ok),
-    ).subscribe(() => this.update());
+            return true;
+          }
+        ),
+        retryWhen(error => error.pipe(
+          delay(this.refreshInterval)
+        ))
+      );
+
+    // short polling sensors after icons
+    getIcons$.pipe(
+      switchMapTo(
+        combineLatest([
+          this.visibilityApi.monitor(),                 // visible
+          this.authService.monitor(),                   // authorized
+        ]).pipe(
+          switchMap(([visible, authorized]) => !visible || !authorized
+            ? of([])
+            : this._getSensors().pipe(
+              delay(this.refreshInterval),
+              repeat(),
+              retryWhen(error => error.pipe(
+                delay(this.refreshInterval)
+              ))
+            ))
+        )
+      )
+    ).subscribe(
+      data => this._processSensorsData(data)
+    );
   }
 
   update(): void {
+    console.log('update called');
     this._getSensors().subscribe(
       data => this._processSensorsData(data)
     );
@@ -157,22 +170,25 @@ export class SensorsService {
   }
 
   _getSensors(): Observable<Sensor[]> {
-    // Incremental updates
-    const url = this.sensorsUrl + 'states' + (this.lastUpdate ? '?' + (this.lastUpdate.getTime() / 1000) : '');
-    // const url = this.sensorsUrl + 'states'; // non-incremental updates
-    return this.http.get<ServerSensorsData>(url).pipe(
-      filter(data => data.sensors.length > 0),
-      map(data => {
-        if (data.timestamp) {
-          this.lastUpdate = new Date(data.timestamp * 1000);
-        }
-        return data.sensors;
-      }),
-      map(sensors => sensors.map(sensor => {
-        const s = new Sensor(sensor);
-        s.setIcon(this.getSensorIcon(s));
-        return s;
-      }))
+    return of(true).pipe(
+      switchMap(() => {
+        // Incremental updates
+        const url = this.sensorsUrl + 'states' + (this.lastUpdate ? '?' + (this.lastUpdate.getTime() / 1000) : '');
+        return this.http.get<ServerSensorsData>(url).pipe(
+          take(1),
+          filter(data => data.sensors.length > 0),
+          map(data => {
+            if (data.timestamp) {
+              this.lastUpdate = new Date(data.timestamp * 1000);
+            }
+            return data.sensors.map(sensor => {
+              const s = new Sensor(sensor);
+              s.setIcon(this.getSensorIcon(s));
+              return s;
+            });
+          })
+        );
+      })
     );
   }
 

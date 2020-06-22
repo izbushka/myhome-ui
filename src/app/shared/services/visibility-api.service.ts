@@ -7,7 +7,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 export class VisibilityApiService {
   private visibilityProp: string = null; // true if hidden
   private visibilityEvent: string = null;
-  private isVisible: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  private isVisible: BehaviorSubject<boolean> = new BehaviorSubject(!document.hidden);
   constructor() {
     this.setup();
   }
