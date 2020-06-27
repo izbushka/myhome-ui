@@ -1,0 +1,7 @@
+{
+	"/sensors": {
+		"target": "https://rpi.xvv.be",
+		"secure": false,
+    "changeOrigin": true
+	}
+}

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
-import {catchError, delay, filter, map, repeat, retry, retryWhen, switchMap, switchMapTo, take} from 'rxjs/operators';
+import {catchError, delay, filter, map, mapTo, repeat, retry, retryWhen, switchMap, switchMapTo, take, tap} from 'rxjs/operators';
 import {Group, Sensor, SensorData, SensorGraphPoint} from '../interfaces/sensor';
 import {environment} from '../../../environments/environment';
 import {VisibilityApiService} from './visibility-api.service';
@@ -31,14 +31,16 @@ export class SensorsService {
   // https://my-server/sensors/52 [post json]
   // https://my-server/sensors/52/graph
   // https://my-server/sensors/states/52
+  private fullRefreshTime = 300; // Get full sensors list ones in this seconds
   private lastUpdate: Date;
+  private lastFullUpdate: Date;
   private sensors$: Map<number, BehaviorSubject<Sensor>> = new Map();
   private groupsData: Map<string, number[]> = new Map();
   private groupsData$: BehaviorSubject<Group[]> = new BehaviorSubject([]);
 
   private icons: IconsData[];
 
-  private lastChange: string;
+  private lastChange: number;
 
   constructor(
     private http: HttpClient,
@@ -74,9 +76,10 @@ export class SensorsService {
           this.visibilityApi.monitor(),                 // visible
           this.authService.monitor(),                   // authorized
         ]).pipe(
+          tap(() => { this.lastFullUpdate = null;}), // get full update
           switchMap(([visible, authorized]) => !visible || !authorized
             ? of([])
-            : this._getSensors().pipe(
+            : this.updateSensors().pipe(
               delay(this.refreshInterval),
               repeat(),
               retryWhen(error => error.pipe(
@@ -85,15 +88,20 @@ export class SensorsService {
             ))
         )
       )
-    ).subscribe(
-      data => this._processSensorsData(data)
-    );
+    ).subscribe(() => {});
   }
 
   update(): void {
-    console.log('update called');
-    this._getSensors().subscribe(
-      data => this._processSensorsData(data)
+    this.lastFullUpdate = null; // get full update
+    this.updateSensors().subscribe(() => {});
+  }
+  updateSensors(): Observable<boolean>{
+    return this._getSensors().pipe(
+      tap((data) => {
+        this._processSensorsData(data);
+      }),
+      mapTo(true),
+      catchError((e) => of(false))
     );
   }
 
@@ -172,6 +180,12 @@ export class SensorsService {
   _getSensors(): Observable<Sensor[]> {
     return of(true).pipe(
       switchMap(() => {
+        // full update from time to time
+        const lastFullUpdate = (new Date().getTime() - this.lastFullUpdate?.getTime()) / 1000;
+        if (!this.lastFullUpdate || lastFullUpdate > this.fullRefreshTime) {
+          this.lastUpdate = null;
+          this.lastFullUpdate = new Date();
+        }
         // Incremental updates
         const url = this.sensorsUrl + 'states' + (this.lastUpdate ? '?' + (this.lastUpdate.getTime() / 1000) : '');
         return this.http.get<ServerSensorsData>(url).pipe(
@@ -188,6 +202,10 @@ export class SensorsService {
             });
           })
         );
+      }),
+      catchError((e) => {
+        console.log('Error getting sensors', e);
+        return of (null);
       })
     );
   }
@@ -196,8 +214,8 @@ export class SensorsService {
     let created = false;
     for (const sensor of data) {
       created = this._updateSensor(sensor) || created;
-      if (!this.lastChange || this.lastChange < sensor.last_change) {
-        this.lastChange = sensor.last_change;
+      if (!this.lastChange || this.lastChange < sensor.timestamp) {
+        this.lastChange = sensor.timestamp;
       }
     }
     if (created) {
@@ -230,7 +248,7 @@ export class SensorsService {
     let created = false;
     if (this.sensors$.has(sensor.id)) { // sensor exists - updating
       const oldState = this.sensors$.get(sensor.id).getValue();
-      if (oldState.last_change < sensor.last_change) {
+      if (oldState.timestamp < sensor.timestamp) {
         // console.log('updating sensor', sensor.id);
         this.sensors$.get(sensor.id).next(sensor);
       }

@@ -62,6 +62,7 @@ export class Sensor implements SensorData {
   name: string;
   type: string;
   last_change: string;
+  timestamp: number;
   normal_state: string;
   sensor_id: number;
   logs?: [{ state: string, change_time: string }];
