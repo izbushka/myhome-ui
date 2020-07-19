@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {AdministrationModule} from './administration.module';
 import {Observable} from 'rxjs';
 import {DbSensors} from './db-sensors';
 

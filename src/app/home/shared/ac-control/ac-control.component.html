@@ -8,13 +8,6 @@
         </span>
     </h1>
 
-    <!--    <mat-radio-group aria-label="AC Mode">-->
-    <!--        <mat-label>Mode</mat-label><br>-->
-    <!--        <mat-radio-button *ngFor="let i of modes " [value]="i" [checked]="i === state.mode">-->
-    <!--            {{i | titlecase}} &nbsp;&nbsp;&nbsp;&nbsp;-->
-    <!--        </mat-radio-button><br><br><br>-->
-    <!--    </mat-radio-group>-->
-
     <div class="temperature">
         <span class="border">
             <mat-label>{{acForm.get('temperature').value}}</mat-label>
@@ -49,7 +42,7 @@
             </mat-form-field>
             <br>
             Turbo
-            <mat-slide-toggle [checked]="sensor.isOn()"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="sensor.isOn(state.turbo)" (change)="toggleTurbo()"></mat-slide-toggle>
         </div>
 
         <div class="my-flex-half">

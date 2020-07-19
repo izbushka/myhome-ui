@@ -1,5 +1,5 @@
-import {Component, OnInit, AfterViewInit, ViewChild, ElementRef} from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
 import {FormControl, FormGroup} from '@angular/forms';
 import {AuthService} from '../../../services/auth.service';
 import {MatInput} from '@angular/material/input';

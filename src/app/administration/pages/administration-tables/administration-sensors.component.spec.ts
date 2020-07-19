@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AdministrationSensorsComponent } from './administration-sensors.component';
+import {AdministrationSensorsComponent} from './administration-sensors.component';
 
 describe('AdministrationSensorsComponent', () => {
   let component: AdministrationSensorsComponent;

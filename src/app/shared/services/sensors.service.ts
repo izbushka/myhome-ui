@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
-import {catchError, delay, filter, map, mapTo, repeat, retry, retryWhen, switchMap, switchMapTo, take, tap} from 'rxjs/operators';
+import {catchError, delay, filter, map, mapTo, repeat, retryWhen, switchMap, switchMapTo, take, tap} from 'rxjs/operators';
 import {Group, Sensor, SensorData, SensorGraphPoint} from '../interfaces/sensor';
 import {environment} from '../../../environments/environment';
 import {VisibilityApiService} from './visibility-api.service';
@@ -57,17 +57,31 @@ export class SensorsService {
     // get icons
     const getIcons$: Observable<boolean> = this.icons?.length > 0 // get icons if empty
       ? of(true)
-      : this._getIconsFromServer().pipe(
-        map(icons => {
-            this.icons = icons;
-            this.storage.set('local', iconsCacheKey, this.icons, iconsCacheTTL);
-            return true;
-          }
-        ),
-        retryWhen(error => error.pipe(
-          delay(this.refreshInterval)
-        ))
-      );
+      : combineLatest([
+        this.visibilityApi.monitor(),                 // visible
+        this.authService.monitor(),                   // authorized
+      ])
+        .pipe(
+          filter(([visible, authorized]) => visible && authorized),
+          switchMapTo(this._getIconsFromServer()
+            .pipe(
+              map(icons => {
+                  this.icons = icons;
+                  this.storage.set('local', iconsCacheKey, this.icons, iconsCacheTTL);
+                  return true;
+                }
+              ),
+              // TODO: why it doesn work?
+              // retryWhen(error => error.pipe(
+              //   delay(this.refreshInterval)
+              // ))
+              catchError(e => of(false))
+            )
+          ),
+          filter(Boolean),
+          mapTo(true),
+          take(1),
+        );
 
     // short polling sensors after icons
     getIcons$.pipe(
@@ -76,7 +90,7 @@ export class SensorsService {
           this.visibilityApi.monitor(),                 // visible
           this.authService.monitor(),                   // authorized
         ]).pipe(
-          tap(() => { this.lastFullUpdate = null;}), // get full update
+          tap(() => { this.lastFullUpdate = null; }), // get full update
           switchMap(([visible, authorized]) => !visible || !authorized
             ? of([])
             : this.updateSensors().pipe(
@@ -95,7 +109,8 @@ export class SensorsService {
     this.lastFullUpdate = null; // get full update
     this.updateSensors().subscribe(() => {});
   }
-  updateSensors(): Observable<boolean>{
+
+  updateSensors(): Observable<boolean> {
     return this._getSensors().pipe(
       tap((data) => {
         this._processSensorsData(data);
@@ -205,7 +220,7 @@ export class SensorsService {
       }),
       catchError((e) => {
         console.log('Error getting sensors', e);
-        return of (null);
+        return of(null);
       })
     );
   }

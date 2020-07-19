@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AdministrationService} from '../../administration.service';
-import {DbSensors} from '../../db-sensors';
 import {MatTabChangeEvent} from '@angular/material/tabs';
-import {delay} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 
 @Component({

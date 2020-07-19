@@ -1,5 +1,5 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {BehaviorSubject, merge, Observable} from 'rxjs';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {merge, Observable} from 'rxjs';
 import {Sensor} from '../../../shared/interfaces/sensor';
 import {SensorsService} from '../../../shared/services/sensors.service';
 import {takeWhile} from 'rxjs/operators';

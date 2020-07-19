@@ -1,9 +1,8 @@
-import {Component, OnInit, Inject} from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {AcState, Sensor, AcMode, AcSwing, AcFan} from '../../../shared/interfaces/sensor';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {AcFan, AcMode, AcState, AcSwing, Sensor, SwOnOff} from '../../../shared/interfaces/sensor';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatSliderChange} from '@angular/material/slider';
-import {UtilsService} from '../../../shared/services/utils.service';
 import {SensorsService} from '../../../shared/services/sensors.service';
 
 @Component({
@@ -38,10 +37,9 @@ export class AcControlComponent implements OnInit {
   }
 
   onOkClick(): void {
-    if (!UtilsService.compareObjects(this.acForm.value, this.state)) {
-      // alert('chandeg');
-      this.sensorsService.saveState(this.sensor.id, this.acForm.value);
-    }
+    // do not check changes - it ok to turn on/off twice
+    // if (!UtilsService.compareObjects(this.acForm.value, this.state)) {
+    this.sensorsService.saveState(this.sensor.id, this.acForm.value);
     this.dialogRef.close(this.sensor);
   }
 
@@ -49,7 +47,6 @@ export class AcControlComponent implements OnInit {
   ngOnInit(): void {
     // console.debug(this.sensor-card.extraState);
     this.state = this.sensor.extraState;
-    // console.debug(this.sensor-card.extraState, this.state);
 
     this.swing = this.createList(AcSwing);
     this.modes = this.createList(AcMode);
@@ -75,7 +72,13 @@ export class AcControlComponent implements OnInit {
 
   toggle() {
     const prevState = this.acForm.get('state').value;
-    const newState = prevState === 'off' ? 'on' : 'off';
+    const newState = prevState === SwOnOff.off ? SwOnOff.on : SwOnOff.off;
     this.acForm.patchValue({state: newState});
+  }
+
+  toggleTurbo() {
+    const prevState = this.acForm.get('turbo').value;
+    const newState = prevState === SwOnOff.off ? SwOnOff.on : SwOnOff.off;
+    this.acForm.patchValue({turbo: newState});
   }
 }

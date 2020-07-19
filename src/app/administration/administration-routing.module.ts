@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {AdministrationComponent} from './administration.component';
 import {AdministrationHomeComponent} from './pages/administration-home/administration-home.component';
 import {AdministrationTablesComponent} from './pages/administration-tables/administration-tables.component';

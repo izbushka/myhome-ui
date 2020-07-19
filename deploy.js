@@ -2,7 +2,9 @@ const Deployer = require('ssh-deploy-release');
  
 const options = {
     localPath: 'dist/angular',
-    host: '11.230.0.2',
+	//host: '127.0.0.1',
+	//port: '2222',
+	host: '11.230.0.2',
     username: 'pi',
 	privateKeyFile: '/home/mirage/.ssh/id_rsa',
 //    password: 'password',

@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { VisibilityApiService } from './visibility-api.service';
+import {VisibilityApiService} from './visibility-api.service';
 
 describe('VisibilityApiService', () => {
   let service: VisibilityApiService;

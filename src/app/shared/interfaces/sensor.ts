@@ -1,5 +1,3 @@
-import {BehaviorSubject} from 'rxjs';
-
 export interface SensorData {
   sensor_id?: number;
   last_change?: string;
@@ -35,7 +33,7 @@ export interface SensorLog {
   change_time: string;
 }
 
-export enum SwOnOff {on, off}
+export enum SwOnOff {on = 'on', off = 'off'}
 
 export enum AcSwing {auto, off, top, middle, bottom}
 
@@ -95,8 +93,11 @@ export class Sensor implements SensorData {
     return ['light-switch', 'power-switch'].indexOf(this.group) !== -1;
   }
 
-  isOn(): boolean {
-    return this.state === 'ON' || this.state === 'PON';
+  isOn(state?: string): boolean {
+    if (!state) {
+      state = this.state;
+    }
+    return state === 'ON' || state === 'PON' || state === 'on';
   }
 
   isWarn(): boolean {

@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { PagePropertiesService } from './page-properties.service';
+import {PagePropertiesService} from './page-properties.service';
 
 describe('PagePropertiesService', () => {
   let service: PagePropertiesService;
