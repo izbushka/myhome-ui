@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AcControlComponent} from '../../shared/ac-control/ac-control.component';
-import {takeWhile} from 'rxjs/operators';
+import {takeWhile, tap} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
 import {SensorsService} from '../../../shared/services/sensors.service';
 import {Sensor} from '../../../shared/interfaces/sensor';
@@ -21,7 +21,9 @@ export class SensorCardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sensorService.getSensor(this.id)
-      .pipe(takeWhile(() => this.isAlive))
+      .pipe(
+        takeWhile(() => this.isAlive)
+      )
       .subscribe(sensor => this.sensor = sensor);
   }
   ngOnDestroy(): void {
@@ -34,14 +36,12 @@ export class SensorCardComponent implements OnInit, OnDestroy {
   }
 
   openAcControl(): void {
-    const dialogRef = this.dialog.open(AcControlComponent, {
+    this.dialog.open(AcControlComponent, {
       width: '500px',
       height: 'fit',
       data: this.sensor
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed', result);
+    })
+    .afterClosed().subscribe(result => {
       if (result) {
         this.sensor = result;
       }
