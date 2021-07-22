@@ -1,0 +1,8 @@
+@import 'theme/theme';
+@import 'mixins/scroll.mixin';
+
+* {
+	@include scroll();
+	box-sizing: border-box;
+}
+

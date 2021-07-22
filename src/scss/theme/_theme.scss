@@ -1,0 +1,26 @@
+@use '~@angular/material' as mat;
+@import 'colors';
+@import '../mixins/vars.mixin';
+@include mat.core();
+
+// Define a dark theme
+$dark-primary: mat.define-palette(mat.$pink-palette);
+$dark-accent: mat.define-palette(mat.$blue-gray-palette);
+$dark-theme: mat.define-dark-theme($dark-primary, $dark-accent);
+
+@include mat.all-component-themes($dark-theme);
+
+$primary: map-get($dark-theme, primary);
+$foreground: map-get($dark-theme, foreground);
+$background: map-get($dark-theme, background);
+$accent: map-get($dark-theme, accent);
+
+$light-theme-colors: (
+	primary: map-get($primary, A100),
+	secondary: map-get($accent, A400)
+);
+
+
+:root {
+	@include var-rgb-colors($base-color);
+}

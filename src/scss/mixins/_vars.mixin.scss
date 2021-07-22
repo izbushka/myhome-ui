@@ -1,0 +1,8 @@
+@use 'sass:color' as color;
+
+@mixin var-rgb-colors($base-color) {
+	@each $name, $color in $base-color {
+		--#{"" + $name}: #{$color};
+		--#{"" + $name + '-rgb'}: #{color.red($color)}, #{color.green($color)}, #{color.blue($color)};
+	}
+}
