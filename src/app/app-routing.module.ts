@@ -1,10 +1,16 @@
 import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
+import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
+import {Pages} from '@shared/entities/common.interfaces';
 
-const routes: Routes = [];
+const routes: Routes = [
+	{
+		path: Pages.Dashboard,
+		loadChildren: () => import('@pages/dashboard/dashboard.module').then((m) => m.DashboardModule),
+	},
+];
 
 @NgModule({
-	imports: [RouterModule.forRoot(routes)],
+	imports: [RouterModule.forRoot(routes, {useHash: true, preloadingStrategy: PreloadAllModules})],
 	exports: [RouterModule],
 })
 export class AppRoutingModule {}

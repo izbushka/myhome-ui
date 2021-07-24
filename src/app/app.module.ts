@@ -7,10 +7,20 @@ import {AppContainer} from './app.container';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatButtonModule} from '@angular/material/button';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AppStoreModule} from '@store/app-store.module';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
 	declarations: [AppComponent, AppContainer],
-	imports: [BrowserModule, AppRoutingModule, MatSidenavModule, MatButtonModule, BrowserAnimationsModule],
+	imports: [
+		HttpClientModule,
+		BrowserModule,
+		AppRoutingModule,
+		MatSidenavModule,
+		MatButtonModule,
+		BrowserAnimationsModule,
+		AppStoreModule,
+	],
 	providers: [],
 	bootstrap: [AppContainer],
 })
