@@ -1,3 +1,4 @@
 export enum Pages {
-	Dashboard = 'dashboard',
+	Login = 'login',
+	Dashboard = '',
 }

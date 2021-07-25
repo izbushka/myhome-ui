@@ -1,0 +1,21 @@
+<mat-list>
+	<mat-list-item [routerLink]="['/home/dashboard']">
+		<mat-icon>home</mat-icon>
+		Dashboard
+	</mat-list-item>
+
+	<mat-list-item [routerLink]="['/home/sensors/', 'all']">
+		<mat-icon>list</mat-icon>
+		All Sensors
+	</mat-list-item>
+
+	<mat-list-item *ngFor="let group of groups" class="subquote" [routerLink]="['/home/sensors', group.name]">
+		<mat-icon>{{group.icon}}</mat-icon>
+		{{group.name | titlecase}}
+	</mat-list-item>
+
+	<mat-list-item [routerLink]="['/admin']">
+		<mat-icon>settings</mat-icon>
+		Administration
+	</mat-list-item>
+</mat-list>

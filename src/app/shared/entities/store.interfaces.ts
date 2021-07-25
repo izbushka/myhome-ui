@@ -1,6 +1,7 @@
 export enum StoreModules {
 	Router = 'router',
 	Sensors = 'sensors',
+	Auth = 'auth',
 }
 
 /** Type that represents possible states of API response status */

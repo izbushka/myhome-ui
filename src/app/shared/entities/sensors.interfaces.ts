@@ -20,3 +20,11 @@ export interface SensorLog {
 	state: string;
 	change_time: string;
 }
+
+export type MappedSensors = Record<Sensor['sensor_id'], Sensor>;
+
+export interface SensorGroup {
+	name: string;
+	members: number[];
+	icon?: string;
+}

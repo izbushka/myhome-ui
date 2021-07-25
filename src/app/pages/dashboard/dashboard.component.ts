@@ -1,4 +1,5 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {MappedSensors, SensorGroup} from '@entities/sensors.interfaces';
 
 @Component({
 	selector: 'rpi-dashboard-component',
@@ -6,4 +7,7 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 	styleUrls: ['./dashboard.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent {}
+export class DashboardComponent {
+	@Input() sensors: MappedSensors;
+	@Input() sensorGroups: SensorGroup[];
+}

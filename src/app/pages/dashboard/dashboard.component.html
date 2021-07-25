@@ -1,1 +1,7 @@
 <p>dashboard works!</p>
+<div *ngFor="let group of sensorGroups">
+	<b>{{group.name}}</b>
+	<div *ngFor="let sensor_id of group.members">
+		{{sensors[sensor_id].name}}
+	</div>
+</div>
