@@ -1,0 +1,32 @@
+:host {
+	flex: auto;
+
+	.mat-card {
+		padding-top: 0;
+	}
+
+	.mat-card-title {
+		font-size: 20px;
+	}
+
+	.mat-card-subtitle {
+		margin-bottom: 5px;
+	}
+
+	.mat-card-title-group {
+		//TODO: Colors!
+		background: #212121;
+		border-radius: 4px 4px 0 0;
+		box-sizing: border-box;
+		margin: 0 -16px 15px;
+		padding: 10px 15px 0;
+
+		.mat-icon {
+			margin-top: 7px;
+		}
+	}
+
+	.mat-icon {
+		vertical-align: bottom;
+	}
+}

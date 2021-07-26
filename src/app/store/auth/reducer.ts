@@ -7,12 +7,14 @@ export interface AuthState {
 	authorized: boolean;
 	requestedPage: string;
 	lastUpdate: number;
+	token: string;
 }
 
 export const initialAuthState: AuthState = {
 	authorized: true,
 	requestedPage: null,
 	lastUpdate: 0,
+	token: null,
 };
 
 export const props = nameOfFactory<AuthState>();
@@ -22,6 +24,7 @@ export const authReducer = createReducer(
 	on(AuthActions.authorize, (state) =>
 		flow(state)(set(props('authorized'), true), set(props('lastUpdate'), +Date.now()))
 	),
+	on(AuthActions.setToken, (state, {payload}) => set(props('token'), payload, state)),
 	on(AuthActions.unAuthorize, (state, {payload}) =>
 		flow(state)(
 			set(props('authorized'), true),

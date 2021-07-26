@@ -1,4 +1,5 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Output} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
 	selector: 'rpi-login-page-component',
@@ -6,4 +7,18 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 	styleUrls: ['./login-page.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginPageComponent {}
+export class LoginPageComponent {
+	@Output() authorize = new EventEmitter<string>();
+
+	authForm = new FormGroup({
+		login: new FormControl(''),
+		password: new FormControl(''),
+	});
+
+	public onSubmit(): void {
+		const username = this.authForm.controls.login.value as string;
+		const password = this.authForm.controls.password.value as string;
+		const token = btoa(`${username}:${password}`);
+		this.authorize.emit(token);
+	}
+}

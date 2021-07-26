@@ -9,6 +9,7 @@ export type LoadingStatus =
 	| {loading: false; loaded: false; error: null}
 	| {loading: true; loaded: false; error: null}
 	| {loading: false; loaded: true; error: null}
+	| {loading: true; loaded: true; error: null}
 	| {loading: false; loaded: false; error: unknown};
 
 /**
@@ -17,6 +18,7 @@ export type LoadingStatus =
 interface Statuses {
 	default: LoadingStatus;
 	loading: LoadingStatus;
+	updating: LoadingStatus;
 	loaded: LoadingStatus;
 	error: (error: unknown) => LoadingStatus;
 }
@@ -25,6 +27,7 @@ interface Statuses {
 export const status: Statuses = {
 	default: {loading: false, loaded: false, error: null},
 	loading: {loading: true, loaded: false, error: null},
+	updating: {loading: true, loaded: true, error: null},
 	loaded: {loading: false, loaded: true, error: null},
 	error: (error: unknown) => ({loading: false, loaded: false, error: error || 'Something went wrong'}),
 };

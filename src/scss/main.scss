@@ -1,8 +1,31 @@
 @import 'theme/theme';
 @import 'mixins/scroll.mixin';
+@import 'mixins/responsive.mixin';
 
 * {
 	@include scroll();
 	box-sizing: border-box;
 }
 
+.rpi-grid {
+	--columns: 4;
+	display: grid;
+	gap: 1rem;
+	grid-template-columns: repeat(var(--columns), 1fr);
+	margin-top: 1rem;
+
+	@include tablet {
+		--columns: 3;
+	}
+
+	@include phone {
+		--columns: 2;
+	}
+
+	&-cell {
+		box-sizing: border-box;
+		margin: 0;
+		overflow: hidden;
+		padding: 0;
+	}
+}

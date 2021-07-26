@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {MappedSensors, SensorGroup} from '@entities/sensors.interfaces';
+import {LoadingStatus} from '@entities/store.interfaces';
 
 @Component({
 	selector: 'rpi-dashboard-component',
@@ -10,4 +11,5 @@ import {MappedSensors, SensorGroup} from '@entities/sensors.interfaces';
 export class DashboardComponent {
 	@Input() sensors: MappedSensors;
 	@Input() sensorGroups: SensorGroup[];
+	@Input() loadingStatus: LoadingStatus;
 }

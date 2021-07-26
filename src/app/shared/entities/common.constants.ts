@@ -1,0 +1,1 @@
+export const SENSORS_POLLING_INTERVAL = 10000;

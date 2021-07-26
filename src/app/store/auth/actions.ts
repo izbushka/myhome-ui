@@ -7,5 +7,6 @@ const desc = ActionsHelper.getDescription<AppState>(StoreModules.Auth);
 
 export const AuthActions = {
 	authorize: createAction(desc('Authorize')),
-	unAuthorize: createAction(desc('UnAuthorize'), props<{payload: string}>()),
+	unAuthorize: createAction(desc('UnAuthorize'), props<{payload?: string}>()),
+	setToken: createAction(desc('Set Token'), props<{payload?: string}>()),
 };

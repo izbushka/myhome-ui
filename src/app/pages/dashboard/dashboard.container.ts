@@ -1,10 +1,10 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '@store/rootReducer';
-import {SensorsActions} from '@store/sensors/actions';
 import {SensorsSelectors} from '@store/sensors/selectors';
 import {Observable} from 'rxjs';
 import {MappedSensors, SensorGroup} from '@entities/sensors.interfaces';
+import {LoadingStatus} from '@entities/store.interfaces';
 
 @Component({
 	selector: 'rpi-dashboard',
@@ -12,20 +12,19 @@ import {MappedSensors, SensorGroup} from '@entities/sensors.interfaces';
 		<rpi-dashboard-component
 			[sensorGroups]="sensorGroups$ | async"
 			[sensors]="sensors$ | async"
+			[loadingStatus]="sensorsLoadingStatus$ | async"
 		></rpi-dashboard-component>
 	`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardContainer implements OnInit {
-	sensorGroups$: Observable<SensorGroup[]>;
-	sensors$: Observable<MappedSensors>;
+export class DashboardContainer {
+	readonly sensorGroups$: Observable<SensorGroup[]>;
+	readonly sensors$: Observable<MappedSensors>;
+	readonly sensorsLoadingStatus$: Observable<LoadingStatus>;
 
 	public constructor(private store: Store<AppState>) {
 		this.sensorGroups$ = this.store.select(SensorsSelectors.sensorGroups.list);
 		this.sensors$ = this.store.select(SensorsSelectors.sensors.map);
-	}
-
-	public ngOnInit(): void {
-		this.store.dispatch(SensorsActions.getSensors.requested());
+		this.sensorsLoadingStatus$ = this.store.select(SensorsSelectors.sensors.loadingStatus);
 	}
 }

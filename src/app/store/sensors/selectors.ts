@@ -8,13 +8,8 @@ export const getState = (state: AppState): SensorsState => state[StoreModules.Se
 
 export namespace SensorsSelectors {
 	export const sensors = {
-		list: createSelector(getState, (state) => state.sensors),
-		map: createSelector(getState, (state): MappedSensors => {
-			if (!state.sensors) {
-				return null;
-			}
-			return state.sensors.reduce((acc, s) => ({...acc, [s.sensor_id]: s}), {});
-		}),
+		list: createSelector(getState, (state) => Object.values(state.sensors)),
+		map: createSelector(getState, (state): MappedSensors => state.sensors),
 		loadingStatus: createSelector(getState, (state) => state.sensorsLoadingStatus),
 		lastUpdate: createSelector(getState, (state) => state.lastUpdate),
 	};

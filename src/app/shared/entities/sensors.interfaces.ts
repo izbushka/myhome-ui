@@ -28,3 +28,10 @@ export interface SensorGroup {
 	members: number[];
 	icon?: string;
 }
+
+export enum SensorState {
+	On = 'on',
+	Off = 'off',
+	Pending = 'pending',
+	Unknown = 'unknown',
+}

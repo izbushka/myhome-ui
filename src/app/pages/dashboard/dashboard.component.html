@@ -1,7 +1,11 @@
-<p>dashboard works!</p>
-<div *ngFor="let group of sensorGroups">
-	<b>{{group.name}}</b>
-	<div *ngFor="let sensor_id of group.members">
-		{{sensors[sensor_id].name}}
-	</div>
+<div class="rpi-grid" *ngIf="loadingStatus.loaded">
+	<rpi-group-card
+		class="rpi-grid-cell"
+		*ngFor="let group of sensorGroups"
+		[sensorGroup]="group"
+		[sensors]="sensors"
+	></rpi-group-card>
+</div>
+<div *ngIf="!loadingStatus.loaded">
+	<mat-spinner></mat-spinner>
 </div>
