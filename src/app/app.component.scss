@@ -9,4 +9,8 @@
 	.page {
 		height: 100%;
 	}
+
+	.content {
+		padding: var(--offset);
+	}
 }

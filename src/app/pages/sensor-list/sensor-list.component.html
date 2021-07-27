@@ -1,1 +1,9 @@
-<p>sensor-list works!</p>
+<rpi-spinner *ngIf="!loadingStatus.loaded"></rpi-spinner>
+<ng-container *ngIf="loadingStatus.loaded">
+	<ng-container *ngFor="let group of sensorGroups">
+		<rpi-group-card [sensors]="sensors" [sensorGroup]="group"></rpi-group-card>
+		<div *ngFor="let sensorId of group?.members">
+			{{sensors[sensorId].name}}
+		</div>
+	</ng-container>
+</ng-container>

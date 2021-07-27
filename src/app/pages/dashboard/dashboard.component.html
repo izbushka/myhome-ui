@@ -6,6 +6,4 @@
 		[sensors]="sensors"
 	></rpi-group-card>
 </div>
-<div *ngIf="!loadingStatus.loaded">
-	<mat-spinner></mat-spinner>
-</div>
+<rpi-spinner *ngIf="!loadingStatus.loaded"></rpi-spinner>

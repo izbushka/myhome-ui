@@ -10,9 +10,8 @@
 .rpi-grid {
 	--columns: 4;
 	display: grid;
-	gap: 1rem;
+	gap: var(--offset);
 	grid-template-columns: repeat(var(--columns), 1fr);
-	margin-top: 1rem;
 
 	@include tablet {
 		--columns: 3;

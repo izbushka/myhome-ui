@@ -6,10 +6,13 @@ import {reducers} from '@store/rootReducer';
 import {SensorsEffects} from '@store/sensors/effects';
 import {SensorsApiService} from '@api/sensors.api.service';
 import {AuthEffects} from '@store/auth/effects';
+import {RouterEffects} from '@store/router/effects';
+
+const STORE_EFFECTS = [SensorsEffects, AuthEffects, RouterEffects];
 
 @NgModule({
 	imports: [
-		EffectsModule.forRoot([SensorsEffects, AuthEffects]),
+		EffectsModule.forRoot(STORE_EFFECTS),
 		StoreRouterConnectingModule.forRoot({
 			navigationActionTiming: NavigationActionTiming.PostActivation,
 		}),

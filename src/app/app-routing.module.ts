@@ -13,6 +13,11 @@ const routes: Routes = [
 		loadChildren: () => import('@pages/dashboard/dashboard.module').then((m) => m.DashboardModule),
 		canActivate: [AuthGuard],
 	},
+	{
+		path: Pages.Sensors,
+		loadChildren: () => import('@pages/sensor-list/sensor-list.module').then((m) => m.SensorListModule),
+		canActivate: [AuthGuard],
+	},
 ];
 
 @NgModule({

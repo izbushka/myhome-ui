@@ -1,4 +1,6 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {MappedSensors, SensorGroup} from '@entities/sensors.interfaces';
+import {LoadingStatus} from '@entities/store.interfaces';
 
 @Component({
 	selector: 'rpi-sensor-list-component',
@@ -6,4 +8,8 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 	styleUrls: ['./sensor-list.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SensorListComponent {}
+export class SensorListComponent {
+	@Input() sensorGroups: SensorGroup[];
+	@Input() sensors: MappedSensors;
+	@Input() loadingStatus: LoadingStatus;
+}

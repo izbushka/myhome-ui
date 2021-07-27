@@ -1,15 +1,15 @@
 <mat-list>
-	<mat-list-item [routerLink]="['/home/dashboard']">
+	<mat-list-item (click)="go.emit(pages.Dashboard)">
 		<mat-icon>home</mat-icon>
 		Dashboard
 	</mat-list-item>
 
-	<mat-list-item [routerLink]="['/home/sensors/', 'all']">
+	<mat-list-item (click)="go.emit(pages.Sensors)">
 		<mat-icon>list</mat-icon>
 		All Sensors
 	</mat-list-item>
 
-	<mat-list-item *ngFor="let group of groups" class="subquote" [routerLink]="['/home/sensors', group.name]">
+	<mat-list-item *ngFor="let group of groups" class="subquote" (click)="go.emit([pages.Sensors, group.name])">
 		<mat-icon>{{group.icon}}</mat-icon>
 		{{group.name | titlecase}}
 	</mat-list-item>
