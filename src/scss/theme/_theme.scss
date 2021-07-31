@@ -1,13 +1,19 @@
 @use '~@angular/material' as mat;
+@use 'sass:map';
 @import 'colors';
 @import 'vars';
 @import '../mixins/vars.mixin';
+
 @include mat.core();
 
+$rpi-custom-colors: mat.define-palette($custom-mat-colors, custom);
 // Define a dark theme
 $dark-primary: mat.define-palette(mat.$pink-palette);
 $dark-accent: mat.define-palette(mat.$blue-gray-palette);
 $dark-theme: mat.define-dark-theme($dark-primary, $dark-accent);
+
+$dark-theme: map.merge($dark-theme, (custom: $rpi-custom-colors));
+$custom: map-get($dark-theme, custom);
 
 @include mat.all-component-themes($dark-theme);
 
@@ -25,4 +31,9 @@ $light-theme-colors: (
 :root {
 	@include var-rgb-colors($base-color);
 	@include var-range(--offset, #{$offset});
+
+	.mat-on {
+		background-color: mat.get-color-from-palette($custom, contrast-error);
+		color: mat.get-color-from-palette($custom, error);
+	}
 }

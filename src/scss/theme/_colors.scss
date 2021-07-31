@@ -25,3 +25,16 @@ $base-color: (
 	light-red: #ffe3e3,
 	dark-green: #219653,
 );
+
+$custom-mat-colors: (
+	unknown : map-get($base-color, grey2),
+	on: map-get($base-color, color-ok),
+	off: map-get($base-color, grey3),
+	error: map-get($base-color, color-error),
+	contrast: (
+		unknown : #000,
+		on : #fff,
+		off: #fff,
+		error: #fff,
+	)
+);

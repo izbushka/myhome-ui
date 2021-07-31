@@ -1,4 +1,16 @@
 :host {
 	display: block;
 	width: 15rem;
+
+	.level2 {
+		margin-left: var(--offset);
+	}
+
+	.mat-list-item {
+		cursor: pointer;
+
+		.mat-icon {
+			margin-right: var(--offset-s);
+		}
+	}
 }

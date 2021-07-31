@@ -32,6 +32,7 @@ export class GroupCardComponent implements OnChanges {
 				console.warn('Unknown sensor', sensor_id);
 				return;
 			}
+
 			const state = SensorsHelper.getState(sensor);
 			const defaultState = SensorsHelper.getState(sensor, true);
 

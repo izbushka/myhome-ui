@@ -1,7 +1,15 @@
-import {MappedSensors, Sensor, SensorGroup, SensorState} from '@entities/sensors.interfaces';
+import {
+	Icon,
+	IconType,
+	MappedIcons,
+	MappedSensors,
+	Sensor,
+	SensorGroup,
+	SensorState,
+} from '@entities/sensors.interfaces';
 
 export class SensorsHelper {
-	public static getSensorGroups(sensors: Sensor[]): Set<SensorGroup> {
+	public static getSensorGroups(sensors: Sensor[], icons: MappedIcons): Set<SensorGroup> {
 		const groups: Record<string, number[]> = sensors.reduce(
 			(acc, sensor) => ({
 				...acc,
@@ -16,6 +24,7 @@ export class SensorsHelper {
 				sensorGroups.add({
 					name: group,
 					members: groups[group],
+					icon: icons[IconType.Group][group],
 				});
 			});
 		return sensorGroups;
@@ -47,7 +56,7 @@ export class SensorsHelper {
 		if (!state) {
 			return SensorState.Unknown;
 		}
-		if (state.includes('}')) {
+		if (SensorsHelper.isJSON(state)) {
 			state = (JSON.parse(state) as {state: string}).state;
 		}
 
@@ -58,5 +67,35 @@ export class SensorsHelper {
 		}
 		// TODO: check data when sensor.pending: what sensor.state
 		return SensorState.Pending;
+	}
+
+	public static isJSON(state: string): boolean {
+		return state.includes('}');
+	}
+
+	public static mapIcons(icons: Icon[]): MappedIcons {
+		if (!icons) {
+			return null;
+		}
+		return icons.reduce((acc, item) => {
+			if (!acc[item.type]) {
+				acc[item.type] = {};
+			}
+
+			acc[item.type][item.key] = item.icon;
+			return acc;
+		}, {} as MappedIcons);
+	}
+
+	public static getSensorIcon(sensor: Sensor, icons: MappedIcons): Icon['icon'] {
+		if (icons[IconType.Sensor][`${sensor.sensor_id}`]) {
+			return icons[IconType.Sensor][`${sensor.sensor_id}`];
+		}
+
+		if (icons[IconType.Group][sensor.group]) {
+			return icons[IconType.Group][sensor.group];
+		}
+
+		return icons[IconType.Default][IconType.Default];
 	}
 }

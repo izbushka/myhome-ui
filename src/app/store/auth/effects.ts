@@ -5,7 +5,6 @@ import {Store} from '@ngrx/store';
 import {AppState} from '@store/rootReducer';
 import {AuthActions} from '@store/auth/actions';
 import {AuthSelectors} from '@store/auth/selectors';
-import {Router} from '@angular/router';
 import {Pages} from '@entities/common.interfaces';
 import {SensorsActions} from '@store/sensors/actions';
 import {RouterActions} from '@store/router/actions';
@@ -18,7 +17,7 @@ export class AuthEffects {
 			withLatestFrom(this.store.select(AuthSelectors.requestedPage)),
 			concatMap(([, requestedPage]) => [
 				RouterActions.go({url: requestedPage || Pages.Dashboard}),
-				// TODO: restart polling in router effects after navigation to not login
+				// TODO: restart polling in router effects after navigation to !login
 				SensorsActions.polling.start(),
 			])
 		)
