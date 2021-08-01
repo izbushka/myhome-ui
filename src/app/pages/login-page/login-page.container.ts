@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '@store/rootReducer';
 import {AuthActions} from '@store/auth/actions';
@@ -8,8 +8,12 @@ import {AuthActions} from '@store/auth/actions';
 	template: '<rpi-login-page-component (authorize)="authorize($event)"></rpi-login-page-component>',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginPageContainer {
+export class LoginPageContainer implements OnInit {
 	public constructor(private store: Store<AppState>) {}
+
+	public ngOnInit(): void {
+		this.store.dispatch(AuthActions.unAuthorize({}));
+	}
 
 	public authorize(token: string): void {
 		this.store.dispatch(AuthActions.setToken({payload: token}));

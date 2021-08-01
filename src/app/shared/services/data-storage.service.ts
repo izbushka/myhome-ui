@@ -37,6 +37,10 @@ export class DataStorageService {
 		return res;
 	}
 
+	delete(storageType: StorageTypes, key: string): void {
+		this.storageApi(storageType).clear(key);
+	}
+
 	set<T>(storageType: StorageTypes, key: string, val: T, expirationInSec: number = null): void {
 		let expirationDate: Date;
 		if (expirationInSec) {

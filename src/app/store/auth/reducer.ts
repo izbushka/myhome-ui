@@ -29,7 +29,7 @@ export const authReducer = createReducer(
 		flow(state)(
 			set(props('authorized'), false),
 			set(props('lastUpdate'), +Date.now()),
-			set(props('requestedPage'), payload)
+			set(props('requestedPage'), payload || state.requestedPage)
 		)
 	)
 );

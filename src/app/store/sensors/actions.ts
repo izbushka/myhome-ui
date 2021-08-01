@@ -15,6 +15,7 @@ import {AppState} from '@store/rootReducer';
 const desc = ActionsHelper.getDescription<AppState>(StoreModules.Sensors);
 
 export const SensorsActions = {
+	resetState: createAction(desc('Clear Store')),
 	getSensors: {
 		requested: createAction(desc('Get Sensors Requested')),
 		succeeded: createAction(desc('Get Sensors Succeeded')),

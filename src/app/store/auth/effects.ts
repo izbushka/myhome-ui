@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {concatMap, mapTo, tap, withLatestFrom} from 'rxjs/operators';
+import {concatMap, concatMapTo, map, mapTo, tap, withLatestFrom} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
 import {AppState} from '@store/rootReducer';
 import {AuthActions} from '@store/auth/actions';
@@ -17,12 +17,16 @@ export class AuthEffects {
 	authorized$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(AuthActions.authorize),
-			withLatestFrom(
-				this.store.select(AuthSelectors.requestedPage),
-				this.store.select(RouterSelectors.selectUrl)
-			),
-			concatMap(([, requestedPage, url]) => [
-				RouterActions.go({url: requestedPage || url || Pages.Dashboard}),
+			withLatestFrom(this.store.select(AuthSelectors.requestedPage), this.store.select(RouterSelectors.url)),
+			map(([, requestedPage, url]) => {
+				let page = requestedPage || url;
+				if (page === Pages.Login) {
+					page = Pages.Dashboard;
+				}
+				return page;
+			}),
+			concatMap((page) => [
+				RouterActions.go({url: page}),
 				// TODO: restart polling in router effects after navigation to !login
 				SensorsActions.polling.start(),
 			])
@@ -32,8 +36,10 @@ export class AuthEffects {
 	unauthorized$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(AuthActions.unAuthorize),
-			// to login page
-			mapTo(RouterActions.go({url: Pages.Login}))
+			tap(() => {
+				this.storage.delete(StorageTypes.Local, StorageKeys.Token);
+			}),
+			concatMapTo([SensorsActions.resetState(), RouterActions.go({url: Pages.Login})])
 		)
 	);
 

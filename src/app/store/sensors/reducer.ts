@@ -29,6 +29,7 @@ export const props = nameOfFactory<SensorsState>();
 
 export const sensorsReducer = createReducer(
 	initialSensorsState,
+	on(SensorsActions.resetState, () => initialSensorsState),
 	// icons
 	on(SensorsActions.getIcons.succeeded, (state, {payload}) => set(props('icons'), payload, state)),
 	// sensor details
