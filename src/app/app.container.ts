@@ -15,6 +15,7 @@ export class AppContainer implements OnInit {
 	constructor(private store: Store<AppState>, private storage: DataStorageService) {}
 
 	public ngOnInit(): void {
+		document.body.classList.remove('loading');
 		const token = this.storage.get<string>(StorageTypes.Local, StorageKeys.Token);
 		this.store.dispatch(AuthActions.setToken({payload: token}));
 		this.store.dispatch(SensorsActions.polling.start());
