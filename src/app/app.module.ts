@@ -15,6 +15,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import {LeftMenuModule} from '@shared/components/left-menu/left-menu.module';
 import {RpiHttpInterceptor} from '@shared/guards/rpi-http.interceptor';
+import {NgxWebstorageModule} from 'ngx-webstorage';
 
 @NgModule({
 	declarations: [AppComponent, AppContainer],
@@ -27,6 +28,7 @@ import {RpiHttpInterceptor} from '@shared/guards/rpi-http.interceptor';
 		BrowserAnimationsModule,
 		AppStoreModule,
 		StoreDevtoolsModule.instrument(),
+		NgxWebstorageModule.forRoot(),
 		MatToolbarModule,
 		MatIconModule,
 		MatListModule,

@@ -34,6 +34,14 @@ export class SensorsApiService {
 		);
 	}
 
+	public getSensorDetails(id: Sensor['sensor_id']): Observable<Sensor> {
+		const url = `${API_BASE_URL}/states/${id}`;
+
+		return this.http.get<Sensor>(url).pipe(
+			take(1)
+		);
+	}
+
 	public setSensorState(id: Sensor['sensor_id'], state: SensorState | SensorFullState): Observable<void> {
 		if (typeof state === 'object') {
 			const url = `${API_BASE_URL}/${id}`;

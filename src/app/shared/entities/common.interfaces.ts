@@ -9,3 +9,7 @@ export enum PageParams {
 	GroupId = 'groupId',
 	SensorId = 'sensorId',
 }
+
+export enum StorageKeys {
+	Token = 'token',
+}

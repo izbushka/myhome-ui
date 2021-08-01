@@ -11,6 +11,6 @@ import {SensorStatusModule} from '@shared/components/sensor-status/sensor-status
 @NgModule({
 	declarations: [SensorCardComponent, SensorCardContainer, TimeAgo],
 	imports: [CommonModule, MatCardModule, MatIconModule, MatSlideToggleModule, SensorStatusModule],
-	exports: [SensorCardContainer],
+	exports: [SensorCardContainer, TimeAgo],
 })
 export class SensorCardModule {}

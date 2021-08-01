@@ -1,8 +1,8 @@
 import {AppState} from '@store/rootReducer';
 import {SensorsState} from '@store/sensors/reducer';
-import {status, StoreModules} from '@entities/store.interfaces';
+import {LoadingStatus, status, StoreModules} from '@entities/store.interfaces';
 import {createSelector} from '@ngrx/store';
-import {Icon, MappedIcons, MappedSensors} from '@entities/sensors.interfaces';
+import {Icon, MappedIcons, MappedSensors, SensorLog} from '@entities/sensors.interfaces';
 import {SensorsHelper} from '@shared/helpers/sensors.helper';
 
 export const getState = (state: AppState): SensorsState => state[StoreModules.Sensors];
@@ -18,6 +18,11 @@ export namespace SensorsSelectors {
 	export const icons = {
 		list: createSelector(getState, (state): Icon[] => state.icons),
 		map: createSelector(getState, (state): MappedIcons => SensorsHelper.mapIcons(state.icons)),
+	};
+
+	export const sensorDetails = {
+		logs: createSelector(getState, (state): SensorLog[] => state.sensorDetails?.logs),
+		loadingStatus: createSelector(getState, (state): LoadingStatus => state.sensorDetailsLoadingStatus),
 	};
 
 	export const sensorGroups = {

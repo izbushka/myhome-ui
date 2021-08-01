@@ -25,6 +25,11 @@ export const SensorsActions = {
 			props<{payload: SensorsApiResponse['timestamp']}>()
 		),
 	},
+	getSensorDetails: {
+		requested: createAction(desc('Get Sensor Details Requested')),
+		succeeded: createAction(desc('Get Sensor Details Succeeded'), props<{payload: Sensor}>()),
+		failed: createAction(desc('Get Sensor Details Failed'), props<{error?: string}>()),
+	},
 	switchSensor: {
 		requested: createAction(
 			desc('Switch Sensors Requested'),

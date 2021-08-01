@@ -1,7 +1,7 @@
 <mat-card role="group">
 	<mat-card-title-group>
 		<mat-icon>{{sensorGroup.icon}}</mat-icon>
-		<mat-card-title>
+		<mat-card-title (click)="goToGroup.emit(sensorGroup.name)">
 			{{sensorGroup.name}}
 		</mat-card-title>
 		<mat-card-subtitle>

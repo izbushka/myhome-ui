@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
-import {Pages} from '@shared/entities/common.interfaces';
+import {PageParams, Pages} from '@shared/entities/common.interfaces';
 import {AuthGuard} from '@shared/guards/auth.guard';
 
 const routes: Routes = [
@@ -18,9 +18,15 @@ const routes: Routes = [
 		loadChildren: () => import('@pages/sensor-list/sensor-list.module').then((m) => m.SensorListModule),
 		canActivate: [AuthGuard],
 	},
+	{
+		path: `${Pages.SensorDetails}/:${PageParams.SensorId}`,
+		loadChildren: () => import('@pages/sensor-details/sensor-details.module').then((m) => m.SensorDetailsModule),
+		canActivate: [AuthGuard],
+	},
 ];
 
 @NgModule({
+	// imports: [RouterModule.forRoot(routes)],
 	imports: [RouterModule.forRoot(routes, {useHash: true, preloadingStrategy: PreloadAllModules})],
 	exports: [RouterModule],
 })

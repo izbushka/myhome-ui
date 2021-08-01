@@ -1,10 +1,10 @@
-import {ChangeDetectionStrategy, Component, Input, OnChanges} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {MappedSensors, SensorGroup, SensorState} from '@entities/sensors.interfaces';
 import {NgChanges} from '@entities/ng-changes.types';
 import {SensorsHelper} from '@shared/helpers/sensors.helper';
 
 @Component({
-	selector: 'rpi-group-card',
+	selector: 'rpi-group-card-component',
 	templateUrl: './group-card.component.html',
 	styleUrls: ['./group-card.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -12,6 +12,8 @@ import {SensorsHelper} from '@shared/helpers/sensors.helper';
 export class GroupCardComponent implements OnChanges {
 	@Input() sensorGroup: SensorGroup;
 	@Input() sensors: MappedSensors;
+
+	@Output() goToGroup = new EventEmitter<SensorGroup['name']>();
 
 	stat = {num: 0, off: 0, on: 0, ok: 0};
 
