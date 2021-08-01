@@ -4,6 +4,7 @@ import {
 	MappedIcons,
 	MappedSensors,
 	Sensor,
+	SensorFullState,
 	SensorGroup,
 	SensorState,
 } from '@entities/sensors.interfaces';
@@ -47,17 +48,24 @@ export class SensorsHelper {
 		return oldData;
 	}
 
+	public static getFullState<T extends SensorFullState = SensorFullState>(sensor: Sensor): T {
+		try {
+			return JSON.parse(sensor.state) as T;
+		} catch {
+			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+			return {state: sensor.state} as T;
+		}
+	}
+
 	public static getState(sensor: Sensor, getDefaultState = false): SensorState {
 		if (!sensor) {
 			return null;
 		}
 
-		let state = getDefaultState ? sensor.normal_state : sensor.state;
+		let state = getDefaultState ? sensor.normal_state : SensorsHelper.getFullState(sensor).state;
+
 		if (!state) {
 			return SensorState.Unknown;
-		}
-		if (SensorsHelper.isJSON(state)) {
-			state = (JSON.parse(state) as {state: string}).state;
 		}
 
 		state = state.toLocaleLowerCase();

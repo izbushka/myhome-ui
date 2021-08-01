@@ -40,6 +40,10 @@ export interface SensorGroup {
 	icon?: string;
 }
 
+export interface SensorFullState extends Record<string, unknown> {
+	state: string;
+}
+
 export enum SensorState {
 	On = 'on',
 	Off = 'off',
@@ -53,40 +57,35 @@ export enum IconType {
 	Default = 'default',
 }
 
-export enum SwOnOff {
-	On = 'on',
-	Off = 'off',
-}
-
 export enum AcSwing {
-	Auto,
-	Off,
-	Top,
-	Middle,
-	Bottom,
+	Auto = 'auto',
+	Off = 'off',
+	Top = 'top',
+	Middle = 'middle',
+	Bottom = 'bottom',
 }
 
 export enum AcFan {
-	Auto,
-	S1,
-	S2,
-	S3,
+	Auto = 'auto',
+	S1 = 's1',
+	S2 = 's2',
+	S3 = 's3',
 }
 
 export enum AcMode {
-	Auto,
-	Cool,
-	Hot,
-	Dry,
-	Fan,
+	Auto = 'auto',
+	Cool = 'cool',
+	Hot = 'hot',
+	Dry = 'dry',
+	Fan = 'fan',
 }
 
-export interface AcState {
+export interface AcState extends SensorFullState {
 	change_time: string;
 	temperature: number;
 	swing: AcSwing;
 	mode: AcMode;
-	turbo: SwOnOff;
+	turbo: SensorState;
 	fan: AcFan;
-	state: SwOnOff;
+	state: SensorState;
 }

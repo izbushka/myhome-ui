@@ -1,0 +1,19 @@
+<mat-card class="card">
+	<div class="name" (click)="toDetails.emit(sensor.sensor_id)">
+		<mat-icon
+			[class]="'sensor-' + sensor.group"
+			[class.sensor-on]="sensor.state"
+			[class.sensor-not-default]="!sensor.state"
+		>{{sensor.icon}}
+		</mat-icon>
+		<div class="my-flex-shrink">
+			{{sensor.name}}
+		</div>
+	</div>
+	<rpi-sensor-status [sensor]="sensor"></rpi-sensor-status>
+	<div class="down-right">
+		{{sensor.last_change|timeAgo}}
+	</div>
+</mat-card>
+
+

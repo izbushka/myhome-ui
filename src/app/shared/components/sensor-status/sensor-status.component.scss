@@ -1,0 +1,9 @@
+:host {
+	.rw-state {
+		display: flex;
+
+		.config {
+			margin-right: var(--offset);
+		}
+	}
+}

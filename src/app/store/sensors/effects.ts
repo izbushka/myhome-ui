@@ -85,7 +85,7 @@ export class SensorsEffects {
 		this.actions$.pipe(
 			ofType(SensorsActions.switchSensor.requested),
 			switchMap(({sensorId, state}) =>
-				this.sensorsApiService.switchSensor(sensorId, state).pipe(
+				this.sensorsApiService.setSensorState(sensorId, state).pipe(
 					mapTo(SensorsActions.switchSensor.succeeded()),
 					catchError((error: string) => of(SensorsActions.switchSensor.failed({error: `${error}`})))
 				)

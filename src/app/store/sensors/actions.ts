@@ -1,6 +1,14 @@
 import {createAction, props} from '@ngrx/store';
 import {StoreModules} from '@entities/store.interfaces';
-import {Icon, MappedSensors, Sensor, SensorGroup, SensorsApiResponse, SensorState} from '@entities/sensors.interfaces';
+import {
+	Icon,
+	MappedSensors,
+	Sensor,
+	SensorFullState,
+	SensorGroup,
+	SensorsApiResponse,
+	SensorState,
+} from '@entities/sensors.interfaces';
 import {ActionsHelper} from '@shared/helpers/store/actions.helper';
 import {AppState} from '@store/rootReducer';
 
@@ -20,7 +28,7 @@ export const SensorsActions = {
 	switchSensor: {
 		requested: createAction(
 			desc('Switch Sensors Requested'),
-			props<{sensorId: Sensor['sensor_id']; state: SensorState}>()
+			props<{sensorId: Sensor['sensor_id']; state: SensorState | SensorFullState}>()
 		),
 		succeeded: createAction(desc('Switch Sensors Succeeded')),
 		failed: createAction(desc('Switch Sensors Failed'), props<{error?: string}>()),
