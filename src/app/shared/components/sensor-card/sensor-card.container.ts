@@ -8,6 +8,7 @@ import {Pages} from '@entities/common.interfaces';
 @Component({
 	selector: 'rpi-sensor-card',
 	template: '<rpi-sensor-card-component [sensor]="sensor" (toDetails)="goToDetails()"></rpi-sensor-card-component>',
+	styles: [':host {display: block}'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SensorCardContainer {

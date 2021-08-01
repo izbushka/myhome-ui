@@ -13,3 +13,10 @@ export enum PageParams {
 export enum StorageKeys {
 	Token = 'token',
 }
+
+export enum Period {
+	Day = 'day',
+	Week = 'week',
+	Month = 'month',
+	Year = 'year',
+}

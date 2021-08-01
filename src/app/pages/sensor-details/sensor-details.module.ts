@@ -6,10 +6,11 @@ import {SensorDetailsRouterModule} from '@pages/sensor-details/sensor-details.ro
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatTableModule} from '@angular/material/table';
 import {SensorCardModule} from '@shared/components/sensor-card/sensor-card.module';
+import {ChartModule} from 'angular-highcharts';
 
 @NgModule({
 	declarations: [SensorDetailsComponent, SensorDetailsContainer],
 	exports: [SensorDetailsContainer],
-	imports: [CommonModule, SensorDetailsRouterModule, MatTabsModule, MatTableModule, SensorCardModule],
+	imports: [CommonModule, SensorDetailsRouterModule, ChartModule, MatTabsModule, MatTableModule, SensorCardModule],
 })
 export class SensorDetailsModule {}

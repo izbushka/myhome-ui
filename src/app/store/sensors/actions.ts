@@ -11,6 +11,7 @@ import {
 } from '@entities/sensors.interfaces';
 import {ActionsHelper} from '@shared/helpers/store/actions.helper';
 import {AppState} from '@store/rootReducer';
+import {Period} from '@entities/common.interfaces';
 
 const desc = ActionsHelper.getDescription<AppState>(StoreModules.Sensors);
 
@@ -30,6 +31,11 @@ export const SensorsActions = {
 		requested: createAction(desc('Get Sensor Details Requested')),
 		succeeded: createAction(desc('Get Sensor Details Succeeded'), props<{payload: Sensor}>()),
 		failed: createAction(desc('Get Sensor Details Failed'), props<{error?: string}>()),
+	},
+	getSensorChart: {
+		requested: createAction(desc('Get Sensor Chart Requested'), props<{period: Period}>()),
+		succeeded: createAction(desc('Get Sensor Chart Succeeded'), props<{payload: Sensor}>()),
+		failed: createAction(desc('Get Sensor Chart Failed'), props<{error?: string}>()),
 	},
 	switchSensor: {
 		requested: createAction(

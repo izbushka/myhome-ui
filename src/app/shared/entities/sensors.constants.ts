@@ -1,2 +1,39 @@
 //TODO: move to env
+import {Highcharts} from 'highcharts/modules/data';
+
 export const API_BASE_URL = 'https://rpi.xvv.be/sensors/';
+export const SENSORS_CHART_OPTIONS: Highcharts.Options = {
+	chart: {
+		zoomType: 'x',
+		backgroundColor: 'transparent',
+	},
+	title: {
+		text: ' ',
+	},
+	xAxis: {
+		type: 'datetime',
+	},
+	yAxis: {
+		gridLineColor: '#393939',
+	},
+	credits: {
+		enabled: false,
+	},
+	legend: {
+		enabled: false,
+	},
+	plotOptions: {
+		area: {
+			marker: {
+				radius: 2,
+			},
+			lineWidth: 1,
+			states: {
+				hover: {
+					lineWidth: 1,
+				},
+			},
+			threshold: null,
+		},
+	},
+};

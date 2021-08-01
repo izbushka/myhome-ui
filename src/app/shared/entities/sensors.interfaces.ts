@@ -31,6 +31,13 @@ export interface SensorLog {
 	change_time: string;
 }
 
+export interface SensorChartPoint {
+	sensor_id: string;
+	time: string;
+	date: string;
+	value: number;
+}
+
 export type MappedSensors = Record<Sensor['sensor_id'], Sensor>;
 export type MappedIcons = Record<Icon['type'], Record<Icon['key'], Icon['icon']>>;
 

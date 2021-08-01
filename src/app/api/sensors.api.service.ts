@@ -12,6 +12,7 @@ import {API_BASE_URL} from '@entities/sensors.constants';
 import {map, take} from 'rxjs/operators';
 import {SensorsApiMapper} from '@api/sensors.api.mapper';
 import {Observable} from 'rxjs';
+import {Period} from '@entities/common.interfaces';
 
 @Injectable()
 export class SensorsApiService {
@@ -36,6 +37,14 @@ export class SensorsApiService {
 
 	public getSensorDetails(id: Sensor['sensor_id']): Observable<Sensor> {
 		const url = `${API_BASE_URL}/states/${id}`;
+
+		return this.http.get<Sensor>(url).pipe(
+			take(1)
+		);
+	}
+
+	public getSensorChart(id: Sensor['sensor_id'], period: Period): Observable<Sensor> {
+		const url = `${API_BASE_URL}/${id}/graph/${period}`;
 
 		return this.http.get<Sensor>(url).pipe(
 			take(1)

@@ -11,10 +11,15 @@
 	}
 
 	.down-right {
-		bottom: -2px;
+		bottom: calc(-1 * var(--offset-xs));
 		font-size: 10px;
 		position: absolute;
-		right: 7px;
+		right: var(--offset-s);
+
+		.id {
+			color: var(--grey3);
+			margin-right: var(--offset-xs);
+		}
 	}
 
 }

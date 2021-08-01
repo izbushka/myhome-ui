@@ -96,6 +96,19 @@ export class SensorsEffects {
 		)
 	);
 
+	getSensorChart = createEffect(() =>
+		this.actions$.pipe(
+			ofType(SensorsActions.getSensorChart.requested),
+			withLatestFrom(this.store.select(RouterSelectors.selectRouteParam(PageParams.SensorId))),
+			switchMap(([{period}, sensorId]) =>
+				this.sensorsApiService.getSensorChart(+sensorId, period).pipe(
+					map((payload) => SensorsActions.getSensorChart.succeeded({payload})),
+					catchError((error: string) => of(SensorsActions.getSensorChart.failed({error: `${error}`})))
+				)
+			)
+		)
+	);
+
 	switchSensor$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(SensorsActions.switchSensor.requested),

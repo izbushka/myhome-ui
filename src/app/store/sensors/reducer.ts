@@ -1,5 +1,5 @@
 import {createReducer, on} from '@ngrx/store';
-import {Icon, Sensor, SensorGroup} from '@entities/sensors.interfaces';
+import {Icon, Sensor, SensorChartPoint, SensorGroup, SensorLog} from '@entities/sensors.interfaces';
 import {LoadingStatus, status} from '@entities/store.interfaces';
 import {nameOfFactory} from '@entities/nameof.constants';
 import {flow, set} from '@shared/helpers/store/immutable.helper';
@@ -10,6 +10,8 @@ export interface SensorsState {
 	sensorsLoadingStatus: LoadingStatus;
 	sensorDetails: Sensor;
 	sensorDetailsLoadingStatus: LoadingStatus;
+	sensorChart: SensorChartPoint[];
+	sensorChartLoadingStatus: LoadingStatus;
 	lastUpdate: number;
 	icons: Icon[];
 	groups: Set<SensorGroup>;
@@ -20,6 +22,8 @@ export const initialSensorsState: SensorsState = {
 	sensorsLoadingStatus: status.default,
 	sensorDetails: null,
 	sensorDetailsLoadingStatus: null,
+	sensorChart: null,
+	sensorChartLoadingStatus: null,
 	lastUpdate: 0,
 	icons: null,
 	groups: null,
@@ -41,6 +45,16 @@ export const sensorsReducer = createReducer(
 	),
 	on(SensorsActions.getSensorDetails.failed, (state, {error}) =>
 		set(props('sensorDetailsLoadingStatus'), status.error(error), state)
+	),
+	// sensor chart
+	on(SensorsActions.getSensorChart.requested, (state) =>
+		set(props('sensorChartLoadingStatus'), status.loading, state)
+	),
+	on(SensorsActions.getSensorChart.succeeded, (state, {payload}) =>
+		flow(state)(set(props('sensorChartLoadingStatus'), status.loaded), set(props('sensorChart'), payload))
+	),
+	on(SensorsActions.getSensorChart.failed, (state, {error}) =>
+		set(props('sensorChartLoadingStatus'), status.error(error), state)
 	),
 	// sensors
 	on(SensorsActions.getSensors.requested, (state) =>

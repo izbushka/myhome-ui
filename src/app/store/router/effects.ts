@@ -13,7 +13,9 @@ export class RouterEffects {
 			this.actions$.pipe(
 				ofType(RouterActions.go),
 				tap(({url, extras}) => {
-					void this.router.navigate(Array.isArray(url) ? url : [url], extras || {});
+					if (url) {
+						void this.router.navigate(Array.isArray(url) ? url : [url], extras || {});
+					}
 				})
 			),
 		{

@@ -23,6 +23,8 @@ export namespace SensorsSelectors {
 	export const sensorDetails = {
 		logs: createSelector(getState, (state): SensorLog[] => state.sensorDetails?.logs),
 		loadingStatus: createSelector(getState, (state): LoadingStatus => state.sensorDetailsLoadingStatus),
+		chart: createSelector(getState, (state) => state.sensorChart),
+		chartLoadingStatus: createSelector(getState, (state) => state.sensorChartLoadingStatus),
 	};
 
 	export const sensorGroups = {

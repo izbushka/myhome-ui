@@ -1,4 +1,4 @@
-<mat-card class="card">
+<mat-card class="card" *ngIf="sensor">
 	<div class="name" (click)="toDetails.emit(sensor.sensor_id)">
 		<mat-icon
 			[class]="'sensor-' + sensor.group"
@@ -12,6 +12,9 @@
 	</div>
 	<rpi-sensor-status [sensor]="sensor"></rpi-sensor-status>
 	<div class="down-right">
+		<span class="id">
+			id: {{sensor.sensor_id}}
+		</span>
 		{{sensor.last_change|timeAgo}}
 	</div>
 </mat-card>
