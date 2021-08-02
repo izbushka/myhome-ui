@@ -1,6 +1,7 @@
 export enum StoreModules {
 	Router = 'router',
 	Sensors = 'sensors',
+	Common = 'common',
 	Auth = 'auth',
 }
 

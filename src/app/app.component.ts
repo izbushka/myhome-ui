@@ -1,5 +1,6 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatDrawerMode} from '@angular/material/sidenav';
+import {LeftPanelModes} from '@entities/common.interfaces';
 
 @Component({
 	selector: 'rpi-root-component',
@@ -7,20 +8,15 @@ import {MatDrawerMode} from '@angular/material/sidenav';
 	styleUrls: ['./app.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
+	@Input() isSideBarOpened: boolean;
+	@Input() sideBarMode: MatDrawerMode = LeftPanelModes.Over;
+
+	@Output() setLeftPanelState = new EventEmitter<boolean>();
+
 	title = 'Replace my with sensor title';
-	isSideBarOpened = false;
-
-	public ngOnInit(): void {
-		this.isSideBarOpened = this.slideMode() === 'side';
-	}
-
-	public slideMode(): MatDrawerMode {
-		const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-		return width > 1200 ? 'side' : 'over';
-	}
 
 	public toggleSideBar(): void {
-		this.isSideBarOpened = !this.isSideBarOpened;
+		this.setLeftPanelState.emit(!this.isSideBarOpened);
 	}
 }

@@ -7,8 +7,9 @@ import {SensorsEffects} from '@store/sensors/effects';
 import {SensorsApiService} from '@api/sensors.api.service';
 import {AuthEffects} from '@store/auth/effects';
 import {RouterEffects} from '@store/router/effects';
+import {CommonEffects} from '@store/common/effects';
 
-const STORE_EFFECTS = [SensorsEffects, AuthEffects, RouterEffects];
+const STORE_EFFECTS = [SensorsEffects, AuthEffects, RouterEffects, CommonEffects];
 
 @NgModule({
 	imports: [

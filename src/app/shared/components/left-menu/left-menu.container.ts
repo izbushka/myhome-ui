@@ -5,10 +5,18 @@ import {Observable} from 'rxjs';
 import {SensorGroup} from '@entities/sensors.interfaces';
 import {SensorsSelectors} from '@store/sensors/selectors';
 import {RouterActions} from '@store/router/actions';
+import {LeftPanelModes} from '@entities/common.interfaces';
+import {CommonActions} from '@store/common/actions';
 
 @Component({
 	selector: 'rpi-left-menu',
-	template: '<rpi-left-menu-component [groups]="sensorGroups$ | async" (go)="go($event)"></rpi-left-menu-component>',
+	template: `
+		<rpi-left-menu-component
+			[groups]="sensorGroups$ | async"
+			(go)="go($event)"
+			(setMode)="setMode($event)"
+		></rpi-left-menu-component>
+	`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeftMenuContainer {
@@ -20,5 +28,9 @@ export class LeftMenuContainer {
 
 	public go(page: string | string[]): void {
 		this.store.dispatch(RouterActions.go({url: page}));
+	}
+
+	public setMode(mode: LeftPanelModes): void {
+		this.store.dispatch(CommonActions.setLeftPanelMode({mode}));
 	}
 }

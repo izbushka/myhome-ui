@@ -1,13 +1,13 @@
 <div class="app">
 	<mat-toolbar color="primary" class="top-toolbar">
-		<button mat-icon-button (click)="toggleSideBar()" #menu>
+		<button mat-icon-button (click)="toggleSideBar()">
 			<mat-icon>menu</mat-icon>
 		</button>
 		<h1 class="mdContainer-title">{{title}}</h1>
 	</mat-toolbar>
 
 	<mat-sidenav-container class="page">
-		<mat-sidenav [mode]="slideMode()" [opened]="isSideBarOpened">
+		<mat-sidenav [mode]="sideBarMode" [opened]="isSideBarOpened">
 			<rpi-left-menu></rpi-left-menu>
 		</mat-sidenav>
 

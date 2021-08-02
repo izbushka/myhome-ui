@@ -20,3 +20,8 @@ export enum Period {
 	Month = 'month',
 	Year = 'year',
 }
+
+export enum LeftPanelModes {
+	Side = 'side',
+	Over = 'over',
+}

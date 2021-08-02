@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {PageParams, Pages} from '@shared/entities/common.interfaces';
 import {AuthGuard} from '@shared/guards/auth.guard';
+import {ROUTING_USE_HASH} from '@entities/common.constants';
 
 const routes: Routes = [
 	{
@@ -27,7 +28,7 @@ const routes: Routes = [
 
 @NgModule({
 	// imports: [RouterModule.forRoot(routes)],
-	imports: [RouterModule.forRoot(routes, {useHash: false, preloadingStrategy: PreloadAllModules})],
+	imports: [RouterModule.forRoot(routes, {useHash: ROUTING_USE_HASH, preloadingStrategy: PreloadAllModules})],
 	exports: [RouterModule],
 })
 export class AppRoutingModule {}

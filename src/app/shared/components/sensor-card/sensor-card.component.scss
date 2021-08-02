@@ -1,6 +1,13 @@
 :host {
+	--card-height: calc(var(--offset) * 3.5);
+
 	.card {
+		align-items: center;
 		display: flex;
+		max-height: var(--card-height);
+		min-height: var(--card-height);
+		overflow: hidden;
+		padding: 0 var(--offset);
 
 		.name {
 			align-items: center;
