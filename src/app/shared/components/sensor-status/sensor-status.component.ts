@@ -4,6 +4,7 @@ import {NgChanges} from '@entities/ng-changes.types';
 import {SensorsHelper} from '@shared/helpers/sensors.helper';
 import {MatDialog} from '@angular/material/dialog';
 import {AcControlContainer} from '@shared/components/ac-control/ac-control.container';
+import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 
 @Component({
 	selector: 'rpi-sensor-status-component',
@@ -28,8 +29,8 @@ export class SensorStatusComponent implements OnChanges {
 		}
 	}
 
-	public toggle(): void {
-		const newState = this.state === SensorState.On ? SensorState.Off : SensorState.On;
+	toggle(state: MatSlideToggleChange): void {
+		const newState = state.checked ? SensorState.On : SensorState.Off;
 		if (!this.configurable) {
 			this.setState.emit(newState);
 			return;
@@ -49,7 +50,12 @@ export class SensorStatusComponent implements OnChanges {
 	}
 
 	private init(): void {
-		this.state = SensorsHelper.getState(this.sensor);
+		const state = SensorsHelper.getState(this.sensor);
+
+		if (state === SensorState.On || state === SensorState.Off) {
+			this.state = state;
+		}
+
 		this.configurable = SensorsHelper.isJSON(this.sensor.state);
 	}
 }

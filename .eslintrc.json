@@ -46,7 +46,7 @@
 					"error",
 					{
 						"type": "attribute",
-						"prefix": ["pri"],
+						"prefix": ["rpi"],
 						"style": "camelCase"
 					}
 				],

@@ -58,6 +58,14 @@ export enum SensorState {
 	Unknown = 'unknown',
 }
 
+export enum SensorClasses {
+	On = 'state-on',
+	Off = 'state-off',
+	Pending = 'state-pending',
+	Unknown = 'state-unknown',
+	Error = 'state-error',
+}
+
 export enum IconType {
 	Group = 'group',
 	Sensor = 'sensor',

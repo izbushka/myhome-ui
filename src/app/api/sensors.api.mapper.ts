@@ -5,7 +5,10 @@ export class SensorsApiMapper {
 	public static mapSensors(data: SensorsApiResponse, icons: MappedIcons): SensorsApiResponse {
 		return {
 			timestamp: data.timestamp,
-			sensors: data.sensors.map((sensor) => ({...sensor, icon: SensorsHelper.getSensorIcon(sensor, icons)})),
+			sensors: data.sensors.map((sensor) => ({
+				...sensor,
+				icon: SensorsHelper.getSensorIcon(sensor, icons),
+			})).sort((a, b) => a.name.localeCompare(b.name)),
 		};
 	}
 }

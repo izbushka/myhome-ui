@@ -1,5 +1,11 @@
-<div class="ro-state" *ngIf="sensor.readonly">{{sensor.state}}</div>
+<div class="ro-state" rpiSensorState [sensor]="sensor" *ngIf="sensor.readonly">
+	{{sensor.state}}
+</div>
 <div class="rw-state" *ngIf="!sensor.readonly">
 	<mat-icon class="config" (click)="openAcControl()" *ngIf="configurable">tune</mat-icon>
-	<mat-slide-toggle color="on" (change)="toggle()" [checked]="state === states.On"></mat-slide-toggle>
+	<mat-slide-toggle
+		rpiSensorState [sensor]="sensor"
+		(change)="toggle($event)"
+		[checked]="state === states.On"
+	></mat-slide-toggle>
 </div>

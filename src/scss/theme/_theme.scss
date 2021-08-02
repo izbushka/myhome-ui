@@ -32,8 +32,27 @@ $light-theme-colors: (
 	@include var-rgb-colors($base-color);
 	@include var-range(--offset, #{$offset});
 
-	.mat-on {
-		background-color: mat.get-color-from-palette($custom, contrast-error);
-		color: mat.get-color-from-palette($custom, error);
+	.state-on {
+		color: var(--color-ok);
+
+		&.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+			background-color: mat.get-color-from-palette($custom, on);
+		}
+
+		&.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+			background-color: #03ff00;
+		}
+	}
+
+	.state-pending {
+		color: var(--color-warn);
+
+		&.mat-slide-toggle:not(.mat-disabled) .mat-slide-toggle-bar {
+			background-color: rgba(96, 125, 139, 0.54);
+		}
+
+		&.mat-slide-toggle:not(.mat-disabled) .mat-slide-toggle-thumb {
+			background-color: #607d8b;
+		}
 	}
 }
