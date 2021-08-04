@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {concatMap, concatMapTo, map, mapTo, tap, withLatestFrom} from 'rxjs/operators';
+import {concatMap, concatMapTo, filter, map, mapTo, tap, withLatestFrom} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
 import {AppState} from '@store/rootReducer';
 import {AuthActions} from '@store/auth/actions';
@@ -39,7 +39,11 @@ export class AuthEffects {
 			tap(() => {
 				this.storage.delete(StorageTypes.Local, StorageKeys.Token);
 			}),
-			concatMapTo([SensorsActions.resetState(), RouterActions.go({url: Pages.Login})])
+			concatMapTo([
+				SensorsActions.resetState(),
+				SensorsActions.polling.stop(),
+				RouterActions.go({url: Pages.Login}),
+			])
 		)
 	);
 
@@ -52,6 +56,15 @@ export class AuthEffects {
 				}
 			}),
 			// authorize
+			mapTo(AuthActions.authorize())
+		)
+	);
+
+	authOk$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(SensorsActions.getSensors.succeeded),
+			withLatestFrom(this.store.select(RouterSelectors.url)),
+			filter(([, url]) => url === Pages.Login),
 			mapTo(AuthActions.authorize())
 		)
 	);

@@ -5,11 +5,14 @@ import {
 	concatMap,
 	debounce,
 	debounceTime,
+	filter,
 	map,
 	mapTo,
 	startWith,
 	switchMap,
 	switchMapTo,
+	take,
+	takeUntil,
 	withLatestFrom,
 } from 'rxjs/operators';
 import {SensorsActions} from '@store/sensors/actions';
@@ -25,6 +28,14 @@ import {PageParams} from '@entities/common.interfaces';
 
 @Injectable()
 export class SensorsEffects {
+	pollingFilter$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(SensorsActions.getSensors.succeeded),
+			filter(() => document.hidden),
+			mapTo(SensorsActions.polling.stopByVisibility())
+		)
+	);
+
 	polling$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(SensorsActions.polling.start),
@@ -57,7 +68,13 @@ export class SensorsEffects {
 						].includes(action.type)
 					),
 					debounce((noDelay) => timer(noDelay ? 1 : SENSORS_POLLING_INTERVAL)),
-					mapTo(SensorsActions.getSensors.requested())
+					mapTo(SensorsActions.getSensors.requested()),
+					takeUntil(
+						this.actions$.pipe(
+							ofType(SensorsActions.polling.stop, SensorsActions.polling.stopByVisibility),
+							take(1)
+						)
+					)
 				)
 			)
 		)

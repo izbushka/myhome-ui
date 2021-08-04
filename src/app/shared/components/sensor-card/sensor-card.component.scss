@@ -4,16 +4,25 @@
 	.card {
 		align-items: center;
 		display: flex;
+		gap: var(--offset-xs);
 		max-height: var(--card-height);
 		min-height: var(--card-height);
 		overflow: hidden;
-		padding: 0 var(--offset);
+		padding: 0 var(--offset-m);
 
 		.name {
 			align-items: center;
 			display: flex;
 			flex: 1;
-			gap: 1rem;
+			gap: var(--offset-m);
+
+			.sensor-name {
+				box-orient: vertical;
+				display: box;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
 		}
 	}
 
@@ -26,7 +35,12 @@
 		.id {
 			color: var(--grey3);
 			margin-right: var(--offset-xs);
+			visibility: hidden;
 		}
+	}
+
+	&:hover .down-right .id {
+		visibility: visible;
 	}
 
 }

@@ -3,17 +3,15 @@
 @import 'colors';
 @import 'vars';
 @import '../mixins/vars.mixin';
+@import '../mixins/state.mixin';
+@import '../helpers/functions';
 
 @include mat.core();
 
-$rpi-custom-colors: mat.define-palette($custom-mat-colors, custom);
 // Define a dark theme
 $dark-primary: mat.define-palette(mat.$pink-palette);
 $dark-accent: mat.define-palette(mat.$blue-gray-palette);
 $dark-theme: mat.define-dark-theme($dark-primary, $dark-accent);
-
-$dark-theme: map.merge($dark-theme, (custom: $rpi-custom-colors));
-$custom: map-get($dark-theme, custom);
 
 @include mat.all-component-themes($dark-theme);
 
@@ -32,27 +30,8 @@ $light-theme-colors: (
 	@include var-rgb-colors($base-color);
 	@include var-range(--offset, #{$offset});
 
-	.state-on {
-		color: var(--color-ok);
-
-		&.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
-			background-color: mat.get-color-from-palette($custom, on);
-		}
-
-		&.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
-			background-color: #03ff00;
-		}
-	}
-
-	.state-pending {
-		color: var(--color-warn);
-
-		&.mat-slide-toggle:not(.mat-disabled) .mat-slide-toggle-bar {
-			background-color: rgba(96, 125, 139, 0.54);
-		}
-
-		&.mat-slide-toggle:not(.mat-disabled) .mat-slide-toggle-thumb {
-			background-color: #607d8b;
-		}
-	}
+	@include state-color(on);
+	@include state-color(pending);
+	@include state-color(error);
+	@include state-color(good);
 }

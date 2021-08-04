@@ -5,17 +5,14 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {AppContainer} from './app.container';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatButtonModule} from '@angular/material/button';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppStoreModule} from '@store/app-store.module';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon';
-import {MatListModule} from '@angular/material/list';
 import {LeftMenuModule} from '@shared/components/left-menu/left-menu.module';
 import {RpiHttpInterceptor} from '@shared/guards/rpi-http.interceptor';
 import {NgxWebstorageModule} from 'ngx-webstorage';
+import {TopPanelModule} from '@shared/components/top-panel/top-panel.module';
 
 @NgModule({
 	declarations: [AppComponent, AppContainer],
@@ -24,15 +21,12 @@ import {NgxWebstorageModule} from 'ngx-webstorage';
 		BrowserModule,
 		AppRoutingModule,
 		MatSidenavModule,
-		MatButtonModule,
 		BrowserAnimationsModule,
 		AppStoreModule,
 		StoreDevtoolsModule.instrument(),
 		NgxWebstorageModule.forRoot(),
-		MatToolbarModule,
-		MatIconModule,
-		MatListModule,
 		LeftMenuModule,
+		TopPanelModule,
 	],
 	providers: [{provide: HTTP_INTERCEPTORS, useClass: RpiHttpInterceptor, multi: true}],
 	bootstrap: [AppContainer],

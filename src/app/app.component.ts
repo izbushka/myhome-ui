@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {MatDrawerMode} from '@angular/material/sidenav';
 import {LeftPanelModes} from '@entities/common.interfaces';
 
@@ -11,12 +11,4 @@ import {LeftPanelModes} from '@entities/common.interfaces';
 export class AppComponent {
 	@Input() isSideBarOpened: boolean;
 	@Input() sideBarMode: MatDrawerMode = LeftPanelModes.Over;
-
-	@Output() setLeftPanelState = new EventEmitter<boolean>();
-
-	title = 'Replace my with sensor title';
-
-	public toggleSideBar(): void {
-		this.setLeftPanelState.emit(!this.isSideBarOpened);
-	}
 }

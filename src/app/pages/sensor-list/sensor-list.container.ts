@@ -3,11 +3,12 @@ import {Store} from '@ngrx/store';
 import {AppState} from '@store/rootReducer';
 import {SensorsSelectors} from '@store/sensors/selectors';
 import {combineLatest, Observable} from 'rxjs';
-import {MappedSensors, SensorGroup} from '@entities/sensors.interfaces';
+import {MappedSensors, Sensor, SensorGroup} from '@entities/sensors.interfaces';
 import {map} from 'rxjs/operators';
 import {RouterSelectors} from '@store/router/selectors';
-import {PageParams} from '@entities/common.interfaces';
+import {PageParams, SensorGroups} from '@entities/common.interfaces';
 import {LoadingStatus} from '@entities/store.interfaces';
+import {SENSORS_FAVORITES_GROUP} from '@entities/sensors.constants';
 
 @Component({
 	selector: 'rpi-sensor-list',
@@ -35,10 +36,19 @@ export class SensorListContainer {
 		return combineLatest([
 			this.store.select(SensorsSelectors.sensorGroups.list),
 			this.store.select(RouterSelectors.selectRouteParam(PageParams.GroupId)),
+			this.store.select(SensorsSelectors.sensors.switchedOn),
 		]).pipe(
-			map(([groups, groupId]: [SensorGroup[], string]) =>
-				groupId ? [groups.find((item) => item.name === groupId)] : groups
-			)
+			map(([groups, groupId, switchedOn]: [SensorGroup[], string, Sensor['sensor_id'][]]) => {
+				if (groupId === SensorGroups.Favorites) {
+					return [
+						{
+							...SENSORS_FAVORITES_GROUP,
+							members: switchedOn,
+						},
+					];
+				}
+				return groupId ? [groups.find((item) => item.name === groupId)] : groups;
+			})
 		);
 	}
 }

@@ -1,0 +1,17 @@
+:host {
+	.top-toolbar {
+		display: flex;
+
+		.spacer {
+			flex: 1;
+		}
+
+		.shortcuts {
+			display: flex;
+
+			.mat-icon {
+				margin-left: var(--offset);
+			}
+		}
+	}
+}

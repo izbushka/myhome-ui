@@ -63,6 +63,8 @@ export enum SensorClasses {
 	Off = 'state-off',
 	Pending = 'state-pending',
 	Unknown = 'state-unknown',
+	Normal = 'state-normal',
+	Good = 'state-good',
 	Error = 'state-error',
 }
 

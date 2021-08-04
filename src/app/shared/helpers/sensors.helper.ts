@@ -49,22 +49,21 @@ export class SensorsHelper {
 	}
 
 	public static getFullState<T extends SensorFullState = SensorFullState>(sensor: Sensor): T {
-		try {
+		if (sensor.state.includes('}')) {
 			return JSON.parse(sensor.state) as T;
-		} catch {
-			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-			return {state: sensor.state} as T;
 		}
+		// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+		return {state: sensor.state} as T;
 	}
 
-	public static getState(sensor: Sensor, getDefaultState = false): SensorState {
+	public static getState(sensor: Sensor, getDefaultState = false): SensorState | string {
 		if (!sensor) {
 			return null;
 		}
 
 		let state = getDefaultState ? sensor.normal_state : SensorsHelper.getFullState(sensor).state;
 
-		if (!state) {
+		if (!state?.length) {
 			return SensorState.Unknown;
 		}
 
@@ -73,8 +72,16 @@ export class SensorsHelper {
 		if (state === SensorState.On || state === SensorState.Off) {
 			return state as SensorState;
 		}
-		// TODO: check data when sensor.pending: what sensor.state
-		return SensorState.Pending;
+
+		if (getDefaultState) {
+			return state;
+		}
+
+		if (sensor.pending) {
+			return SensorState.Pending;
+		}
+
+		return state;
 	}
 
 	public static isJSON(state: string): boolean {

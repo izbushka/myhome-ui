@@ -9,10 +9,17 @@ export const getState = (state: AppState): SensorsState => state[StoreModules.Se
 
 export namespace SensorsSelectors {
 	export const sensors = {
-		list: createSelector(getState, (state) => Object.values(state.sensors)),
+		list: createSelector(getState, (state) => (state?.sensors ? Object.values(state.sensors) : [])),
 		map: createSelector(getState, (state): MappedSensors => state.sensors),
 		loadingStatus: createSelector(getState, (state) => state.sensorsLoadingStatus),
 		lastUpdate: createSelector(getState, (state) => state.lastUpdate),
+		switchedOn: createSelector(getState, (state) =>
+			state?.sensors
+				? Object.values(state.sensors)
+						.filter((sensor) => !sensor.readonly && sensor.state !== 'OFF')
+						.map((sensor) => sensor.sensor_id)
+				: []
+		),
 	};
 
 	export const icons = {

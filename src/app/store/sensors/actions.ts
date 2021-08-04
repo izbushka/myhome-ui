@@ -49,6 +49,7 @@ export const SensorsActions = {
 	polling: {
 		start: createAction(desc('Start Sensors Polling')),
 		stop: createAction(desc('Stop Sensors Polling')),
+		stopByVisibility: createAction(desc('Stop Sensors Polling by Page Visibility API')),
 	},
 	getIcons: {
 		requested: createAction(desc('Get Icons Requested')),

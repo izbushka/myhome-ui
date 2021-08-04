@@ -1,0 +1,12 @@
+<mat-toolbar color="primary" class="top-toolbar">
+	<button mat-icon-button (click)="toggleSideBar()">
+		<mat-icon>menu</mat-icon>
+	</button>
+	<h1 class="mdContainer-title">RPI Home Control</h1>
+	<div class="spacer"></div>
+	<div class="shortcuts">
+		<mat-icon (click)="go.emit([pages.Sensors, groups.Favorites])">star_border</mat-icon>
+		<mat-icon (click)="go.emit([pages.Sensors, groups.Light])">lightbulb_outline</mat-icon>
+		<mat-icon (click)="go.emit([pages.Sensors, groups.AC])">ac_unit</mat-icon>
+	</div>
+</mat-toolbar>

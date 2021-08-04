@@ -6,6 +6,8 @@ $base-color: (
 	orange: #f2994a,
 	yellow: #f2c94c,
 	green: #27ae60,
+	bright-green: #03ff00,
+	dark-green: #607d8b,
 	blue: #2d9cdb,
 	purple: #bb6bd9,
 	dark-bg: #212121,
@@ -21,20 +23,23 @@ $base-color: (
 	color-ok: #27ae60,
 	color-warn: #f2994a,
 	color-error: #eb5757,
-	light-green: #d5fde5,
-	light-red: #ffe3e3,
-	dark-green: #219653,
 );
 
-$custom-mat-colors: (
-	unknown : map-get($base-color, grey2),
-	on: map-get($base-color, color-ok),
-	off: map-get($base-color, grey3),
-	error: map-get($base-color, color-error),
-	contrast: (
-		unknown : #000,
-		on : #fff,
-		off: #fff,
-		error: #fff,
+$state-colors: (
+	on: (
+		normal: map-get($base-color, color-ok),
+		bright: map-get($base-color, bright-green),
+	),
+	pending: (
+		normal: rgba(map-get($base-color, dark-green), 0.54),
+		bright: map-get($base-color, dark-green),
+	),
+	error: (
+		normal: map-get($base-color, pale-red),
+		bright: map-get($base-color, red),
+	),
+	good: (
+		normal: rgba(map-get($base-color, color-ok), 0.8),
+		bright: map-get($base-color, color-ok),
 	)
 );
