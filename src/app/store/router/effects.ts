@@ -3,7 +3,7 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppState} from '@store/rootReducer';
 import {Store} from '@ngrx/store';
-import {tap, withLatestFrom} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 import {RouterActions} from '@store/router/actions';
 
 @Injectable()

@@ -5,7 +5,7 @@ import {SensorsActions} from '@store/sensors/actions';
 import {combineLatest, Observable} from 'rxjs';
 import {Sensor, SensorChartPoint, SensorLog} from '@entities/sensors.interfaces';
 import {SensorsSelectors} from '@store/sensors/selectors';
-import {map, tap} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {RouterSelectors} from '@store/router/selectors';
 import {PageParams, Period} from '@entities/common.interfaces';
 import {LoadingStatus} from '@entities/store.interfaces';

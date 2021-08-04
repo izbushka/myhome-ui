@@ -1,5 +1,5 @@
 import {createReducer, on} from '@ngrx/store';
-import {Icon, Sensor, SensorChartPoint, SensorGroup, SensorLog} from '@entities/sensors.interfaces';
+import {Icon, Sensor, SensorChartPoint, SensorGroup} from '@entities/sensors.interfaces';
 import {LoadingStatus, status} from '@entities/store.interfaces';
 import {nameOfFactory} from '@entities/nameof.constants';
 import {flow, set} from '@shared/helpers/store/immutable.helper';
