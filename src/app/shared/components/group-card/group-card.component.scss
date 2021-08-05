@@ -1,5 +1,11 @@
+@import '~scss/mixins/sizes.mixin';
+
 :host {
 	flex: auto;
+
+	.pointer {
+		cursor: pointer;
+	}
 
 	.mat-card {
 		padding-top: 0;
@@ -14,18 +20,25 @@
 	}
 
 	.mat-card-title-group {
+		align-items: center;
 		background: var(--dark-bg);
 		border-radius: 4px 4px 0 0;
 		box-sizing: border-box;
 		margin: 0 -16px 15px;
 		padding: 10px 15px 0;
-
-		.mat-icon {
-			margin-top: 7px;
-		}
 	}
 
 	.mat-icon {
-		vertical-align: bottom;
+		@include mat-icon-size(1.2rem);
+		vertical-align: sub;
+
+		&.on {
+			//color: var(--yellow);
+			text-shadow: 0 0 var(--offset-s) var(--yellow);
+		}
+	}
+
+	.grey {
+		color: var(--grey3);
 	}
 }

@@ -1,7 +1,7 @@
 <mat-card role="group">
-	<mat-card-title-group>
+	<mat-card-title-group class="pointer" (click)="goToGroup.emit(sensorGroup.name)">
 		<mat-icon>{{sensorGroup.icon}}</mat-icon>
-		<mat-card-title (click)="goToGroup.emit(sensorGroup.name)">
+		<mat-card-title>
 			{{sensorGroup.name}}
 		</mat-card-title>
 		<mat-card-subtitle>
@@ -10,19 +10,22 @@
 	</mat-card-title-group>
 	<mat-card-content>
 		<div class="my-flex">
-            <span class="my-flex-half">
-                <mat-icon>done_all</mat-icon> OK: {{stat.ok}}
+            <span [class.state-good]="stat.ok === stat.num">
+                <mat-icon>done_all</mat-icon>
+				OK: {{stat.ok}}
             </span>
-			<span class="my-flex-half">
-                <span  *ngIf="stat.ok < stat.num" class="my-color-red">
+			<span>
+                <span  *ngIf="stat.ok < stat.num" class="state-error">
                     <mat-icon>error_outline</mat-icon>
                     Warn: {{stat.num - stat.ok}}
                 </span>
             </span>
-			<span class="my-flex-half my-color-grey">
-                <mat-icon>check_box</mat-icon> {{stat.on}} is ON
+			<span class="grey">
+                <mat-icon *ngIf="stat.on">lightbulb</mat-icon>
+                <mat-icon *ngIf="!stat.on">lightbulb_outline</mat-icon>
+				{{stat.on}} is ON
             </span>
-			<span class="my-flex-half my-color-grey">
+			<span class="grey">
                 <mat-icon>check_box_outline_blank</mat-icon> {{stat.off}} is OFF<br>
             </span>
 		</div>

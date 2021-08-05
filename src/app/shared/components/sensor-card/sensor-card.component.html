@@ -1,10 +1,8 @@
 <mat-card class="card" *ngIf="sensor">
 	<div class="name" (click)="toDetails.emit(sensor.sensor_id)">
-		<mat-icon
-			[class]="'sensor-' + sensor.group"
-			[class.sensor-on]="sensor.state"
-			[class.sensor-not-default]="!sensor.state"
-		>{{sensor.icon}}
+		<mat-icon *ngIf="sensor.readonly">{{sensor.icon}}</mat-icon>
+		<mat-icon *ngIf="!sensor.readonly" rpiSensorState [sensor]="sensor">
+			{{sensor.icon}}
 		</mat-icon>
 		<div class="sensor-name">
 			{{sensor.name}}

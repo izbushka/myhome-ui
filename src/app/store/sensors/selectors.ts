@@ -2,10 +2,22 @@ import {AppState} from '@store/rootReducer';
 import {SensorsState} from '@store/sensors/reducer';
 import {LoadingStatus, status, StoreModules} from '@entities/store.interfaces';
 import {createSelector} from '@ngrx/store';
-import {Icon, MappedIcons, MappedSensors, SensorLog} from '@entities/sensors.interfaces';
+import {Icon, MappedIcons, MappedSensors, Sensor, SensorLog} from '@entities/sensors.interfaces';
 import {SensorsHelper} from '@shared/helpers/sensors.helper';
 
 export const getState = (state: AppState): SensorsState => state[StoreModules.Sensors];
+const getSwitchedOnSensors = (state: SensorsState): Sensor['sensor_id'][] => {
+	const sensors: Sensor[] = state?.sensors ? Object.values(state.sensors) : [];
+	return sensors
+		.filter((sensor: Sensor) => !sensor.readonly && sensor.state !== 'OFF')
+		.sort((a, b) => {
+			if (a.group === b.group) {
+				return a.name.localeCompare(b.name);
+			}
+			return a.group.localeCompare(b.group);
+		})
+		.map((sensor) => sensor.sensor_id);
+};
 
 export namespace SensorsSelectors {
 	export const sensors = {
@@ -13,13 +25,7 @@ export namespace SensorsSelectors {
 		map: createSelector(getState, (state): MappedSensors => state.sensors),
 		loadingStatus: createSelector(getState, (state) => state.sensorsLoadingStatus),
 		lastUpdate: createSelector(getState, (state) => state.lastUpdate),
-		switchedOn: createSelector(getState, (state) =>
-			state?.sensors
-				? Object.values(state.sensors)
-						.filter((sensor) => !sensor.readonly && sensor.state !== 'OFF')
-						.map((sensor) => sensor.sensor_id)
-				: []
-		),
+		switchedOn: createSelector(getState, getSwitchedOnSensors),
 	};
 
 	export const icons = {

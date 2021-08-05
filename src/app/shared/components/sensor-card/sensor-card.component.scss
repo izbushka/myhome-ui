@@ -12,16 +12,19 @@
 
 		.name {
 			align-items: center;
+			cursor: pointer;
 			display: flex;
 			flex: 1;
 			gap: var(--offset-m);
 
 			.sensor-name {
-				box-orient: vertical;
-				display: box;
+				/* stylelint-disable */
+				-webkit-box-orient: vertical;
 				-webkit-line-clamp: 2;
+				display: -webkit-box;
 				overflow: hidden;
 				text-overflow: ellipsis;
+				/* stylelint-enable */
 			}
 		}
 	}

@@ -18,7 +18,7 @@ export class GroupCardComponent implements OnChanges {
 	stat = {num: 0, off: 0, on: 0, ok: 0};
 
 	public ngOnChanges(changes: NgChanges<GroupCardComponent>): void {
-		if (changes.sensors.currentValue) {
+		if (changes.sensors?.currentValue) {
 			this.getStatistic();
 		}
 	}
@@ -44,7 +44,7 @@ export class GroupCardComponent implements OnChanges {
 				off++;
 			}
 
-			if (sensor.normal_state && defaultState === state) {
+			if (!sensor.normal_state || defaultState === state) {
 				ok++;
 			}
 		});
