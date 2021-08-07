@@ -6,6 +6,7 @@ import {
 	Sensor,
 	SensorFullState,
 	SensorsApiResponse,
+	SensorsResponse,
 	SensorState,
 } from '@entities/sensors.interfaces';
 import {API_BASE_URL} from '@entities/sensors.constants';
@@ -18,7 +19,7 @@ import {Period} from '@entities/common.interfaces';
 export class SensorsApiService {
 	constructor(private http: HttpClient) {}
 
-	public getSensors(icons: MappedIcons, lastUpdate?: number): Observable<SensorsApiResponse> {
+	public getSensors(icons: MappedIcons, lastUpdate?: number): Observable<SensorsResponse> {
 		const url = `${API_BASE_URL}/states${lastUpdate ? `?${lastUpdate}` : ''}`;
 
 		return this.http.get<SensorsApiResponse>(url).pipe(
@@ -35,7 +36,7 @@ export class SensorsApiService {
 		);
 	}
 
-	public getSensorDetails(id: Sensor['sensor_id']): Observable<Sensor> {
+	public getSensorDetails(id: Sensor['id']): Observable<Sensor> {
 		const url = `${API_BASE_URL}/states/${id}`;
 
 		return this.http.get<Sensor>(url).pipe(
@@ -43,7 +44,7 @@ export class SensorsApiService {
 		);
 	}
 
-	public getSensorChart(id: Sensor['sensor_id'], period: Period): Observable<Sensor> {
+	public getSensorChart(id: Sensor['id'], period: Period): Observable<Sensor> {
 		const url = `${API_BASE_URL}/${id}/graph/${period}`;
 
 		return this.http.get<Sensor>(url).pipe(
@@ -51,7 +52,7 @@ export class SensorsApiService {
 		);
 	}
 
-	public setSensorState(id: Sensor['sensor_id'], state: SensorState | SensorFullState): Observable<void> {
+	public setSensorState(id: Sensor['id'], state: SensorState | SensorFullState): Observable<void> {
 		if (typeof state === 'object') {
 			const url = `${API_BASE_URL}/${id}`;
 			return this.http.post<void>(url, state).pipe(

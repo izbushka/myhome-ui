@@ -178,7 +178,7 @@ export class SensorsEffects {
 		)
 	);
 
-	public constructor(
+	constructor(
 		private actions$: Actions,
 		private store: Store<AppState>,
 		private sensorsApiService: SensorsApiService

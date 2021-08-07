@@ -22,7 +22,7 @@ import {CommonActions} from '@store/common/actions';
 export class LeftMenuContainer {
 	sensorGroups$: Observable<SensorGroup[]>;
 
-	public constructor(private store: Store<AppState>) {
+	constructor(private store: Store<AppState>) {
 		this.sensorGroups$ = this.store.select(SensorsSelectors.sensorGroups.list);
 	}
 

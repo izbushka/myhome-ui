@@ -39,9 +39,5 @@ export class CommonEffects {
 		)
 	);
 
-	public constructor(
-		private actions$: Actions,
-		private store: Store<AppState>,
-		private storage: DataStorageService
-	) {}
+	constructor(private actions$: Actions, private store: Store<AppState>, private storage: DataStorageService) {}
 }

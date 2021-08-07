@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
-import {MappedSensors, SensorGroup, SensorState} from '@entities/sensors.interfaces';
+import {MappedSensors, SensorGroup, SensorState, SensorStatus} from '@entities/sensors.interfaces';
 import {NgChanges} from '@entities/ng-changes.types';
-import {SensorsHelper} from '@shared/helpers/sensors.helper';
 
 @Component({
 	selector: 'rpi-group-card-component',
@@ -35,16 +34,13 @@ export class GroupCardComponent implements OnChanges {
 				return;
 			}
 
-			const state = SensorsHelper.getState(sensor);
-			const defaultState = SensorsHelper.getState(sensor, true);
-
-			if (state === SensorState.On) {
+			if (sensor.sensorState === SensorState.On) {
 				on++;
-			} else if (state === SensorState.Off) {
+			} else if (sensor.sensorState === SensorState.Off) {
 				off++;
 			}
 
-			if (!sensor.normal_state || defaultState === state) {
+			if (sensor.sensorStatus === SensorStatus.Normal) {
 				ok++;
 			}
 		});

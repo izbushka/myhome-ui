@@ -22,7 +22,7 @@ export class GroupCardContainer {
 
 	constructor(private store: Store<AppState>) {}
 
-	goToGroup(): void {
+	public goToGroup(): void {
 		this.store.dispatch(RouterActions.go({url: [Pages.Sensors, this.sensorGroup.name]}));
 	}
 }

@@ -1,6 +1,11 @@
-export interface SensorsApiResponse {
+export interface SensorsResponse {
 	timestamp: number;
 	sensors: Sensor[];
+}
+
+export interface SensorsApiResponse {
+	timestamp: number;
+	sensors: SensorApiData[];
 }
 
 export type IconsApiResponse = Icon[];
@@ -12,17 +17,34 @@ export interface Icon {
 }
 
 export interface Sensor {
-	sensor_id: number;
-	pending: number;
+	id: number;
+	pending: boolean;
 	group: string;
 	state: string;
 	sensor: string;
 	name: string;
 	type: string;
-	icon: Icon['icon'];
 	readonly: boolean;
-	last_change?: string;
-	normal_state?: string;
+	lastChange: string;
+	normalState: string;
+	logs?: SensorLog[];
+	icon: Icon['icon'];
+	sensorState: SensorState;
+	jsonState: SensorFullState;
+	sensorStatus: SensorStatus;
+}
+
+export interface SensorApiData {
+	sensor_id: number;
+	pending: boolean;
+	group: string;
+	state: string;
+	sensor: string;
+	name: string;
+	type: string;
+	readonly: boolean;
+	last_change: string;
+	normal_state: string;
 	logs?: SensorLog[];
 }
 
@@ -38,7 +60,7 @@ export interface SensorChartPoint {
 	value: number;
 }
 
-export type MappedSensors = Record<Sensor['sensor_id'], Sensor>;
+export type MappedSensors = Record<Sensor['id'], Sensor>;
 export type MappedIcons = Record<Icon['type'], Record<Icon['key'], Icon['icon']>>;
 
 export interface SensorGroup {
@@ -51,11 +73,29 @@ export interface SensorFullState extends Record<string, unknown> {
 	state: string;
 }
 
+export interface AcState extends SensorFullState {
+	change_time: string;
+	temperature: number;
+	swing: AcSwing;
+	mode: AcMode;
+	turbo: SensorState;
+	fan: AcFan;
+	state: SensorState;
+}
+
 export enum SensorState {
 	On = 'on',
 	Off = 'off',
 	Pending = 'pending',
+	Value = 'value',
 	Unknown = 'unknown',
+}
+
+export enum SensorStatus {
+	Normal = 'normal',
+	Abnormal = 'abnormal',
+	Error = 'error',
+	Default = 'default',
 }
 
 export enum SensorClasses {
@@ -64,7 +104,8 @@ export enum SensorClasses {
 	Pending = 'state-pending',
 	Unknown = 'state-unknown',
 	Normal = 'state-normal',
-	Good = 'state-good',
+	Abnormal = 'state-abnormal',
+	Default = 'state-default',
 	Error = 'state-error',
 }
 
@@ -97,12 +138,8 @@ export enum AcMode {
 	Fan = 'fan',
 }
 
-export interface AcState extends SensorFullState {
-	change_time: string;
-	temperature: number;
-	swing: AcSwing;
-	mode: AcMode;
-	turbo: SensorState;
-	fan: AcFan;
-	state: SensorState;
+export enum SensorGroups {
+	Favorites = 'favorites',
+	AC = 'air-conditioner',
+	Light = 'light-switch',
 }

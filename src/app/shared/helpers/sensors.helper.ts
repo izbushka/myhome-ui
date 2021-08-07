@@ -7,6 +7,7 @@ import {
 	SensorFullState,
 	SensorGroup,
 	SensorState,
+	SensorStatus,
 } from '@entities/sensors.interfaces';
 
 export class SensorsHelper {
@@ -14,7 +15,7 @@ export class SensorsHelper {
 		const groups: Record<string, number[]> = sensors.reduce(
 			(acc, sensor) => ({
 				...acc,
-				[sensor.group]: [...(acc[sensor.group] || []), sensor.sensor_id],
+				[sensor.group]: [...(acc[sensor.group] || []), sensor.id],
 			}),
 			{} as Record<string, number[]>
 		);
@@ -32,7 +33,7 @@ export class SensorsHelper {
 	}
 
 	public static mapSensors(sensors: Sensor[]): MappedSensors {
-		return sensors?.reduce((acc, s) => ({...acc, [s.sensor_id]: s}), {});
+		return sensors?.reduce((acc, s) => ({...acc, [s.id]: s}), {});
 	}
 
 	public static updateSensors(oldData: MappedSensors, newData: Sensor[]): MappedSensors {
@@ -43,45 +44,16 @@ export class SensorsHelper {
 		oldData = {...oldData};
 
 		newData?.forEach((sensor) => {
-			oldData[sensor.sensor_id] = sensor;
+			oldData[sensor.id] = sensor;
 		});
 		return oldData;
 	}
 
-	public static getFullState<T extends SensorFullState = SensorFullState>(sensor: Sensor): T {
+	public static getJsonState<T extends SensorFullState = SensorFullState>(sensor: Sensor): T {
 		if (sensor.state.includes('}')) {
 			return JSON.parse(sensor.state) as T;
 		}
-		// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-		return {state: sensor.state} as T;
-	}
-
-	public static getState(sensor: Sensor, getDefaultState = false): SensorState | string {
-		if (!sensor) {
-			return null;
-		}
-
-		let state = getDefaultState ? sensor.normal_state : SensorsHelper.getFullState(sensor).state;
-
-		if (!state?.length) {
-			return SensorState.Unknown;
-		}
-
-		state = state.toLocaleLowerCase();
-
-		if (state === SensorState.On || state === SensorState.Off) {
-			return state as SensorState;
-		}
-
-		if (getDefaultState) {
-			return state;
-		}
-
-		if (sensor.pending) {
-			return SensorState.Pending;
-		}
-
-		return state;
+		return null;
 	}
 
 	public static isJSON(state: string): boolean {
@@ -103,8 +75,8 @@ export class SensorsHelper {
 	}
 
 	public static getSensorIcon(sensor: Sensor, icons: MappedIcons): Icon['icon'] {
-		if (icons[IconType.Sensor][`${sensor.sensor_id}`]) {
-			return icons[IconType.Sensor][`${sensor.sensor_id}`];
+		if (icons[IconType.Sensor][`${sensor.id}`]) {
+			return icons[IconType.Sensor][`${sensor.id}`];
 		}
 
 		if (icons[IconType.Group][sensor.group]) {
@@ -112,5 +84,43 @@ export class SensorsHelper {
 		}
 
 		return icons[IconType.Default][IconType.Default];
+	}
+
+	public static getSensorState(state: string, isPending: boolean): SensorState {
+		if (isPending) {
+			return SensorState.Pending;
+		}
+
+		if (!state?.length) {
+			return SensorState.Unknown;
+		}
+
+		state = state.toLowerCase();
+
+		if (state === SensorState.On || state === SensorState.Off) {
+			return state as SensorState;
+		}
+
+		return SensorState.Value;
+	}
+
+	public static expandState(sensor: Sensor): Sensor {
+		const jsonState = SensorsHelper.getJsonState(sensor);
+		const sensorState = SensorsHelper.getSensorState(jsonState?.state ?? sensor.state, sensor.pending);
+		let sensorStatus;
+		if (!sensor.normalState.length) {
+			sensorStatus = SensorStatus.Default;
+		} else if (sensor.state.toLowerCase() === 'err') {
+			sensorStatus = SensorStatus.Error;
+		} else {
+			sensorStatus = sensorState === sensor.normalState ? SensorStatus.Normal : SensorStatus.Abnormal;
+		}
+
+		return {
+			...sensor,
+			sensorState,
+			jsonState,
+			sensorStatus,
+		};
 	}
 }

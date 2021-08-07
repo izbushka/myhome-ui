@@ -29,6 +29,6 @@ export class AcControlContainer {
 	}
 
 	public setState(state: AcState): void {
-		this.store.dispatch(SensorsActions.switchSensor.requested({sensorId: this.sensor.sensor_id, state}));
+		this.store.dispatch(SensorsActions.switchSensor.requested({sensorId: this.sensor.id, state}));
 	}
 }

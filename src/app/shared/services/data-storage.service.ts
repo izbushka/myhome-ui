@@ -21,7 +21,7 @@ export enum StorageTypes {
 export class DataStorageService {
 	constructor(private localStorage: LocalStorageService, private sessionStorage: SessionStorageService) {}
 
-	get<T>(storageType: StorageTypes, key: string): T {
+	public get<T>(storageType: StorageTypes, key: string): T {
 		let res = null;
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 		const stringValue: string = this.storageApi(storageType).retrieve(key);
@@ -37,11 +37,11 @@ export class DataStorageService {
 		return res;
 	}
 
-	delete(storageType: StorageTypes, key: string): void {
+	public delete(storageType: StorageTypes, key: string): void {
 		this.storageApi(storageType).clear(key);
 	}
 
-	set<T>(storageType: StorageTypes, key: string, val: T, expirationInSec: number = null): void {
+	public set<T>(storageType: StorageTypes, key: string, val: T, expirationInSec: number = null): void {
 		let expirationDate: Date;
 		if (expirationInSec) {
 			expirationDate = new Date(new Date().getTime() + 1000 * expirationInSec);

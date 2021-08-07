@@ -17,6 +17,6 @@ export class SensorStatusContainer {
 	constructor(private store: Store<AppState>) {}
 
 	public setState(state: SensorState | SensorFullState): void {
-		this.store.dispatch(SensorsActions.switchSensor.requested({sensorId: this.sensor.sensor_id, state}));
+		this.store.dispatch(SensorsActions.switchSensor.requested({sensorId: this.sensor.id, state}));
 	}
 }

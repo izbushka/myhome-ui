@@ -26,7 +26,7 @@ export class RpiHttpInterceptor implements HttpInterceptor {
 		});
 	}
 
-	intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+	public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 		if (!this.authorized) {
 			this.store.dispatch(AuthActions.unAuthorize({}));
 			throw new HttpErrorResponse(this.error401);

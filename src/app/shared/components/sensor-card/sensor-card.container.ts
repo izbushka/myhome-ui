@@ -18,6 +18,6 @@ export class SensorCardContainer {
 	constructor(private store: Store<AppState>) {}
 
 	public goToDetails(): void {
-		this.store.dispatch(RouterActions.go({url: [Pages.SensorDetails, this.sensor.sensor_id]}));
+		this.store.dispatch(RouterActions.go({url: [Pages.SensorDetails, this.sensor.id]}));
 	}
 }

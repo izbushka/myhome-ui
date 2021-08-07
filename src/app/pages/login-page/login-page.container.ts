@@ -9,7 +9,7 @@ import {AuthActions} from '@store/auth/actions';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPageContainer implements OnInit {
-	public constructor(private store: Store<AppState>) {}
+	constructor(private store: Store<AppState>) {}
 
 	public ngOnInit(): void {
 		this.store.dispatch(AuthActions.unAuthorize({}));

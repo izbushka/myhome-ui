@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
-import {Pages, SensorGroups} from '@entities/common.interfaces';
+import {Pages} from '@entities/common.interfaces';
+import {SensorGroups} from '@entities/sensors.interfaces';
 
 @Component({
 	selector: 'rpi-top-panel-component',

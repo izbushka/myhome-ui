@@ -1,11 +1,17 @@
 {
 	"root": true,
-	"ignorePatterns": ["projects/**/*"],
+	"ignorePatterns": [
+		"projects/**/*"
+	],
 	"overrides": [
 		{
-			"files": ["*.ts"],
+			"files": [
+				"*.ts"
+			],
 			"parserOptions": {
-				"project": ["tsconfig.json"],
+				"project": [
+					"tsconfig.json"
+				],
 				"createDefaultProgram": true
 			},
 			"extends": [
@@ -38,7 +44,10 @@
 					"error",
 					{
 						"type": "element",
-						"prefix": ["rpi", "app"],
+						"prefix": [
+							"rpi",
+							"app"
+						],
 						"style": "kebab-case"
 					}
 				],
@@ -46,22 +55,28 @@
 					"error",
 					{
 						"type": "attribute",
-						"prefix": ["rpi"],
+						"prefix": [
+							"rpi"
+						],
 						"style": "camelCase"
 					}
 				],
 				"@angular-eslint/component-class-suffix": [
 					"error",
 					{
-						"suffixes": ["Component", "Container"]
+						"suffixes": [
+							"Component",
+							"Container"
+						]
 					}
 				],
 				"@typescript-eslint/explicit-member-accessibility": [
-					"off",
+					"error",
 					{
 						"accessibility": "explicit",
 						"overrides": {
 							"methods": "explicit",
+							"constructors": "no-public",
 							"properties": "no-public"
 						}
 					}
@@ -83,7 +98,9 @@
 				"@typescript-eslint/dot-notation": "error",
 				"@typescript-eslint/indent": "off",
 				"@typescript-eslint/no-unsafe-assignment": "off",
-				"@typescript-eslint/member-delimiter-style": ["error"],
+				"@typescript-eslint/member-delimiter-style": [
+					"error"
+				],
 				"@typescript-eslint/member-ordering": [
 					"error",
 					{
@@ -104,38 +121,74 @@
 					"error",
 					{
 						"selector": "objectLiteralProperty",
-						"format": ["UPPER_CASE", "camelCase"]
+						"format": [
+							"UPPER_CASE",
+							"camelCase"
+						]
 					},
 					{
 						"selector": "classProperty",
-						"format": ["camelCase"]
+						"format": [
+							"camelCase"
+						]
 					},
 					{
 						"selector": "classProperty",
-						"modifiers": ["static"],
-						"format": ["UPPER_CASE"]
+						"modifiers": [
+							"static"
+						],
+						"format": [
+							"UPPER_CASE"
+						]
 					},
 					{
 						"selector": "classProperty",
-						"modifiers": ["readonly"],
-						"format": ["UPPER_CASE", "PascalCase", "camelCase"]
+						"modifiers": [
+							"readonly"
+						],
+						"format": [
+							"UPPER_CASE",
+							"PascalCase",
+							"camelCase"
+						]
 					},
 					{
 						"selector": "classProperty",
-						"modifiers": ["readonly"],
-						"format": ["UPPER_CASE", "PascalCase"]
+						"modifiers": [
+							"readonly"
+						],
+						"format": [
+							"UPPER_CASE",
+							"PascalCase"
+						]
 					},
 					{
 						"selector": "variable",
-						"format": ["UPPER_CASE", "camelCase", "PascalCase"]
+						"format": [
+							"UPPER_CASE",
+							"camelCase",
+							"PascalCase"
+						]
 					},
 					{
-						"selector": ["enum", "interface", "class", "enumMember", "typeAlias"],
-						"format": ["PascalCase"]
+						"selector": [
+							"enum",
+							"interface",
+							"class",
+							"enumMember",
+							"typeAlias"
+						],
+						"format": [
+							"PascalCase"
+						]
 					},
 					{
-						"selector": ["enumMember"],
-						"format": ["camelCase"]
+						"selector": [
+							"enumMember"
+						],
+						"format": [
+							"camelCase"
+						]
 					}
 				],
 				"@typescript-eslint/no-namespace": "off",
@@ -161,7 +214,10 @@
 						"avoidEscape": true
 					}
 				],
-				"@typescript-eslint/semi": ["error", "always"],
+				"@typescript-eslint/semi": [
+					"error",
+					"always"
+				],
 				"@typescript-eslint/triple-slash-reference": [
 					"error",
 					{
@@ -170,19 +226,29 @@
 						"lib": "always"
 					}
 				],
-				"arrow-body-style": ["error", "as-needed"],
+				"arrow-body-style": [
+					"error",
+					"as-needed"
+				],
 				"no-console": [
 					"error",
 					{
-						"allow": ["warn", "error"]
+						"allow": [
+							"warn",
+							"error"
+						]
 					}
 				]
 			}
 		},
 		// NOTE: WE ARE NOT APPLYING PRETTIER IN THIS OVERRIDE, ONLY @ANGULAR-ESLINT/TEMPLATE
 		{
-			"files": ["*.html"],
-			"extends": ["plugin:@angular-eslint/template/recommended"],
+			"files": [
+				"*.html"
+			],
+			"extends": [
+				"plugin:@angular-eslint/template/recommended"
+			],
 			"rules": {}
 		}
 	]

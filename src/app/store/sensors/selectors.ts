@@ -2,21 +2,21 @@ import {AppState} from '@store/rootReducer';
 import {SensorsState} from '@store/sensors/reducer';
 import {LoadingStatus, status, StoreModules} from '@entities/store.interfaces';
 import {createSelector} from '@ngrx/store';
-import {Icon, MappedIcons, MappedSensors, Sensor, SensorLog} from '@entities/sensors.interfaces';
+import {Icon, MappedIcons, MappedSensors, Sensor, SensorLog, SensorState} from '@entities/sensors.interfaces';
 import {SensorsHelper} from '@shared/helpers/sensors.helper';
 
 export const getState = (state: AppState): SensorsState => state[StoreModules.Sensors];
-const getSwitchedOnSensors = (state: SensorsState): Sensor['sensor_id'][] => {
+const getSwitchedOnSensors = (state: SensorsState): Sensor['id'][] => {
 	const sensors: Sensor[] = state?.sensors ? Object.values(state.sensors) : [];
 	return sensors
-		.filter((sensor: Sensor) => !sensor.readonly && sensor.state !== 'OFF')
+		.filter((sensor: Sensor) => !sensor.readonly && sensor.sensorState !== SensorState.Off)
 		.sort((a, b) => {
 			if (a.group === b.group) {
 				return a.name.localeCompare(b.name);
 			}
 			return a.group.localeCompare(b.group);
 		})
-		.map((sensor) => sensor.sensor_id);
+		.map((sensor) => sensor.id);
 };
 
 export namespace SensorsSelectors {

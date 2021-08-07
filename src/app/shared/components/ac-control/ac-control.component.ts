@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {AcFan, AcMode, AcState, AcSwing, Sensor, SensorState} from '@entities/sensors.interfaces';
-import {SensorsHelper} from '@shared/helpers/sensors.helper';
 import {NgChanges} from '@entities/ng-changes.types';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {filter} from 'rxjs/operators';
@@ -19,13 +18,13 @@ export class AcControlComponent implements OnChanges {
 	@Output() setState = new EventEmitter<AcState>();
 	@Output() closeModal = new EventEmitter<void>();
 
-	public readonly states = SensorState;
-	public liveUpdate = new FormControl(true);
-	public acForm: FormGroup;
-	public state: AcState;
-	public modes = AcMode;
-	public swing = AcSwing;
-	public fan = AcFan;
+	readonly states = SensorState;
+	liveUpdate = new FormControl(true);
+	acForm: FormGroup;
+	state: AcState;
+	modes = AcMode;
+	swing = AcSwing;
+	fan = AcFan;
 
 	public ngOnChanges(changes: NgChanges<AcControlComponent>): void {
 		if (changes.sensor?.currentValue) {
@@ -52,7 +51,7 @@ export class AcControlComponent implements OnChanges {
 		if (!this.acForm) {
 			this.initForm();
 		}
-		this.state = SensorsHelper.getFullState<AcState>(this.sensor);
+		this.state = this.sensor.jsonState as AcState;
 		this.acForm.patchValue(
 			{
 				...this.state,

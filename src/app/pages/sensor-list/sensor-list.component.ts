@@ -13,7 +13,7 @@ export class SensorListComponent {
 	@Input() sensors: MappedSensors;
 	@Input() loadingStatus: LoadingStatus;
 
-	public trackSensorId(i: number, sensorId: Sensor['sensor_id']): Sensor['sensor_id'] {
+	public trackSensorId(i: number, sensorId: Sensor['id']): Sensor['id'] {
 		return sensorId;
 	}
 

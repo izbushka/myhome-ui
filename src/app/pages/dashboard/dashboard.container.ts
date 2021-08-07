@@ -22,7 +22,7 @@ export class DashboardContainer {
 	readonly sensors$: Observable<MappedSensors>;
 	readonly sensorsLoadingStatus$: Observable<LoadingStatus>;
 
-	public constructor(private store: Store<AppState>) {
+	constructor(private store: Store<AppState>) {
 		this.sensorGroups$ = this.store.select(SensorsSelectors.sensorGroups.list);
 		this.sensors$ = this.store.select(SensorsSelectors.sensors.map);
 		this.sensorsLoadingStatus$ = this.store.select(SensorsSelectors.sensors.loadingStatus);

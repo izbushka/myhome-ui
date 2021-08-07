@@ -10,12 +10,6 @@ export enum PageParams {
 	SensorId = 'sensorId',
 }
 
-export enum SensorGroups {
-	Favorites = 'favorites',
-	AC = 'air-conditioner',
-	Light = 'light-switch',
-}
-
 export enum StorageKeys {
 	Token = 'token',
 }

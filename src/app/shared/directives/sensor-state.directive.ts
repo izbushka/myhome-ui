@@ -1,7 +1,6 @@
 import {Directive, ElementRef, Input, OnChanges, Renderer2} from '@angular/core';
-import {Sensor, SensorClasses, SensorState} from '@entities/sensors.interfaces';
+import {Sensor, SensorClasses, SensorState, SensorStatus} from '@entities/sensors.interfaces';
 import {NgChanges} from '@entities/ng-changes.types';
-import {SensorsHelper} from '@shared/helpers/sensors.helper';
 
 @Directive({
 	selector: '[rpiSensorState]',
@@ -27,17 +26,20 @@ export class SensorStateDirective implements OnChanges {
 	}
 
 	private getClassByState(): SensorClasses {
-		const state = SensorsHelper.getState(this.sensor);
-		const normalState = SensorsHelper.getState(this.sensor, true);
-
 		if (this.sensor.readonly) {
-			if (normalState !== SensorState.Unknown) {
-				return normalState === state ? SensorClasses.Good : SensorClasses.Error;
+			switch (this.sensor.sensorStatus) {
+				case SensorStatus.Default:
+					return SensorClasses.Default;
+				case SensorStatus.Error:
+					return SensorClasses.Error;
+				case SensorStatus.Abnormal:
+					return SensorClasses.Abnormal;
+				case SensorStatus.Normal:
+					return SensorClasses.Normal;
 			}
-			return SensorClasses.Normal;
 		}
 
-		switch (state) {
+		switch (this.sensor.sensorState) {
 			case SensorState.On:
 				return SensorClasses.On;
 			case SensorState.Off:

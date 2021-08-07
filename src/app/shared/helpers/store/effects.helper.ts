@@ -2,7 +2,7 @@ import {ApiActions, ErrorPayload} from './actions.helper';
 import {defer, of, OperatorFunction} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {TypedAction} from '@ngrx/store/src/models';
-
+/* eslint-disable */
 /**
  * Applies a given project function to each value emitted by the source Observable.
  * Emits a FAILED action if an error occurs. Emits a SUCCEEDED action with/without payload if a data load is successful.

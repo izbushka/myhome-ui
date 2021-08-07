@@ -84,7 +84,7 @@ function timeToWords(time: string): string {
  */
 @Pipe({name: 'timeAgo'})
 export class TimeAgo implements PipeTransform {
-	transform(value: string): string {
+	public transform(value: string): string {
 		return timeToWords(value);
 	}
 }

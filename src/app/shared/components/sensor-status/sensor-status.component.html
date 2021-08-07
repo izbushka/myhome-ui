@@ -2,10 +2,10 @@
 	{{sensor.state}}
 </div>
 <div class="rw-state" *ngIf="!sensor.readonly">
-	<mat-icon class="config" (click)="openAcControl()" *ngIf="configurable">tune</mat-icon>
+	<mat-icon class="config" (click)="openAcControl()" *ngIf="sensor.group === groups.AC">tune</mat-icon>
 	<mat-slide-toggle
 		rpiSensorState [sensor]="sensor"
 		(change)="toggle($event)"
-		[checked]="state === states.On"
+		[checked]="sensor.sensorState === states.On"
 	></mat-slide-toggle>
 </div>

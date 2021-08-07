@@ -23,7 +23,7 @@ export class RouterEffects {
 		}
 	);
 
-	public constructor(
+	constructor(
 		private actions$: Actions,
 		private router: Router,
 		private route: ActivatedRoute,

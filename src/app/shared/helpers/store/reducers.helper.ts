@@ -2,7 +2,7 @@ import {ActionCreator, on, ReducerTypes} from '@ngrx/store';
 import {ApiActions} from './actions.helper';
 import {Params} from '@angular/router';
 import {flow, set} from './immutable.helper';
-
+/* eslint-disable */
 export const getDataLoaderReducerWithoutPayloadFn =
 	<State extends Params>() =>
 	<Payload extends Params, Keys extends keyof State>(

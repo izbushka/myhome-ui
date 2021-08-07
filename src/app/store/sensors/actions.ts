@@ -6,7 +6,7 @@ import {
 	Sensor,
 	SensorFullState,
 	SensorGroup,
-	SensorsApiResponse,
+	SensorsResponse,
 	SensorState,
 } from '@entities/sensors.interfaces';
 import {ActionsHelper} from '@shared/helpers/store/actions.helper';
@@ -24,7 +24,7 @@ export const SensorsActions = {
 		update: createAction(desc('Get Sensors: Update data'), props<{payload: MappedSensors}>()),
 		setTimestamp: createAction(
 			desc('Get Sensors: Set timestamp'),
-			props<{payload: SensorsApiResponse['timestamp']}>()
+			props<{payload: SensorsResponse['timestamp']}>()
 		),
 	},
 	getSensorDetails: {
@@ -40,7 +40,7 @@ export const SensorsActions = {
 	switchSensor: {
 		requested: createAction(
 			desc('Switch Sensors Requested'),
-			props<{sensorId: Sensor['sensor_id']; state: SensorState | SensorFullState}>()
+			props<{sensorId: Sensor['id']; state: SensorState | SensorFullState}>()
 		),
 		succeeded: createAction(desc('Switch Sensors Succeeded')),
 		failed: createAction(desc('Switch Sensors Failed'), props<{error?: string}>()),

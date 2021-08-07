@@ -69,9 +69,5 @@ export class AuthEffects {
 		)
 	);
 
-	public constructor(
-		private actions$: Actions,
-		private store: Store<AppState>,
-		private storage: DataStorageService
-	) {}
+	constructor(private actions$: Actions, private store: Store<AppState>, private storage: DataStorageService) {}
 }

@@ -11,7 +11,7 @@ import {AuthActions} from '@store/auth/actions';
 	providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-	public constructor(private router: Router, private store: Store<AppState>) {}
+	constructor(private router: Router, private store: Store<AppState>) {}
 
 	public canActivate(
 		route: ActivatedRouteSnapshot,
