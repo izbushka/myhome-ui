@@ -7,10 +7,19 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatTableModule} from '@angular/material/table';
 import {SensorCardModule} from '@shared/components/sensor-card/sensor-card.module';
 import {ChartModule} from 'angular-highcharts';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
 	declarations: [SensorDetailsComponent, SensorDetailsContainer],
 	exports: [SensorDetailsContainer],
-	imports: [CommonModule, SensorDetailsRouterModule, ChartModule, MatTabsModule, MatTableModule, SensorCardModule],
+	imports: [
+		CommonModule,
+		SensorDetailsRouterModule,
+		ChartModule,
+		MatTabsModule,
+		MatTableModule,
+		SensorCardModule,
+		MatTooltipModule,
+	],
 })
 export class SensorDetailsModule {}

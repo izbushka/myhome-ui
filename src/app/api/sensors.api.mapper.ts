@@ -6,11 +6,14 @@ export class SensorsApiMapper {
 		return {
 			timestamp: data.timestamp,
 			sensors: data.sensors.map((item) => {
+				// eslint-disable-next-line @typescript-eslint/naming-convention
+				const {last_change, normal_state, sensor_id, ...rest} = item;
 				const sensor: Sensor = {
-					...item,
-					id: item.sensor_id,
-					lastChange: item.last_change,
-					normalState: item.normal_state,
+					...rest,
+					id: sensor_id,
+					lastChange: last_change,
+					normalState: normal_state.toLowerCase(),
+					state: item.state.toLowerCase(),
 					sensorState: null,
 					jsonState: null,
 					sensorStatus: null,

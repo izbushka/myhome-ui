@@ -37,3 +37,7 @@
 .rpi-margin-bottom {
 	margin-bottom: var(--offset);
 }
+
+.tooltip-no-wrap {
+	white-space: pre-line;
+}

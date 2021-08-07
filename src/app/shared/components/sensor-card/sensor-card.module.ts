@@ -8,10 +8,19 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {TimeAgo} from '@shared/pipes/time-ago.pipe';
 import {SensorStatusModule} from '@shared/components/sensor-status/sensor-status.module';
 import {SharedModule} from '@shared/shared.module';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
 	declarations: [SensorCardComponent, SensorCardContainer, TimeAgo],
-	imports: [CommonModule, MatCardModule, MatIconModule, MatSlideToggleModule, SensorStatusModule, SharedModule],
+	imports: [
+		CommonModule,
+		MatCardModule,
+		MatIconModule,
+		MatSlideToggleModule,
+		SensorStatusModule,
+		SharedModule,
+		MatTooltipModule,
+	],
 	exports: [SensorCardContainer, TimeAgo],
 })
 export class SensorCardModule {}

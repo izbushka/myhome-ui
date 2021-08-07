@@ -1,5 +1,5 @@
 <div class="ro-state" rpiSensorState [sensor]="sensor" *ngIf="sensor.readonly">
-	{{sensor.state}}
+	{{sensor.state | uppercase}}
 </div>
 <div class="rw-state" *ngIf="!sensor.readonly">
 	<mat-icon class="config" (click)="openAcControl()" *ngIf="sensor.group === groups.AC">tune</mat-icon>

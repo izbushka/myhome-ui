@@ -39,7 +39,7 @@ $state-colors: (
 		normal: map-get($base-color, pale-red),
 		bright: map-get($base-color, red),
 	),
-	good: (
+	normal: (
 		normal: rgba(map-get($base-color, color-ok), 0.8),
 		bright: map-get($base-color, color-ok),
 	)

@@ -1,7 +1,7 @@
 <mat-card class="card" *ngIf="sensor">
 	<div class="name" (click)="toDetails.emit(sensor.id)">
-		<mat-icon *ngIf="sensor.readonly">{{sensor.icon}}</mat-icon>
-		<mat-icon *ngIf="!sensor.readonly" rpiSensorState [sensor]="sensor">
+		<mat-icon [matTooltip]="sensor|json" matTooltipShowDelay=2000 matTooltipClass="tooltip-no-wrap" *ngIf="sensor.readonly">{{sensor.icon}}</mat-icon>
+		<mat-icon [matTooltip]="sensor|json" matTooltipShowDelay=2000 matTooltipClass="tooltip-no-wrap" *ngIf="!sensor.readonly" rpiSensorState [sensor]="sensor">
 			{{sensor.icon}}
 		</mat-icon>
 		<div class="sensor-name">

@@ -40,7 +40,7 @@ export class GroupCardComponent implements OnChanges {
 				off++;
 			}
 
-			if (sensor.sensorStatus === SensorStatus.Normal) {
+			if ([SensorStatus.Default, SensorStatus.Normal].includes(sensor.sensorStatus)) {
 				ok++;
 			}
 		});

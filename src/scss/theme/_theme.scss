@@ -33,5 +33,5 @@ $light-theme-colors: (
 	@include state-color(on);
 	@include state-color(pending);
 	@include state-color(error);
-	@include state-color(good);
+	@include state-color(normal);
 }

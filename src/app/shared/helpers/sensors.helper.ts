@@ -112,6 +112,8 @@ export class SensorsHelper {
 			sensorStatus = SensorStatus.Default;
 		} else if (sensor.state.toLowerCase() === 'err') {
 			sensorStatus = SensorStatus.Error;
+		} else if (sensorState === SensorState.Value) {
+			sensorStatus = sensor.state === sensor.normalState ? SensorStatus.Normal : SensorStatus.Abnormal;
 		} else {
 			sensorStatus = sensorState === sensor.normalState ? SensorStatus.Normal : SensorStatus.Abnormal;
 		}
