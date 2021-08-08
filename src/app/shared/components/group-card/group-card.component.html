@@ -21,11 +21,11 @@
                 </span>
             </span>
 			<span class="grey" *ngIf="stat.on">
-                <mat-icon class="yellow" *ngIf="stat.on">lightbulb</mat-icon>
+                <mat-icon *ngIf="stat.on">lightbulb</mat-icon>
 				{{stat.on}}
             </span>
 			<span class="grey" *ngIf="stat.off">
-                <mat-icon>lightbulb_outline</mat-icon> {{stat.off}}<br>
+                <mat-icon>power_off</mat-icon> {{stat.off}}<br>
             </span>
 		</div>
 	</mat-card-content>

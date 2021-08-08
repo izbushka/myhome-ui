@@ -2,7 +2,7 @@
 	<button mat-icon-button (click)="toggleSideBar()">
 		<mat-icon>menu</mat-icon>
 	</button>
-	<h1 class="mdContainer-title">RPI Home Control</h1>
+	<h1 class="title" (click)="go.emit([pages.Dashboard])">RPI Home Control</h1>
 	<div class="spacer">
 		<mat-icon class="offline blink" *ngIf="!isFresh">sync_problem</mat-icon>
 	</div>
