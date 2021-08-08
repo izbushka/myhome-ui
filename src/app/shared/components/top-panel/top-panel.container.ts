@@ -5,12 +5,14 @@ import {CommonSelectors} from '@store/common/selectors';
 import {AppState} from '@store/rootReducer';
 import {Store} from '@ngrx/store';
 import {RouterActions} from '@store/router/actions';
+import {SensorsSelectors} from '@store/sensors/selectors';
 
 @Component({
 	selector: 'rpi-top-panel',
 	template: `
 		<rpi-top-panel-component
 			[isSideBarOpened]="leftMenuOpened$ | async"
+			[lastUpdate]="lastUpdate$ | async"
 			(setLeftPanelState)="setLeftPanelState($event)"
 			(go)="go($event)"
 		></rpi-top-panel-component>
@@ -19,9 +21,11 @@ import {RouterActions} from '@store/router/actions';
 })
 export class TopPanelContainer {
 	readonly leftMenuOpened$: Observable<boolean>;
+	readonly lastUpdate$: Observable<number>;
 
 	constructor(private store: Store<AppState>) {
 		this.leftMenuOpened$ = this.store.select(CommonSelectors.isLeftPanelOpen);
+		this.lastUpdate$ = this.store.select(SensorsSelectors.sensors.lastUpdate);
 	}
 
 	public setLeftPanelState(state: boolean): void {

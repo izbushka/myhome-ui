@@ -3,6 +3,7 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {
 	catchError,
 	concatMap,
+	concatMapTo,
 	debounce,
 	debounceTime,
 	filter,
@@ -25,6 +26,7 @@ import {SensorsHelper} from '@shared/helpers/sensors.helper';
 import {SENSORS_POLLING_INTERVAL} from '@entities/common.constants';
 import {RouterSelectors} from '@store/router/selectors';
 import {PageParams} from '@entities/common.interfaces';
+import {AuthSelectors} from '@store/auth/selectors';
 
 @Injectable()
 export class SensorsEffects {
@@ -135,6 +137,19 @@ export class SensorsEffects {
 					catchError((error: string) => of(SensorsActions.switchSensor.failed({error: `${error}`})))
 				)
 			)
+		)
+	);
+
+	// in case of offline mode, to get cached sensors
+	getSensorsWithoutUpdateTime$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(SensorsActions.getSensors.failed),
+			withLatestFrom(this.store.select(SensorsSelectors.sensors.lastUpdate)),
+			filter(([, lastUpdate]) => !!lastUpdate),
+			concatMapTo([
+				SensorsActions.getSensors.setTimestamp({payload: null}),
+				SensorsActions.getSensors.requested(),
+			])
 		)
 	);
 

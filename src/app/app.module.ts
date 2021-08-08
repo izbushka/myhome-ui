@@ -13,6 +13,8 @@ import {LeftMenuModule} from '@shared/components/left-menu/left-menu.module';
 import {RpiHttpInterceptor} from '@shared/guards/rpi-http.interceptor';
 import {NgxWebstorageModule} from 'ngx-webstorage';
 import {TopPanelModule} from '@shared/components/top-panel/top-panel.module';
+import {ServiceWorkerModule} from '@angular/service-worker';
+import {environment} from '../environments/environment';
 
 @NgModule({
 	declarations: [AppComponent, AppContainer],
@@ -27,6 +29,12 @@ import {TopPanelModule} from '@shared/components/top-panel/top-panel.module';
 		NgxWebstorageModule.forRoot(),
 		LeftMenuModule,
 		TopPanelModule,
+		ServiceWorkerModule.register('ngsw-worker.js', {
+			enabled: environment.production,
+			// Register the ServiceWorker as soon as the app is stable
+			// or after 30 seconds (whichever comes first).
+			registrationStrategy: 'registerWhenStable:30000',
+		}),
 	],
 	providers: [{provide: HTTP_INTERCEPTORS, useClass: RpiHttpInterceptor, multi: true}],
 	bootstrap: [AppContainer],

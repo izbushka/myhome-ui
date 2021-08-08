@@ -3,7 +3,14 @@
 		display: flex;
 
 		.spacer {
+			align-items: center;
+			display: flex;
 			flex: 1;
+
+			.offline {
+				color: var(--yellow);
+				margin-left: var(--offset);
+			}
 		}
 
 		.shortcuts {

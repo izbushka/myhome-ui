@@ -2,7 +2,7 @@
 import {Highcharts} from 'highcharts/modules/data';
 import {SensorGroup, SensorGroups} from '@entities/sensors.interfaces';
 
-export const API_BASE_URL = 'https://rpi.xvv.be/sensors/';
+export const API_BASE_URL = 'https://rpi.xvv.be/sensors';
 export const SENSORS_CHART_OPTIONS: Highcharts.Options = {
 	chart: {
 		zoomType: 'x',
