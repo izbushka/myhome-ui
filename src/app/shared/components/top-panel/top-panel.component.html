@@ -4,7 +4,7 @@
 	</button>
 	<h1 class="mdContainer-title">RPI Home Control</h1>
 	<div class="spacer">
-		<mat-icon class="offline" *ngIf="!isFresh">sync_problem</mat-icon>
+		<mat-icon class="offline blink" *ngIf="!isFresh">sync_problem</mat-icon>
 	</div>
 	<div class="shortcuts">
 		<mat-icon (click)="go.emit([pages.Sensors, groups.Favorites])">star_border</mat-icon>

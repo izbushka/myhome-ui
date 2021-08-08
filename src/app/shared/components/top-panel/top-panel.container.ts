@@ -6,6 +6,7 @@ import {AppState} from '@store/rootReducer';
 import {Store} from '@ngrx/store';
 import {RouterActions} from '@store/router/actions';
 import {SensorsSelectors} from '@store/sensors/selectors';
+import {throttleTime} from 'rxjs/operators';
 
 @Component({
 	selector: 'rpi-top-panel',
@@ -25,7 +26,7 @@ export class TopPanelContainer {
 
 	constructor(private store: Store<AppState>) {
 		this.leftMenuOpened$ = this.store.select(CommonSelectors.isLeftPanelOpen);
-		this.lastUpdate$ = this.store.select(SensorsSelectors.sensors.lastUpdate);
+		this.lastUpdate$ = this.store.select(SensorsSelectors.sensors.lastUpdate).pipe(throttleTime(1000));
 	}
 
 	public setLeftPanelState(state: boolean): void {

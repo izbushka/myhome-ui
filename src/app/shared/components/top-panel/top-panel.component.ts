@@ -22,7 +22,7 @@ export class TopPanelComponent implements OnChanges {
 
 	public ngOnChanges(changes: NgChanges<TopPanelComponent>): void {
 		if (changes.lastUpdate) {
-			this.isFresh = this.lastUpdate && this.lastUpdate - 60 < new Date().getTime() / 1000;
+			this.isFresh = this.lastUpdate && this.lastUpdate + 60 > new Date().getTime() / 1000;
 		}
 	}
 
