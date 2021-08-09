@@ -30,8 +30,9 @@ $light-theme-colors: (
 	@include var-rgb-colors($base-color);
 	@include var-range(--offset, #{$offset});
 
-	@include state-color(on);
-	@include state-color(pending);
-	@include state-color(error);
-	@include state-color(normal);
+	@include state-color('on');
+	@include state-color('pending');
+	@include state-color('error');
+	@include state-color('normal');
+	@include state-color('abnormal');
 }

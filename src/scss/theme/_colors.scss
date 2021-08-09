@@ -42,5 +42,9 @@ $state-colors: (
 	normal: (
 		normal: rgba(map-get($base-color, color-ok), 0.8),
 		bright: map-get($base-color, color-ok),
-	)
+	),
+	abnormal: (
+		normal: map-get($base-color, orange),
+		bright: map-get($base-color, color-warn),
+	),
 );

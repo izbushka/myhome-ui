@@ -44,9 +44,9 @@
 				"/sensors/states?"
 			],
 			"cacheConfig": {
-				"maxSize": 200,
-				"maxAge": "30d",
-				"timeout": "5",
+				"maxSize": 0,
+				"maxAge": "1u",
+				"timeout": "3s",
 				"strategy": "freshness"
 			}
 		},
@@ -56,9 +56,9 @@
 				"/sensors/states?**"
 			],
 			"cacheConfig": {
-				"maxSize": 200,
-				"maxAge": "30d",
-				"timeout": "5",
+				"maxSize": 0,
+				"maxAge": "1u",
+				"timeout": "3s",
 				"strategy": "freshness"
 			}
 		},
@@ -68,9 +68,9 @@
 				"/sensors/states"
 			],
 			"cacheConfig": {
-				"maxSize": 200,
+				"maxSize": 2,
 				"maxAge": "30d",
-				"timeout": "5",
+				"timeout": "5s",
 				"strategy": "freshness"
 			}
 		},
@@ -80,9 +80,9 @@
 				"/sensors/**"
 			],
 			"cacheConfig": {
-				"maxSize": 200,
+				"maxSize": 20,
 				"maxAge": "30d",
-				"timeout": "5",
+				"timeout": "5s",
 				"strategy": "freshness"
 			}
 		}
