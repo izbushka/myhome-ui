@@ -2,6 +2,7 @@
 
 :host {
 	flex: auto;
+	user-select: none;
 
 	.pointer {
 		cursor: pointer;

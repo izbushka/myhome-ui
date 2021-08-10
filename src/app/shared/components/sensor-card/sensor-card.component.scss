@@ -1,5 +1,6 @@
 :host {
 	--card-height: calc(var(--offset) * 3.5);
+	user-select: none;
 
 	.card {
 		align-items: center;
