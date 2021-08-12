@@ -25,7 +25,7 @@ import {of, timer} from 'rxjs';
 import {SensorsHelper} from '@shared/helpers/sensors.helper';
 import {SENSORS_POLLING_INTERVAL} from '@entities/common.constants';
 import {RouterSelectors} from '@store/router/selectors';
-import {PageParams} from '@entities/common.interfaces';
+import {PageParams, Pages} from '@entities/common.interfaces';
 
 @Injectable()
 export class SensorsEffects {
@@ -152,6 +152,22 @@ export class SensorsEffects {
 		)
 	);
 
+	updateSensorDetails$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(SensorsActions.getSensors.succeeded),
+			withLatestFrom(
+				this.store.select(RouterSelectors.selectRouteParam(PageParams.SensorId)),
+				this.store.select(RouterSelectors.url)
+			),
+			filter(
+				([{sensors}, sensorId, url]) =>
+					`${Pages.SensorDetails}/${sensorId}` === `${url}` &&
+					sensors.some((sensor) => sensor.id === +sensorId)
+			),
+			mapTo(SensorsActions.getSensorDetails.requested())
+		)
+	);
+
 	getSensors$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(SensorsActions.getSensors.requested),
@@ -165,7 +181,7 @@ export class SensorsEffects {
 					concatMap((payload) => {
 						const actions = [];
 						actions.push(
-							SensorsActions.getSensors.succeeded(),
+							SensorsActions.getSensors.succeeded({sensors: payload.sensors}),
 							SensorsActions.getSensors.setTimestamp({
 								payload: payload.timestamp,
 							})
