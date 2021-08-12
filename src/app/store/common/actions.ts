@@ -1,10 +1,9 @@
 import {createAction, props} from '@ngrx/store';
 import {StoreModules} from '@entities/store.interfaces';
-import {ActionsHelper} from '@shared/helpers/store/actions.helper';
-import {AppState} from '@store/rootReducer';
+import {getActionDescription} from '@shared/helpers/store/actions.helper';
 import {LeftPanelModes} from '@entities/common.interfaces';
 
-const desc = ActionsHelper.getDescription<AppState>(StoreModules.Common);
+const desc = getActionDescription(StoreModules.Common);
 
 export const CommonActions = {
 	resetState: createAction(desc('Clear Store')),

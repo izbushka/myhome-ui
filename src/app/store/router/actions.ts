@@ -1,10 +1,9 @@
 import {NavigationExtras, Params, QueryParamsHandling} from '@angular/router';
 import {createAction, props} from '@ngrx/store';
 import {StoreModules} from '@entities/store.interfaces';
-import {AppState} from '@store/rootReducer';
-import {ActionsHelper} from '@shared/helpers/store/actions.helper';
+import {getActionDescription} from '@shared/helpers/store/actions.helper';
 
-const desc = ActionsHelper.getDescription<AppState>(StoreModules.Router);
+const desc = getActionDescription(StoreModules.Router);
 
 export interface RouterGoParams {
 	url: string | (string | number)[] | [string, Record<string, string | number>];

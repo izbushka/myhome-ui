@@ -9,51 +9,36 @@ import {
 	SensorsResponse,
 	SensorState,
 } from '@entities/sensors.interfaces';
-import {ActionsHelper} from '@shared/helpers/store/actions.helper';
-import {AppState} from '@store/rootReducer';
+import {getActionDescription, getApiActions, getApiActionsWithPayload} from '@shared/helpers/store/actions.helper';
 import {Period} from '@entities/common.interfaces';
 
-const desc = ActionsHelper.getDescription<AppState>(StoreModules.Sensors);
+const desc = getActionDescription(StoreModules.Sensors);
 
 export const SensorsActions = {
 	resetState: createAction(desc('Clear Store')),
 	getSensors: {
-		requested: createAction(desc('Get Sensors Requested')),
-		succeeded: createAction(desc('Get Sensors Succeeded')),
-		failed: createAction(desc('Get Sensors Failed'), props<{error?: string}>()),
+		...getApiActions(desc('Get Sensors')),
 		update: createAction(desc('Get Sensors: Update data'), props<{payload: MappedSensors}>()),
 		setTimestamp: createAction(
 			desc('Get Sensors: Set timestamp'),
 			props<{payload: SensorsResponse['timestamp']}>()
 		),
 	},
-	getSensorDetails: {
-		requested: createAction(desc('Get Sensor Details Requested')),
-		succeeded: createAction(desc('Get Sensor Details Succeeded'), props<{payload: Sensor}>()),
-		failed: createAction(desc('Get Sensor Details Failed'), props<{error?: string}>()),
-	},
-	getSensorChart: {
-		requested: createAction(desc('Get Sensor Chart Requested'), props<{period: Period}>()),
-		succeeded: createAction(desc('Get Sensor Chart Succeeded'), props<{payload: Sensor}>()),
-		failed: createAction(desc('Get Sensor Chart Failed'), props<{error?: string}>()),
-	},
-	switchSensor: {
-		requested: createAction(
-			desc('Switch Sensors Requested'),
-			props<{sensorId: Sensor['id']; state: SensorState | SensorFullState}>()
-		),
-		succeeded: createAction(desc('Switch Sensors Succeeded')),
-		failed: createAction(desc('Switch Sensors Failed'), props<{error?: string}>()),
-	},
+	getSensorDetails: getApiActions(desc('Get Sensor Details'), props<{payload: Sensor}>()),
+	getSensorChart: getApiActionsWithPayload(
+		desc('Get Sensor Chart'),
+		props<{period: Period}>(),
+		props<{payload: Sensor}>()
+	),
+	switchSensor: getApiActionsWithPayload(
+		desc('Switch Sensors'),
+		props<{sensorId: Sensor['id']; state: SensorState | SensorFullState}>()
+	),
 	setSensorGroups: createAction(desc('Set Sensor Groups'), props<{payload: Set<SensorGroup>}>()),
 	polling: {
 		start: createAction(desc('Start Sensors Polling')),
 		stop: createAction(desc('Stop Sensors Polling')),
 		stopByVisibility: createAction(desc('Stop Sensors Polling by Page Visibility API')),
 	},
-	getIcons: {
-		requested: createAction(desc('Get Icons Requested')),
-		succeeded: createAction(desc('Get Icons Succeeded'), props<{payload: Icon[]}>()),
-		failed: createAction(desc('Get Icons Failed'), props<{error?: string}>()),
-	},
+	getIcons: getApiActions(desc('Get Icons'), props<{payload: Icon[]}>()),
 };

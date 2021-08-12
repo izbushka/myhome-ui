@@ -26,7 +26,6 @@ import {SensorsHelper} from '@shared/helpers/sensors.helper';
 import {SENSORS_POLLING_INTERVAL} from '@entities/common.constants';
 import {RouterSelectors} from '@store/router/selectors';
 import {PageParams} from '@entities/common.interfaces';
-import {AuthSelectors} from '@store/auth/selectors';
 
 @Injectable()
 export class SensorsEffects {

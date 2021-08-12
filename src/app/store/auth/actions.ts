@@ -1,9 +1,8 @@
 import {createAction, props} from '@ngrx/store';
 import {StoreModules} from '@entities/store.interfaces';
-import {ActionsHelper} from '@shared/helpers/store/actions.helper';
-import {AppState} from '@store/rootReducer';
+import {getActionDescription} from '@shared/helpers/store/actions.helper';
 
-const desc = ActionsHelper.getDescription<AppState>(StoreModules.Auth);
+const desc = getActionDescription(StoreModules.Auth);
 
 export const AuthActions = {
 	authorize: createAction(desc('Authorize')),
