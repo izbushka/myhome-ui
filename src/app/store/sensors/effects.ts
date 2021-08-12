@@ -26,6 +26,7 @@ import {SensorsHelper} from '@shared/helpers/sensors.helper';
 import {SENSORS_POLLING_INTERVAL} from '@entities/common.constants';
 import {RouterSelectors} from '@store/router/selectors';
 import {PageParams, Pages} from '@entities/common.interfaces';
+import {mapApiActions} from '@shared/helpers/store/effects.helper';
 
 @Injectable()
 export class SensorsEffects {
@@ -92,12 +93,7 @@ export class SensorsEffects {
 	getIcons$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(SensorsActions.getIcons.requested),
-			switchMap(() =>
-				this.sensorsApiService.getIcons().pipe(
-					map((payload) => SensorsActions.getIcons.succeeded({payload})),
-					catchError((error: string) => of(SensorsActions.getIcons.failed({error: `${error}`})))
-				)
-			)
+			switchMap(() => this.sensorsApiService.getIcons().pipe(mapApiActions(SensorsActions.getIcons)))
 		)
 	);
 
