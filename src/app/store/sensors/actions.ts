@@ -17,7 +17,7 @@ const desc = getActionDescription(StoreModules.Sensors);
 export const SensorsActions = {
 	resetState: createAction(desc('Clear Store')),
 	getSensors: {
-		...getApiActions(desc('Get Sensors'), props<{sensors: Sensor[]}>()),
+		...getApiActions(desc('Get Sensors'), props<{payload: Sensor[]}>()),
 		update: createAction(desc('Get Sensors: Update data'), props<{payload: MappedSensors}>()),
 		setTimestamp: createAction(
 			desc('Get Sensors: Set timestamp'),

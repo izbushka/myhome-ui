@@ -4,6 +4,7 @@ import {LoadingStatus, status} from '@entities/store.interfaces';
 import {nameOfFactory} from '@entities/nameof.constants';
 import {flow, set} from '@shared/helpers/store/immutable.helper';
 import {SensorsActions} from '@store/sensors/actions';
+import {getApiActionReducers, getApiActionReducersWithoutPayload} from '@shared/helpers/store/reducers.helper';
 
 export interface SensorsState {
 	sensors: Sensor[];
@@ -30,6 +31,8 @@ export const initialSensorsState: SensorsState = {
 };
 
 export const props = nameOfFactory<SensorsState>();
+const apiActionsReducers = getApiActionReducers<SensorsState>();
+const apiActionsReducersWithoutPayload = getApiActionReducersWithoutPayload<SensorsState>();
 
 export const sensorsReducer = createReducer(
 	initialSensorsState,
@@ -37,25 +40,9 @@ export const sensorsReducer = createReducer(
 	// icons
 	on(SensorsActions.getIcons.succeeded, (state, {payload}) => set(props('icons'), payload, state)),
 	// sensor details
-	on(SensorsActions.getSensorDetails.requested, (state) =>
-		set(props('sensorDetailsLoadingStatus'), status.loading, state)
-	),
-	on(SensorsActions.getSensorDetails.succeeded, (state, {payload}) =>
-		flow(state)(set(props('sensorDetailsLoadingStatus'), status.loaded), set(props('sensorDetails'), payload))
-	),
-	on(SensorsActions.getSensorDetails.failed, (state, {error}) =>
-		set(props('sensorDetailsLoadingStatus'), status.error(error), state)
-	),
+	...apiActionsReducers(SensorsActions.getSensorDetails, 'sensorDetails'),
 	// sensor chart
-	on(SensorsActions.getSensorChart.requested, (state) =>
-		set(props('sensorChartLoadingStatus'), status.loading, state)
-	),
-	on(SensorsActions.getSensorChart.succeeded, (state, {payload}) =>
-		flow(state)(set(props('sensorChartLoadingStatus'), status.loaded), set(props('sensorChart'), payload))
-	),
-	on(SensorsActions.getSensorChart.failed, (state, {error}) =>
-		set(props('sensorChartLoadingStatus'), status.error(error), state)
-	),
+	...apiActionsReducers(SensorsActions.getSensorChart, 'sensorChart'),
 	// sensors
 	on(SensorsActions.getSensors.requested, (state) =>
 		set(props('sensorsLoadingStatus'), state.sensors ? status.updating : status.loading, state)
@@ -64,6 +51,7 @@ export const sensorsReducer = createReducer(
 	on(SensorsActions.getSensors.failed, (state, {error}) =>
 		set(props('sensorsLoadingStatus'), status.error(error), state)
 	),
+
 	on(SensorsActions.getSensors.update, (state, {payload}) => set(props('sensors'), payload, state)),
 	on(SensorsActions.getSensors.setTimestamp, (state, {payload}) => set(props('lastUpdate'), payload, state)),
 	// groups

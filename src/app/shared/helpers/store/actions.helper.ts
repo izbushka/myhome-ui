@@ -5,36 +5,42 @@ export interface ErrorPayload {
 	error: string;
 }
 
-/* eslint-disable-next-line @typescript-eslint/ban-types */
-type AnyObject = object;
-type ActionCreatorWithoutPayload<T extends string> = ActionCreator<T, () => TypedAction<T>>;
-type ActionCreatorWithPayload<T extends string, P extends AnyObject> = ActionCreator<
+export interface AnyObject {
+	/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+	[key: string]: any;
+}
+export type ActionCreatorWithoutPayload<T extends string = string> = ActionCreator<T, () => TypedAction<T>>;
+export type ActionCreatorWithPayload<Payload extends AnyObject, T extends string = string> = ActionCreator<
 	T,
-	(props: P & NotAllowedCheck<P>) => P & TypedAction<T>
+	(props: Payload & NotAllowedCheck<Payload>) => Payload & TypedAction<T>
 >;
-type ActionCreatorForFailed = ActionCreator<string, (props: ErrorPayload) => ErrorPayload & TypedAction<string>>;
+export type ActionCreatorForFailed = ActionCreator<string, (props: ErrorPayload) => ErrorPayload & TypedAction<string>>;
+export type ActionsCreatorCombined<Payload extends AnyObject> =
+	| ActionCreatorWithoutPayload
+	| ActionCreatorWithPayload<Payload>
+	| ActionCreatorForFailed;
 
-interface ApiActionsWithSuccessPayload<T extends AnyObject> {
-	requested: ActionCreatorWithoutPayload<string>;
-	succeeded: ActionCreatorWithPayload<string, T>;
+export interface ApiActionsWithSuccessPayload<Payload extends AnyObject> {
+	requested: ActionCreatorWithoutPayload;
+	succeeded: ActionCreatorWithPayload<Payload>;
 	failed: ActionCreatorForFailed;
 }
 
-interface ApiActionsWithoutPayload {
-	requested: ActionCreatorWithoutPayload<string>;
-	succeeded: ActionCreatorWithoutPayload<string>;
+export interface ApiActionsWithoutPayload {
+	requested: ActionCreatorWithoutPayload;
+	succeeded: ActionCreatorWithoutPayload;
 	failed: ActionCreatorForFailed;
 }
 
 interface ApiActionsWithRequestPayload<T extends AnyObject> {
-	requested: ActionCreatorWithPayload<string, T>;
-	succeeded: ActionCreatorWithoutPayload<string>;
+	requested: ActionCreatorWithPayload<T>;
+	succeeded: ActionCreatorWithoutPayload;
 	failed: ActionCreatorForFailed;
 }
 
-interface ApiActionsWithRequestAndSuccessPayload<T1 extends AnyObject, T2 extends AnyObject> {
-	requested: ActionCreatorWithPayload<string, T1>;
-	succeeded: ActionCreatorWithPayload<string, T2>;
+interface ApiActionsWithRequestAndSuccessPayload<RequestPayload extends AnyObject, SuccessPayload extends AnyObject> {
+	requested: ActionCreatorWithPayload<RequestPayload>;
+	succeeded: ActionCreatorWithPayload<SuccessPayload>;
 	failed: ActionCreatorForFailed;
 }
 
@@ -57,22 +63,22 @@ export function getActionDescription(module: string): (action: string) => string
 	};
 }
 
-export function getApiActions<P extends AnyObject>(
+export function getApiActions<SuccessPayload extends AnyObject>(
 	action: string,
-	succeedActionProps: ActionCreatorProps<P> & NotAllowedCheck<P>,
+	succeedActionProps: ActionCreatorProps<SuccessPayload> & NotAllowedCheck<SuccessPayload>,
 	failedActionProps?: ActionCreatorProps<ErrorPayload> & NotAllowedCheck<ErrorPayload>
-): ApiActionsWithSuccessPayload<P>;
+): ApiActionsWithSuccessPayload<SuccessPayload>;
 
 export function getApiActions(
 	action: string,
 	failedActionProps?: ActionCreatorProps<ErrorPayload> & NotAllowedCheck<ErrorPayload>
 ): ApiActionsWithoutPayload;
 
-export function getApiActions<P extends AnyObject>(
+export function getApiActions<SuccessPayload extends AnyObject>(
 	action: string,
-	succeedActionProps?: ActionCreatorProps<P> & NotAllowedCheck<P>,
+	succeedActionProps?: ActionCreatorProps<SuccessPayload> & NotAllowedCheck<SuccessPayload>,
 	failedActionProps = props<ErrorPayload>()
-): ApiActions<P> {
+): ApiActions<SuccessPayload> {
 	return typeof succeedActionProps === 'undefined'
 		? {
 				requested: createAction(`${action} requested`),

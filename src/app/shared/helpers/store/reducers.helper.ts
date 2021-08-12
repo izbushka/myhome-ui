@@ -1,35 +1,37 @@
-import {ActionCreator, on, ReducerTypes} from '@ngrx/store';
-import {ApiActions} from './actions.helper';
-import {Params} from '@angular/router';
+import {on, ReducerTypes} from '@ngrx/store';
+import {ActionCreatorWithPayload, ActionsCreatorCombined, AnyObject, ApiActions} from './actions.helper';
 import {flow, set} from './immutable.helper';
+import {status} from '@entities/store.interfaces';
 /* eslint-disable */
-export const getDataLoaderReducerWithoutPayloadFn =
-	<State extends Params>() =>
-	<Payload extends Params, Keys extends keyof State>(
-		action: ApiActions<Payload>,
-		storeLoadingStatusDataKey: Keys
-	): ReducerTypes<State>[] =>
-		[
-			on(action.requested, (state: State) => set(storeLoadingStatusDataKey as string, status.loading, state)),
-			on(action.succeeded, (state: State) => set(storeLoadingStatusDataKey as string, status.loaded, state)),
-			on(action.failed, (state: State, {error}) =>
-				set(storeLoadingStatusDataKey as string, status.error(error), state)
-			),
-		];
-
-export const getDataLoaderReducerFn =
-	<State extends Params>() =>
-	<Payload extends Params, Keys extends keyof State>(
-		action: ApiActions<Payload>,
+export const getApiActionReducers =
+	<State extends AnyObject>() =>
+	<Payload extends AnyObject, Keys extends keyof State, RequestPayload extends AnyObject>(
+		action: ApiActions<Payload, RequestPayload>,
 		storeDataKey: Keys
-	): ReducerTypes<State>[] => {
+	): ReducerTypes<State, ActionsCreatorCombined<Payload>[]>[] => {
 		const loadingStatusProperty = `${storeDataKey as string}LoadingStatus`;
 
 		return [
-			on(action.requested, (state: State) => set(loadingStatusProperty, status.loading, state)),
-			on(action.succeeded, (state: State, {payload}: {payload: Payload} & ActionCreator) =>
+			on(action.requested as ActionsCreatorCombined<Payload>, (state) =>
+				set(loadingStatusProperty, status.loading, state)
+			),
+			on(action.succeeded as ActionCreatorWithPayload<Payload>, (state, {payload}) =>
 				flow(state)(set(loadingStatusProperty, status.loaded), set(storeDataKey as string, payload))
 			),
-			on(action.failed, (state: State, {error}) => set(loadingStatusProperty, status.error(error), state)),
+			on(action.failed, (state, {error}) => set(loadingStatusProperty, status.error(error), state)),
+		];
+	};
+
+export const getApiActionReducersWithoutPayload =
+	<State extends AnyObject>() =>
+	<Payload extends AnyObject, Keys extends keyof State, RequestPayload extends AnyObject>(action: ApiActions<Payload, RequestPayload>, storeLoadingStatusKey: Keys): ReducerTypes<State, any>[] => {
+		return [
+			on(action.requested as ActionsCreatorCombined<Payload>, (state) =>
+				set(storeLoadingStatusKey as string, status.loading, state)
+			),
+			on(action.succeeded as ActionsCreatorCombined<Payload>, (state) =>
+				set(storeLoadingStatusKey as string, status.loaded, state)
+			),
+			on(action.failed, (state, {error}) => set(storeLoadingStatusKey as string, status.error(error), state)),
 		];
 	};

@@ -1,4 +1,12 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	EventEmitter,
+	Input,
+	OnChanges,
+	Output,
+	TrackByFunction,
+} from '@angular/core';
 import {Sensor, SensorChartPoint, SensorLog} from '@entities/sensors.interfaces';
 import {LoadingStatus} from '@entities/store.interfaces';
 import {Period} from '@entities/common.interfaces';
@@ -38,6 +46,10 @@ export class SensorDetailsComponent implements OnChanges {
 		if (changes.sensorChart) {
 			this.prepareChart();
 		}
+	}
+
+	public trackByDate(index: number, log: SensorLog): string {
+		return log.change_time;
 	}
 
 	private prepareChart(): void {

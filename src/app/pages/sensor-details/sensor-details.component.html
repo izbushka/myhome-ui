@@ -14,7 +14,7 @@
 </div>
 
 <ng-template [ngIf]="logs">
-	<table mat-table [dataSource]="logs" class="table mat-elevation-z8">
+	<table mat-table [dataSource]="logs" [trackBy]="trackByDate" class="table mat-elevation-z8">
 		<!-- Date Column -->
 		<ng-container matColumnDef="change_time">
 			<th mat-header-cell *matHeaderCellDef> Date </th>

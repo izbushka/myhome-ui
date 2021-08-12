@@ -160,9 +160,9 @@ export class SensorsEffects {
 				this.store.select(RouterSelectors.url)
 			),
 			filter(
-				([{sensors}, sensorId, url]) =>
+				([{payload}, sensorId, url]) =>
 					`${Pages.SensorDetails}/${sensorId}` === `${url}` &&
-					sensors.some((sensor) => sensor.id === +sensorId)
+					payload.some((sensor) => sensor.id === +sensorId)
 			),
 			mapTo(SensorsActions.getSensorDetails.requested())
 		)
@@ -181,7 +181,7 @@ export class SensorsEffects {
 					concatMap((payload) => {
 						const actions = [];
 						actions.push(
-							SensorsActions.getSensors.succeeded({sensors: payload.sensors}),
+							SensorsActions.getSensors.succeeded({payload: payload.sensors}),
 							SensorsActions.getSensors.setTimestamp({
 								payload: payload.timestamp,
 							})
