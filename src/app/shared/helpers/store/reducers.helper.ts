@@ -2,7 +2,7 @@ import {on, ReducerTypes} from '@ngrx/store';
 import {ActionCreatorWithPayload, ActionsCreatorCombined, AnyObject, ApiActions} from './actions.helper';
 import {flow, set} from './immutable.helper';
 import {status} from '@entities/store.interfaces';
-/* eslint-disable */
+
 export const getApiActionReducers =
 	<State extends AnyObject>() =>
 	<Payload extends AnyObject, Keys extends keyof State, RequestPayload extends AnyObject>(
@@ -24,8 +24,11 @@ export const getApiActionReducers =
 
 export const getApiActionReducersWithoutPayload =
 	<State extends AnyObject>() =>
-	<Payload extends AnyObject, Keys extends keyof State, RequestPayload extends AnyObject>(action: ApiActions<Payload, RequestPayload>, storeLoadingStatusKey: Keys): ReducerTypes<State, any>[] => {
-		return [
+	<Payload extends AnyObject, Keys extends keyof State, RequestPayload extends AnyObject>(
+		action: ApiActions<Payload, RequestPayload>,
+		storeLoadingStatusKey: Keys
+	): ReducerTypes<State, ActionsCreatorCombined<Payload>[]>[] =>
+		[
 			on(action.requested as ActionsCreatorCombined<Payload>, (state) =>
 				set(storeLoadingStatusKey as string, status.loading, state)
 			),
@@ -34,4 +37,3 @@ export const getApiActionReducersWithoutPayload =
 			),
 			on(action.failed, (state, {error}) => set(storeLoadingStatusKey as string, status.error(error), state)),
 		];
-	};
