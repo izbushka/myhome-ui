@@ -8,8 +8,10 @@ import {SensorsApiService} from '@api/sensors.api.service';
 import {AuthEffects} from '@store/auth/effects';
 import {RouterEffects} from '@store/router/effects';
 import {CommonEffects} from '@store/common/effects';
+import {DbTablesEffects} from '@store/db-tables/effects';
+import {AdministrationApiService} from '@api/administration.api.service';
 
-const STORE_EFFECTS = [SensorsEffects, AuthEffects, RouterEffects, CommonEffects];
+const STORE_EFFECTS = [SensorsEffects, AuthEffects, RouterEffects, CommonEffects, DbTablesEffects];
 
 @NgModule({
 	imports: [
@@ -19,6 +21,6 @@ const STORE_EFFECTS = [SensorsEffects, AuthEffects, RouterEffects, CommonEffects
 		}),
 		StoreModule.forRoot(reducers),
 	],
-	providers: [SensorsApiService],
+	providers: [SensorsApiService, AdministrationApiService],
 })
 export class AppStoreModule {}

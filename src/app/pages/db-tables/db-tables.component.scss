@@ -1,0 +1,14 @@
+:host {
+	.mat-radio-group {
+		margin-left: var(--offset);
+	}
+
+	.mat-radio-button {
+		margin: 0 var(--offset-s);
+	}
+
+	th.mat-header-cell,
+	td.mat-cell {
+		padding-right: var(--offset-xs) !important;
+	}
+}

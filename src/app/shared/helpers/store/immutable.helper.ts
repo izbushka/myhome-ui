@@ -1,7 +1,11 @@
-type SetResponse<T> = T | undefined | ((a: T) => T);
+import {AnyObject} from '@shared/helpers/store/actions.helper';
 
-export function set<Value, State>(path: string | string[], value: Value): State;
-export function set<Value, State>(path: string | string[], value: Value, obj: State): State;
+function innerSet<T, S>(field: string, obj: T, value: S): T {
+	return Object.assign({}, obj, {[field]: value}) as T;
+}
+
+export function set<S, T>(path: string | string[], value: S): T;
+export function set<S, T>(path: string | string[], value: S, obj: T): T;
 
 /**
  * function for immutable set new value in object
@@ -13,20 +17,23 @@ export function set<Value, State>(path: string | string[], value: Value, obj: St
  * @example
  * set('a', 1, obj)
  */
-export function set<Value, State>(path: string | string[], value: Value, obj?: State): SetResponse<State> {
-	if (!path || !path.length) {
+export function set<S, T extends AnyObject>(path: string | string[], value: S, obj?: T): T | ((a: T) => T) {
+	if (!path.length) {
 		return obj;
 	}
 	if (!obj) {
-		return (flowObj: State) => set(path, value, flowObj);
+		return (flowObj: T) => set(path, value, flowObj);
 	}
 	if (Array.isArray(path)) {
 		const [first, ...next] = path;
-		/* eslint-disable-next-line */
-		// @ts-ignore
-		return set(next, value, obj[first]) as SetResponse<State>;
+
+		if (next.length === 1) {
+			return innerSet(first, obj, set(next[0], value, obj[first]));
+		}
+
+		return innerSet(first, obj, {[first]: set(next, value, obj[first])});
 	}
-	return Object.assign({}, obj, {[path]: value}) as State;
+	return Object.assign({}, obj, {[path]: value}) as T;
 }
 
 /**
@@ -41,6 +48,9 @@ export function set<Value, State>(path: string | string[], value: Value, obj?: S
  *    set('b', 2)
  * );
  */
-export function flow<T, S extends (a: T) => T>(obj: T): (...args: S[]) => T {
-	return (...args: S[]) => args.reduce((acc, fn) => fn(acc), obj);
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function flow<T, S extends Function>(obj: T): (...args: S[]) => T {
+	return (...args: S[]) =>
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+		args.reduce((acc, fn) => fn(acc), obj);
 }

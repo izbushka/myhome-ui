@@ -3,6 +3,7 @@ export enum StoreModules {
 	Sensors = 'sensors',
 	Common = 'common',
 	Auth = 'auth',
+	DbTables = 'dbTables',
 }
 
 /** Type that represents possible states of API response status */

@@ -4,6 +4,7 @@ import {sensorsReducer, SensorsState} from '@store/sensors/reducer';
 import {authReducer, AuthState} from '@store/auth/reducer';
 import {commonReducer, CommonState} from '@store/common/reducer';
 import {ActionReducer} from '@ngrx/store';
+import {dbTablesReducer, DbTablesState} from '@store/db-tables/reducer';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const reducers: Record<StoreModules, ActionReducer<any>> = {
@@ -11,6 +12,7 @@ export const reducers: Record<StoreModules, ActionReducer<any>> = {
 	[StoreModules.Sensors]: sensorsReducer,
 	[StoreModules.Auth]: authReducer,
 	[StoreModules.Common]: commonReducer,
+	[StoreModules.DbTables]: dbTablesReducer,
 };
 
 export interface AppState extends Record<StoreModules, unknown> {
@@ -18,4 +20,5 @@ export interface AppState extends Record<StoreModules, unknown> {
 	[StoreModules.Sensors]: SensorsState;
 	[StoreModules.Auth]: AuthState;
 	[StoreModules.Common]: CommonState;
+	[StoreModules.DbTables]: DbTablesState;
 }

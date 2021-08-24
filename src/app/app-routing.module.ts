@@ -24,6 +24,15 @@ const routes: Routes = [
 		loadChildren: () => import('@pages/sensor-details/sensor-details.module').then((m) => m.SensorDetailsModule),
 		canActivate: [AuthGuard],
 	},
+	{
+		path: `${Pages.DbTables}`,
+		loadChildren: () => import('@pages/db-tables/db-tables.module').then((m) => m.DbTablesModule),
+		canActivate: [AuthGuard],
+	},
+	{
+		path: '**',
+		redirectTo: Pages.Dashboard,
+	},
 ];
 
 @NgModule({

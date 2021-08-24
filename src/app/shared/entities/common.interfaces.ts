@@ -3,11 +3,13 @@ export enum Pages {
 	Dashboard = '',
 	Sensors = 'sensors',
 	SensorDetails = 'sensor',
+	DbTables = 'db-tables',
 }
 
 export enum PageParams {
 	GroupId = 'groupId',
 	SensorId = 'sensorId',
+	Table = 'table',
 }
 
 export enum StorageKeys {

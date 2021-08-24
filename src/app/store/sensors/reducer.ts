@@ -2,9 +2,9 @@ import {createReducer, on} from '@ngrx/store';
 import {Icon, Sensor, SensorChartPoint, SensorGroup} from '@entities/sensors.interfaces';
 import {LoadingStatus, status} from '@entities/store.interfaces';
 import {nameOfFactory} from '@entities/nameof.constants';
-import {flow, set} from '@shared/helpers/store/immutable.helper';
+import {set} from '@shared/helpers/store/immutable.helper';
 import {SensorsActions} from '@store/sensors/actions';
-import {getApiActionReducers, getApiActionReducersWithoutPayload} from '@shared/helpers/store/reducers.helper';
+import {getApiActionReducers} from '@shared/helpers/store/reducers.helper';
 
 export interface SensorsState {
 	sensors: Sensor[];
@@ -32,7 +32,7 @@ export const initialSensorsState: SensorsState = {
 
 export const props = nameOfFactory<SensorsState>();
 const apiActionsReducers = getApiActionReducers<SensorsState>();
-const apiActionsReducersWithoutPayload = getApiActionReducersWithoutPayload<SensorsState>();
+// const apiActionsReducersWithoutPayload = getApiActionReducersWithoutPayload<SensorsState>();
 
 export const sensorsReducer = createReducer(
 	initialSensorsState,
