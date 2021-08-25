@@ -1,10 +1,21 @@
 :host {
-	.mat-radio-group {
-		margin-left: var(--offset);
+	.text-search {
+		margin-right: var(--offset);
 	}
 
 	.mat-radio-button {
 		margin: 0 var(--offset-s);
+	}
+
+	.flex {
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		margin-bottom: var(--offset-s);
+
+		> * {
+			white-space: nowrap;
+		}
 	}
 
 	th.mat-header-cell,
