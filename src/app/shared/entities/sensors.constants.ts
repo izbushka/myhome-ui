@@ -23,6 +23,9 @@ export const SENSORS_CHART_OPTIONS: Highcharts.Options = {
 	legend: {
 		enabled: false,
 	},
+	time: {
+		useUTC: false,
+	},
 	plotOptions: {
 		area: {
 			marker: {
