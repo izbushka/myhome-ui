@@ -22,4 +22,8 @@
 	td.mat-cell {
 		padding-right: var(--offset-xs) !important;
 	}
+
+	.mat-table-sticky {
+		top: calc(-1 * var(--offset)) !important;
+	}
 }
