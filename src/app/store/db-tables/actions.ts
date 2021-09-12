@@ -11,6 +11,11 @@ export const DbTablesActions = {
 		props<{table: DbTables}>(),
 		props<{table: DbTables; data: GeneralTableData[]}>()
 	),
+	saveTableRow: getApiActionsWithPayload(
+		desc('Save Table Row'),
+		props<{table: DbTables; data: GeneralTableData}>(),
+		props<{table: DbTables; data: GeneralTableData[]}>()
+	),
 	getCombinedTable: getApiActions(
 		desc('Get Tables For Combined Data'),
 		props<{table: DbTables; data: GeneralTableData[]}>()

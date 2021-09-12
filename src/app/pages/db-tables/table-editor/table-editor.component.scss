@@ -1,0 +1,17 @@
+:host {
+	.row {
+		align-items: flex-start;
+		display: flex;
+		flex-direction: row;
+		gap: var(--offset);
+		justify-content: space-between;
+
+		.half {
+			width: 50%;
+
+			.mat-form-field {
+				width: 100%;
+			}
+		}
+	}
+}

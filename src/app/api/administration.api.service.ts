@@ -16,4 +16,12 @@ export class AdministrationApiService {
 			take(1)
 		);
 	}
+	
+	public saveTableRow(table: string, data: GeneralTableData): Observable<GeneralTableData[]> {
+		const url = `${API_BASE_URL}/../configuration/save/${table}`;
+
+		return this.http.post<GeneralTableData[]>(url, data).pipe(
+			take(1)
+		);
+	}
 }

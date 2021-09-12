@@ -14,14 +14,18 @@ export class DbTablesEffects {
 	getTables$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(DbTablesActions.getTable.requested),
-			mergeMap(({table}) =>
-				table === DbTables.SensorsActionsCombined
+			withLatestFrom(this.store.select(DbTablesSelectors.tables)),
+			mergeMap(([{table}, savedTables]) => {
+				if (savedTables[table]?.length) {
+					return of(DbTablesActions.getTable.succeeded({table, data: savedTables[table]}));
+				}
+				return table === DbTables.SensorsActionsCombined
 					? of(DbTablesActions.getCombinedTable.requested())
 					: this.administrationApiService.getTable(table).pipe(
 							map((data) => DbTablesActions.getTable.succeeded({table, data})),
 							catchError((error: string) => of(DbTablesActions.getTable.failed({error: `${error}`})))
-					  )
-			)
+					  );
+			})
 		)
 	);
 
@@ -63,6 +67,18 @@ export class DbTablesEffects {
 							data: resultTable,
 						});
 					})
+				)
+			)
+		)
+	);
+
+	saveTableData$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(DbTablesActions.saveTableRow.requested),
+			mergeMap(({table, data}) =>
+				this.administrationApiService.saveTableRow(table, data).pipe(
+					map((res) => DbTablesActions.getTable.succeeded({table, data: res})),
+					catchError((error: string) => of(DbTablesActions.getTable.failed({error: `${error}`})))
 				)
 			)
 		)

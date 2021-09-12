@@ -1,33 +1,29 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
+import {ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {MatRadioModule} from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select';
 import {MatTableModule} from '@angular/material/table';
-import {MatTabsModule} from '@angular/material/tabs';
-import {DbTablesRouterModule} from '@pages/db-tables/db-tables.router.module';
 import {SpinnerModule} from '@shared/components/spinner/spinner.module';
-import {DbTablesComponent} from './db-tables.component';
-import {DbTablesContainer} from './db-tables.container';
-import {TableEditorModule} from './table-editor/tables-editor.module';
+import {TableEditorComponent} from './table-editor.component';
+import {TableEditorContainer} from './table-editor.container';
 
 @NgModule({
-	declarations: [DbTablesComponent, DbTablesContainer],
+	declarations: [TableEditorComponent, TableEditorContainer],
 	imports: [
 		CommonModule,
-		DbTablesRouterModule,
 		MatTableModule,
-		MatTabsModule,
 		SpinnerModule,
 		MatFormFieldModule,
 		MatInputModule,
-		MatRadioModule,
 		MatDialogModule,
 		MatButtonModule,
-		TableEditorModule,
+		MatSelectModule,
+		ReactiveFormsModule,
 	],
-	exports: [DbTablesContainer],
+	exports: [TableEditorContainer],
 })
-export class DbTablesModule {}
+export class TableEditorModule {}

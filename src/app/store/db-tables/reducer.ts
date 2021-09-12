@@ -20,7 +20,10 @@ export const props = nameOfFactory<DbTablesState>();
 export const dbTablesReducer = createReducer(
 	initialDbTablesState,
 	on(DbTablesActions.getTable.requested, (state, {table}) =>
-		flow(state)(set(props('tablesLoadingStatus'), status.loading), set([props('tables'), table], []))
+		flow(state)(
+			set(props('tablesLoadingStatus'), status.loading),
+			set([props('tables'), table], state.tables[table] ?? [])
+		)
 	),
 	on(DbTablesActions.getTable.succeeded, (state, {table, data}) =>
 		flow(state)(set(props('tablesLoadingStatus'), status.loaded), set([props('tables'), table], data))

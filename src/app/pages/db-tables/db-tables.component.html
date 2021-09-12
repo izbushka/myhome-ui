@@ -27,5 +27,5 @@
 	</ng-container>
 
 	<tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
-	<tr mat-row *matRowDef="let row; columns: columns;"></tr>
+	<tr mat-row *matRowDef="let row; columns: columns;" (click)="openEditor(row)"></tr>
 </table>

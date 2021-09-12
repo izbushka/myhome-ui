@@ -1,8 +1,11 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
-import {ColumnsOrder, DbTables, GeneralTableData, TableSearchBy} from '@entities/administration.interfaces';
-import {LoadingStatus} from '@entities/store.interfaces';
-import {NgChanges} from '@entities/ng-changes.types';
+import {MatDialog} from '@angular/material/dialog';
 import {MatTableDataSource} from '@angular/material/table';
+import {DbTables, GeneralTableData, TableEditorPayload, TableSearchBy} from '@entities/administration.interfaces';
+import {NgChanges} from '@entities/ng-changes.types';
+import {LoadingStatus} from '@entities/store.interfaces';
+import {DbTablesHelper} from '@shared/helpers/db-tables/db-tables.helper';
+import {TableEditorContainer} from './table-editor/table-editor.container';
 
 @Component({
 	selector: 'rpi-db-tables-component',
@@ -23,6 +26,8 @@ export class DbTablesComponent implements OnChanges {
 	dataSource: MatTableDataSource<Record<string, string | number>>;
 	searchBy: TableSearchBy = TableSearchBy.Unset;
 
+	constructor(public dialog: MatDialog) {}
+
 	public ngOnChanges(changes: NgChanges<DbTablesComponent>): void {
 		if (changes.table?.currentValue) {
 			this.prepareTable();
@@ -33,13 +38,13 @@ export class DbTablesComponent implements OnChanges {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
+	public openEditor(row: GeneralTableData): void {
+		const data: TableEditorPayload = {data: row, name: this.currentTable};
+		this.dialog.open(TableEditorContainer, {width: '50rem', data});
+	}
+
 	private prepareTable(): void {
-		const toTheEnd = 10000;
-		this.columns = Object.keys(this.table[0] ?? {}).sort(
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore
-			(a, b) => (ColumnsOrder[a] || toTheEnd) - (ColumnsOrder[b] || toTheEnd)
-		);
+		this.columns = DbTablesHelper.SortColumns(this.table[0]).filter((c) => c !== 'rowid');
 		this.dataSource = new MatTableDataSource(this.table);
 		this.setTableFilter();
 	}

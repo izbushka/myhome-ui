@@ -1,21 +1,19 @@
 <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
 	<h1 class="my-flex-nowrap">
-        <span class="my-flex-grow">
-            Authorization
-        </span>
+		<span class="my-flex-grow"> Authorization </span>
 	</h1>
 
 	<div class="example-container">
 		<mat-form-field appearance="fill">
 			<mat-label>Username</mat-label>
-			<input cdkFocusInitial matInput formControlName="login">
+			<input cdkFocusInitial matInput formControlName="login" />
 		</mat-form-field>
-		<br>
+		<br />
 		<mat-form-field appearance="fill">
 			<mat-label>Password</mat-label>
-			<input #password="matInput" matInput type="password" formControlName="password">
+			<input #password="matInput" matInput type="password" formControlName="password" />
 		</mat-form-field>
-		<br>
+		<br />
 		<button mat-button type="submit">Login</button>
 	</div>
 </form>
