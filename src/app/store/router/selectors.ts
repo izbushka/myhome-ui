@@ -6,6 +6,7 @@ export const selectRouter = createFeatureSelector<fromRouter.RouterReducerState>
 const {
 	selectCurrentRoute, // select the current route
 	selectRouteParams,
+	selectQueryParam,
 	selectRouteParam,
 	selectUrl, // select the current url
 } = fromRouter.getSelectors(selectRouter);
@@ -14,6 +15,7 @@ export const RouterSelectors = {
 	selectCurrentRoute,
 	selectRouteParam,
 	selectRouteParams,
+	selectQueryParam,
 	selectUrl,
 	url: createSelector(selectUrl, (url) => url?.substr(1)),
 };

@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {AppState} from '@store/rootReducer';
-import {AuthSelectors} from '@store/auth/selectors';
-import {catchError} from 'rxjs/operators';
 import {AuthActions} from '@store/auth/actions';
+import {AuthSelectors} from '@store/auth/selectors';
+import {AppState} from '@store/rootReducer';
+import {Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
 
 @Injectable()
 export class RpiHttpInterceptor implements HttpInterceptor {
@@ -36,7 +36,7 @@ export class RpiHttpInterceptor implements HttpInterceptor {
 			: request.clone({
 					setHeaders: {
 						// eslint-disable-next-line @typescript-eslint/naming-convention
-						Authorization: `Basic ${this.token}`,
+						Authorization: `Bearer ${this.token}`,
 					},
 			  });
 

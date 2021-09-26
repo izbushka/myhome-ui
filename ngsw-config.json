@@ -85,6 +85,19 @@
 				"timeout": "5s",
 				"strategy": "freshness"
 			}
+		},
+		{
+			"name": "auth-requests",
+			"urls": [
+				"/auth/**",
+				"https://auth.rpi.xvv.be/**"
+			],
+			"cacheConfig": {
+				"maxSize": 20,
+				"maxAge": "1u",
+				"timeout": "5s",
+				"strategy": "freshness"
+			}
 		}
 	]
 }

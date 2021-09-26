@@ -10,4 +10,5 @@ export namespace AuthSelectors {
 	export const requestedPage = createSelector(getState, (state) => state.requestedPage);
 	export const lastUpdate = createSelector(getState, (state) => state.lastUpdate);
 	export const token = createSelector(getState, (state) => state.token);
+	export const user = createSelector(getState, (state) => state.user);
 }

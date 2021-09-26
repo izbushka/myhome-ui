@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {concatMap, concatMapTo, filter, map, mapTo, tap, withLatestFrom} from 'rxjs/operators';
+import {concatMap, concatMapTo, filter, map, mapTo, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
 import {AppState} from '@store/rootReducer';
 import {AuthActions} from '@store/auth/actions';
@@ -11,6 +11,8 @@ import {RouterActions} from '@store/router/actions';
 import {DataStorageService, StorageTypes} from '@shared/services/data-storage.service';
 import {AUTH_EXPIRATION_TIME} from '@entities/common.constants';
 import {RouterSelectors} from '@store/router/selectors';
+import {AuthApiService} from '@api/auth.api.service';
+import {mapApiActions} from '@shared/helpers/store/effects.helper';
 
 @Injectable()
 export class AuthEffects {
@@ -69,5 +71,17 @@ export class AuthEffects {
 		)
 	);
 
-	constructor(private actions$: Actions, private store: Store<AppState>, private storage: DataStorageService) {}
+	getUser$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(AuthActions.getUser.requested),
+			switchMap(() => this.authService.getUser().pipe(mapApiActions(AuthActions.getUser)))
+		)
+	);
+
+	constructor(
+		private actions$: Actions,
+		private store: Store<AppState>,
+		private storage: DataStorageService,
+		private authService: AuthApiService
+	) {}
 }

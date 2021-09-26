@@ -10,6 +10,7 @@ import {RouterEffects} from '@store/router/effects';
 import {CommonEffects} from '@store/common/effects';
 import {DbTablesEffects} from '@store/db-tables/effects';
 import {AdministrationApiService} from '@api/administration.api.service';
+import {AuthApiService} from '@api/auth.api.service';
 
 const STORE_EFFECTS = [SensorsEffects, AuthEffects, RouterEffects, CommonEffects, DbTablesEffects];
 
@@ -21,6 +22,6 @@ const STORE_EFFECTS = [SensorsEffects, AuthEffects, RouterEffects, CommonEffects
 		}),
 		StoreModule.forRoot(reducers),
 	],
-	providers: [SensorsApiService, AdministrationApiService],
+	providers: [SensorsApiService, AdministrationApiService, AuthApiService],
 })
 export class AppStoreModule {}

@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Output} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
+import {GOOGLE_AUTH_URL} from '@shared/entities/sensors.constants';
 
 @Component({
 	selector: 'rpi-login-page-component',
@@ -9,6 +10,8 @@ import {FormControl, FormGroup} from '@angular/forms';
 })
 export class LoginPageComponent {
 	@Output() authorize = new EventEmitter<string>();
+
+	$googleAuthUrl = GOOGLE_AUTH_URL + '&state=' + window.location.origin + window.location.pathname;
 
 	authForm = new FormGroup({
 		login: new FormControl(''),

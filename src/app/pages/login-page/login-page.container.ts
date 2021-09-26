@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {AppState} from '@store/rootReducer';
 import {AuthActions} from '@store/auth/actions';
+import {AppState} from '@store/rootReducer';
 
 @Component({
 	selector: 'rpi-login-page',
