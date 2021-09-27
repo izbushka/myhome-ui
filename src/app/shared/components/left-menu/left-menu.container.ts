@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 import {SensorGroup} from '@entities/sensors.interfaces';
 import {SensorsSelectors} from '@store/sensors/selectors';
 import {RouterActions} from '@store/router/actions';
-import {LeftPanelModes} from '@entities/common.interfaces';
+import {LeftPanelModes, Pages} from '@entities/common.interfaces';
 import {CommonActions} from '@store/common/actions';
 import {AuthUser} from '@shared/entities/auth.interfaces';
 import {AuthSelectors} from '@store/auth/selectors';
@@ -37,6 +37,11 @@ export class LeftMenuContainer implements OnInit {
 	}
 
 	public go(page: string | string[]): void {
+		if (page == Pages.Login) {
+			this.store.dispatch(RouterActions.go({url: page, extras: {queryParams: {logout: 1}}}));
+
+			return;
+		}
 		this.store.dispatch(RouterActions.go({url: page}));
 	}
 

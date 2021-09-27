@@ -18,7 +18,7 @@
 		<mat-icon>settings</mat-icon>
 		Administration
 	</mat-list-item>
-	<mat-list-item (click)="go.emit([pages.Login])">
+	<mat-list-item (click)="go.emit(pages.Login)">
 		<mat-icon>logout</mat-icon>
 		<span class="avatar" *ngIf="user?.picture" [style.background-image]="'url(' + user?.picture + ')'"></span>
 		Logout

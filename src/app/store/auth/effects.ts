@@ -22,7 +22,7 @@ export class AuthEffects {
 			withLatestFrom(this.store.select(AuthSelectors.requestedPage), this.store.select(RouterSelectors.url)),
 			map(([, requestedPage, url]) => {
 				let page = requestedPage || url;
-				if (page === Pages.Login) {
+				if (page === Pages.Login || !page) {
 					page = Pages.Dashboard;
 				}
 				return page;
