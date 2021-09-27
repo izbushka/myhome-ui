@@ -14,7 +14,7 @@
 		{{ group.name | titlecase }}
 	</mat-list-item>
 
-	<mat-list-item (click)="go.emit(pages.DbTables)">
+	<mat-list-item *ngIf="user?.authorized" (click)="go.emit(pages.DbTables)">
 		<mat-icon>settings</mat-icon>
 		Administration
 	</mat-list-item>
