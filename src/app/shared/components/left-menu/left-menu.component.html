@@ -10,16 +10,17 @@
 	</mat-list-item>
 
 	<mat-list-item *ngFor="let group of groups" class="level2" (click)="go.emit([pages.Sensors, group.name])">
-		<mat-icon>{{group.icon}}</mat-icon>
-		{{group.name | titlecase}}
+		<mat-icon>{{ group.icon }}</mat-icon>
+		{{ group.name | titlecase }}
 	</mat-list-item>
 
-	<mat-list-item (click)="go.emit(pages.DbTables)">
+	<mat-list-item *ngIf="user?.authorized" (click)="go.emit(pages.DbTables)">
 		<mat-icon>settings</mat-icon>
 		Administration
 	</mat-list-item>
 	<mat-list-item (click)="go.emit([pages.Login])">
 		<mat-icon>logout</mat-icon>
+		<span class="avatar" *ngIf="user?.picture" [style.background-image]="'url(' + user?.picture + ')'"></span>
 		Logout
 	</mat-list-item>
 </mat-list>

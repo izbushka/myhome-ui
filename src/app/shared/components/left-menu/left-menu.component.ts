@@ -4,6 +4,7 @@ import {LeftPanelModes, Pages} from '@entities/common.interfaces';
 import {fromEvent} from 'rxjs';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {debounceTime} from 'rxjs/operators';
+import {AuthUser} from '@shared/entities/auth.interfaces';
 
 @UntilDestroy()
 @Component({
@@ -14,6 +15,7 @@ import {debounceTime} from 'rxjs/operators';
 })
 export class LeftMenuComponent implements OnInit {
 	@Input() groups: SensorGroup[];
+	@Input() user: AuthUser;
 	@Output() go = new EventEmitter<string | string[]>();
 
 	@Output() setMode = new EventEmitter<LeftPanelModes>();

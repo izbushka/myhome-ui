@@ -13,6 +13,7 @@ export class LoginPageContainer implements OnInit {
 
 	public ngOnInit(): void {
 		this.store.dispatch(AuthActions.unAuthorize({}));
+		this.store.dispatch(AuthActions.getUser.requested());
 	}
 
 	public authorize(token: string): void {
