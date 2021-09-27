@@ -18,6 +18,7 @@ export enum DbTables {
 	Commands = 'commands',
 	Icons = 'icons',
 	SmsLog = 'sms_log',
+	States = 'states',
 	StatesLog = 'states_log',
 }
 
