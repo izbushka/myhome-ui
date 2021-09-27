@@ -1,0 +1,50 @@
+:host {
+	--card-height: calc(var(--offset) * 3.5);
+	user-select: none;
+
+	.card {
+		align-items: center;
+		display: flex;
+		gap: var(--offset-xs);
+		max-height: var(--card-height);
+		min-height: var(--card-height);
+		overflow: hidden;
+		padding: 0 var(--offset-m);
+
+		.name {
+			align-items: center;
+			cursor: pointer;
+			display: flex;
+			flex: 1;
+			gap: var(--offset-m);
+
+			.sensor-name {
+				/* stylelint-disable */
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				display: -webkit-box;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				/* stylelint-enable */
+			}
+		}
+	}
+
+	.down-right {
+		bottom: calc(-1 * var(--offset-xs));
+		font-size: 10px;
+		position: absolute;
+		right: var(--offset-s);
+
+		.id {
+			color: var(--grey3);
+			margin-right: var(--offset-xs);
+			visibility: hidden;
+		}
+	}
+
+	&:hover .down-right .id {
+		visibility: visible;
+	}
+
+}

@@ -1,0 +1,40 @@
+@import '../helpers/functions';
+@import '../theme/colors';
+
+@mixin mat-toggle-color($bar, $thumb) {
+	&.mat-slide-toggle:not(.mat-disabled) .mat-slide-toggle-bar {
+		background-color: $bar;
+	}
+
+	&.mat-slide-toggle:not(.mat-disabled) .mat-slide-toggle-thumb {
+		background-color: $thumb;
+	}
+}
+
+@mixin state-color($name) {
+	.state-#{$name} {
+
+		@include mat-toggle-color(
+			map-deep-get($state-colors, $name, 'normal'),
+			map-deep-get($state-colors, $name, 'bright')
+		);
+		color: map-deep-get($state-colors, $name, 'normal');
+
+		@if ($name == 'error') {
+			text-shadow: 0 0 0.6rem map-get($base-color, 'yellow');
+		} @else if ($name == 'normal') {
+			text-shadow: 0 0 0.6rem map-get($base-color, 'bright-green');
+		} @else if ($name == 'abnormal') {
+			text-shadow: 0 0 0.6rem map-get($base-color, 'bright-yellow');
+		} @else {
+			text-shadow: 0 0 0.3rem rgba(map-deep-get($state-colors, $name, 'normal'), 0.5);
+		}
+
+		@if ($name == 'on') {
+			&.mat-icon {
+				color: map-get($base-color, 'bright-yellow');
+				text-shadow: 0 0 0.3rem map-get($base-color, 'bright-yellow');
+			}
+		}
+	}
+}

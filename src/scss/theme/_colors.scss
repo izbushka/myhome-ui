@@ -1,0 +1,50 @@
+$base-color: (
+	white: #fff,
+	black: #000,
+	red: #eb5757,
+	pale-red: #ec7a7a,
+	orange: #f2994a,
+	yellow: #f2c94c,
+	bright-yellow: #d3ff00,
+	green: #27ae60,
+	bright-green: #03ff00,
+	dark-green: #607d8b,
+	blue: #2d9cdb,
+	purple: #bb6bd9,
+	dark-bg: #212121,
+	grey: #c9cacd,
+	grey1: #333,
+	grey2: #4f4f4f,
+	grey3: #828282,
+	grey4: #bdbdbd,
+	grey5: #e0e0e0,
+	grey6: #fafbfc,
+	grey7: #e5e5e5,
+	grey8: #c9cacd42,
+	color-ok: #27ae60,
+	color-warn: #f2994a,
+	color-error: #eb5757,
+);
+
+$state-colors: (
+	on: (
+		normal: map-get($base-color, color-ok),
+		bright: map-get($base-color, bright-green),
+	),
+	pending: (
+		normal: rgba(map-get($base-color, dark-green), 0.54),
+		bright: map-get($base-color, dark-green),
+	),
+	error: (
+		normal: map-get($base-color, pale-red),
+		bright: map-get($base-color, red),
+	),
+	normal: (
+		normal: rgba(map-get($base-color, color-ok), 0.8),
+		bright: map-get($base-color, color-ok),
+	),
+	abnormal: (
+		normal: map-get($base-color, orange),
+		bright: map-get($base-color, color-warn),
+	),
+);

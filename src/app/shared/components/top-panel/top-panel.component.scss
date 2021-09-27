@@ -1,0 +1,30 @@
+:host {
+	user-select: none;
+
+	.title {
+		cursor: pointer;
+	}
+
+	.top-toolbar {
+		display: flex;
+
+		.spacer {
+			align-items: center;
+			display: flex;
+			flex: 1;
+
+			.offline {
+				color: var(--yellow);
+				margin-left: var(--offset);
+			}
+		}
+
+		.shortcuts {
+			display: flex;
+
+			.mat-icon {
+				margin-left: var(--offset);
+			}
+		}
+	}
+}

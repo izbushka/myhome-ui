@@ -1,0 +1,13 @@
+<div class="app">
+	<rpi-top-panel></rpi-top-panel>
+
+	<mat-sidenav-container class="page">
+		<mat-sidenav [mode]="sideBarMode" [opened]="isSideBarOpened">
+			<rpi-left-menu></rpi-left-menu>
+		</mat-sidenav>
+
+		<mat-sidenav-content class="content">
+			<router-outlet></router-outlet>
+		</mat-sidenav-content>
+	</mat-sidenav-container>
+</div>

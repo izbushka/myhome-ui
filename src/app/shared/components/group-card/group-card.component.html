@@ -1,0 +1,32 @@
+<mat-card role="group">
+	<mat-card-title-group class="pointer" (click)="goToGroup.emit(sensorGroup.name)">
+		<mat-icon>{{sensorGroup.icon}}</mat-icon>
+		<mat-card-title>
+			{{sensorGroup.name}}
+		</mat-card-title>
+		<mat-card-subtitle>
+			<span class="my-nowrap">{{stat.num}} members</span>
+		</mat-card-subtitle>
+	</mat-card-title-group>
+	<mat-card-content>
+		<div class="my-flex">
+            <span [class.state-normal]="stat.ok === stat.num">
+                <mat-icon>done_all</mat-icon>
+				{{stat.ok}}
+            </span>
+			<span>
+                <span  *ngIf="stat.ok < stat.num" class="state-error">
+                    <mat-icon>error_outline</mat-icon>
+                    {{stat.num - stat.ok}}
+                </span>
+            </span>
+			<span class="grey" *ngIf="stat.on">
+                <mat-icon *ngIf="stat.on">lightbulb</mat-icon>
+				{{stat.on}}
+            </span>
+			<span class="grey" *ngIf="stat.off">
+                <mat-icon>power_off</mat-icon> {{stat.off}}<br>
+            </span>
+		</div>
+	</mat-card-content>
+</mat-card>

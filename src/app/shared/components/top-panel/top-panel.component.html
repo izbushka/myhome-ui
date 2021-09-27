@@ -1,0 +1,14 @@
+<mat-toolbar color="primary" class="top-toolbar">
+	<button mat-icon-button (click)="toggleSideBar()">
+		<mat-icon>menu</mat-icon>
+	</button>
+	<h1 class="title" (click)="go.emit([pages.Dashboard])">RPI Home Control</h1>
+	<div class="spacer">
+		<mat-icon class="offline blink" *ngIf="!isFresh">sync_problem</mat-icon>
+	</div>
+	<div class="shortcuts">
+		<mat-icon (click)="go.emit([pages.Sensors, groups.Favorites])">star_border</mat-icon>
+		<mat-icon (click)="go.emit([pages.Sensors, groups.Light])">lightbulb_outline</mat-icon>
+		<mat-icon (click)="go.emit([pages.Sensors, groups.AC])">ac_unit</mat-icon>
+	</div>
+</mat-toolbar>

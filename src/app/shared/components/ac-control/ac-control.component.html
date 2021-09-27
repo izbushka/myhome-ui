@@ -1,0 +1,74 @@
+<div mat-dialog-content [formGroup]="acForm">
+	<h1 class="title">
+        <span class="title-name">
+            {{sensor.name}}
+        </span>
+		<span>
+            <mat-slide-toggle formControlName="state"></mat-slide-toggle>
+        </span>
+	</h1>
+
+	<div class="temperature">
+        <span class="border">
+            <mat-label>{{acForm.get('temperature').value}}</mat-label>
+        </span>
+	</div>
+
+	<mat-slider thumbLabel tickInterval="1" min="16" max="30"
+				formControlName="temperature"
+				[displayWith]="acTemperatureFormat"
+				[style.width]="'100%'"
+	></mat-slider>
+
+	<mat-radio-group aria-label="Mode" formControlName="mode">
+		<div class="flex rpi-margin-bottom">
+			<div class="ac-modes" *ngFor="let i of (modes | keyvalue)">
+				<mat-radio-button [value]="i.value">{{i.key}}</mat-radio-button>
+			</div>
+		</div>
+	</mat-radio-group>
+
+
+	<div class="rpi-grid">
+		<div>
+			<mat-form-field>
+				<mat-label>Fan speed</mat-label>
+				<mat-select formControlName="fan">
+					<mat-option *ngFor="let i of (fan | keyvalue)" [value]="i.value">
+						{{i.key}}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+		</div>
+		<div>
+			Turbo
+			<mat-slide-toggle formControlName="turbo"></mat-slide-toggle>
+		</div>
+
+		<div>
+			<mat-form-field>
+				<mat-label>Swing</mat-label>
+				<mat-select formControlName="swing">
+					<mat-option *ngFor="let i of (swing | keyvalue)" [value]="i.value">
+						{{i.key}}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+
+	</div>
+</div>
+
+
+<div mat-dialog-actions>
+	<div class="flex buttons">
+		<div>
+			<button mat-button (click)="onOkClick()">Ok</button>
+		</div>
+		<mat-slide-toggle class="middle" [formControl]="liveUpdate">Live</mat-slide-toggle>
+		<div>
+			<button mat-button (click)="onNoClick()">Cancel</button>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,65 @@
+@import 'theme/theme';
+@import 'theme/loader';
+@import 'mixins/scroll.mixin';
+@import 'mixins/responsive.mixin';
+
+* {
+	@include scroll();
+	box-sizing: border-box;
+}
+
+.rpi-grid {
+	--column-width: 14.5rem;
+	display: grid;
+	gap: var(--offset);
+	grid-auto-rows: 1fr;
+	grid-template-columns: repeat(auto-fill, minmax(var(--column-width), 1fr));
+
+	@include phone {
+		--column-width: 13rem;
+		gap: var(--offset-s);
+	}
+
+	&-cell {
+		box-sizing: border-box;
+		margin: 0;
+		overflow: hidden;
+		padding: 0;
+	}
+}
+
+.rpi-margin-top {
+	margin-top: var(--offset);
+}
+
+.rpi-margin-bottom {
+	margin-bottom: var(--offset);
+}
+
+.tooltip-no-wrap {
+	white-space: pre-line;
+}
+
+.blink {
+	animation: 2s blinker linear infinite;
+	animation: 2s blinker linear infinite;
+	animation: 2s blinker linear infinite;
+}
+
+@keyframes blinker {
+	0% { opacity: 1; }
+	50% { opacity: 0.1; }
+	100% { opacity: 1; }
+}
+
+@keyframes blinker {
+	0% { opacity: 1; }
+	50% { opacity: 0; }
+	100% { opacity: 1; }
+}
+
+@keyframes blinker {
+	0% { opacity: 1; }
+	50% { opacity: 0.1; }
+	100% { opacity: 1; }
+}

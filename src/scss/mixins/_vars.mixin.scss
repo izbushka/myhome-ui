@@ -1,0 +1,21 @@
+@use 'sass:color' as color;
+
+@mixin var-rgb-colors($base-color) {
+	@each $name, $color in $base-color {
+		--#{"" + $name}: #{$color};
+		--#{"" + $name + '-rgb'}: #{color.red($color)}, #{color.green($color)}, #{color.blue($color)};
+	}
+}
+
+@mixin var-range($variable, $value) {
+	// Smaller values
+	#{$variable}-xs: calc(var(#{$variable}) / 4);
+	#{$variable}-s: calc(var(#{$variable}) / 2);
+	#{$variable}-m: calc(var(#{$variable}) / 4 * 3);
+	// Default
+	#{$variable}: $value;
+	// Bigger values
+	#{$variable}-l: calc(var(#{$variable}) * 1.5);
+	#{$variable}-xl: calc(var(#{$variable}) * 2);
+	#{$variable}-xxl: calc(var(#{$variable}) * 4);
+}

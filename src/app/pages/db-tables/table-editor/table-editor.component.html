@@ -1,0 +1,27 @@
+<h1>Edit line</h1>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+	<div class="row" *ngFor="let column of columns">
+		<div class="half">
+			<mat-form-field [appearance]="column === 'rowid' ? 'fill' : 'standard'" class="text-search">
+				<mat-label>{{ column }}</mat-label>
+				<input matInput #input [formControlName]="column" />
+			</mat-form-field>
+		</div>
+		<div class="half" [ngSwitch]="column">
+			<ng-container *ngFor="let col of selectors | keyvalue">
+				<mat-form-field appearance="outline" *ngSwitchCase="col.key">
+					<mat-label>{{ col.key.replace('_id', '') | titlecase }}</mat-label>
+					<mat-select [formControlName]="column">
+						<mat-option *ngFor="let item of col.value" [value]="item[col.key]">
+							{{ item.name }}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</ng-container>
+		</div>
+	</div>
+	<div class="row">
+		<button mat-raised-button color="accent" type="reset" (click)="closed.emit(null)">Cancel</button>
+		<button mat-raised-button color="primary" type="submit">Save</button>
+	</div>
+</form>

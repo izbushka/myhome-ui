@@ -1,0 +1,9 @@
+<div class="rpi-grid" *ngIf="loadingStatus.loaded">
+	<rpi-group-card
+		class="rpi-grid-cell"
+		*ngFor="let group of sensorGroups"
+		[sensorGroup]="group"
+		[sensors]="sensors"
+	></rpi-group-card>
+</div>
+<rpi-spinner *ngIf="!loadingStatus.loaded"></rpi-spinner>

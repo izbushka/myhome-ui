@@ -1,0 +1,12 @@
+<rpi-spinner *ngIf="!loadingStatus.loaded"></rpi-spinner>
+<ng-container *ngIf="loadingStatus.loaded">
+	<ng-container *ngFor="let group of sensorGroups; let i = index; trackBy: trackGroup">
+		<rpi-group-card [sensors]="sensors" [sensorGroup]="group"></rpi-group-card>
+		<div class="rpi-grid rpi-margin-top rpi-margin-bottom">
+			<rpi-sensor-card
+				*ngFor="let sensorId of group?.members; trackBy: trackSensorId"
+				[sensor]="sensors[sensorId]"
+			></rpi-sensor-card>
+		</div>
+	</ng-container>
+</ng-container>
