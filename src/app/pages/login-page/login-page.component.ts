@@ -11,7 +11,7 @@ import {GOOGLE_AUTH_URL} from '@shared/entities/sensors.constants';
 export class LoginPageComponent {
 	@Output() authorize = new EventEmitter<string>();
 
-	$googleAuthUrl = GOOGLE_AUTH_URL + '&state=' + window.location.origin + window.location.pathname;
+	$googleAuthUrl = GOOGLE_AUTH_URL + '?target=' + window.location.origin + window.location.pathname;
 
 	authForm = new FormGroup({
 		login: new FormControl(''),

@@ -25,7 +25,7 @@ export class LoginPageContainer implements OnInit {
 				withLatestFrom(this.store.select(RouterSelectors.selectQueryParam('logout'))),
 				untilDestroyed(this)
 			)
-			.subscribe(([_, logout]) => {
+			.subscribe(([, logout]) => {
 				if (!logout) {
 					this.store.dispatch(AuthActions.authorize());
 				}
