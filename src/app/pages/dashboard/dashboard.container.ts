@@ -1,10 +1,10 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {MappedSensors, SensorGroup} from '@entities/sensors.interfaces';
+import {LoadingStatus} from '@entities/store.interfaces';
 import {Store} from '@ngrx/store';
 import {AppState} from '@store/rootReducer';
 import {SensorsSelectors} from '@store/sensors/selectors';
 import {Observable} from 'rxjs';
-import {MappedSensors, SensorGroup} from '@entities/sensors.interfaces';
-import {LoadingStatus} from '@entities/store.interfaces';
 
 @Component({
 	selector: 'rpi-dashboard',

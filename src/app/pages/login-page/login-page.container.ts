@@ -17,15 +17,14 @@ export class LoginPageContainer implements OnInit {
 	constructor(private store: Store<AppState>) {}
 
 	public ngOnInit(): void {
-		this.store.dispatch(AuthActions.unAuthorize({}));
 		this.store
 			.select(AuthSelectors.user)
-			.pipe(
-				filter((user) => user.authorized),
-				withLatestFrom(this.store.select(RouterSelectors.selectQueryParam('logout'))),
-				untilDestroyed(this)
-			)
-			.subscribe(([, logout]) => {
+			.pipe(withLatestFrom(this.store.select(RouterSelectors.selectQueryParam('logout'))), untilDestroyed(this))
+			.subscribe(([user, logout]) => {
+				if (user?.authorized) {
+					this.store.dispatch(AuthActions.logout.requested());
+					this.store.dispatch(AuthActions.unAuthorize({}));
+				}
 				if (!logout) {
 					this.store.dispatch(AuthActions.authorize());
 				}

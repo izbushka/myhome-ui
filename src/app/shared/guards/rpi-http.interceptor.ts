@@ -1,5 +1,6 @@
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {Store} from '@ngrx/store';
 import {AuthActions} from '@store/auth/actions';
 import {AuthSelectors} from '@store/auth/selectors';
@@ -7,6 +8,7 @@ import {AppState} from '@store/rootReducer';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 
+@UntilDestroy()
 @Injectable()
 export class RpiHttpInterceptor implements HttpInterceptor {
 	private authorized = false;
@@ -18,12 +20,18 @@ export class RpiHttpInterceptor implements HttpInterceptor {
 	};
 
 	constructor(private store: Store<AppState>) {
-		this.store.select(AuthSelectors.isAuthorized).subscribe((data) => {
-			this.authorized = data;
-		});
-		this.store.select(AuthSelectors.token).subscribe((token) => {
-			this.token = token;
-		});
+		this.store
+			.select(AuthSelectors.isAuthorized)
+			.pipe(untilDestroyed(this))
+			.subscribe((data) => {
+				this.authorized = data;
+			});
+		this.store
+			.select(AuthSelectors.token)
+			.pipe(untilDestroyed(this))
+			.subscribe((token) => {
+				this.token = token;
+			});
 	}
 
 	public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {

@@ -29,9 +29,12 @@ export const authReducer = createReducer(
 	),
 	on(AuthActions.getUser.succeeded, (state, {payload}) => set(props('user'), payload, state)),
 	on(AuthActions.setToken, (state, {payload}) => set(props('token'), payload, state)),
+	on(AuthActions.removeToken, (state) => set(props('token'), null, state)),
 	on(AuthActions.unAuthorize, (state, {payload}) =>
 		flow(state)(
 			set(props('authorized'), false),
+			set(props('token'), null),
+			set(props('user'), null),
 			set(props('lastUpdate'), +Date.now()),
 			set(props('requestedPage'), payload || state.requestedPage)
 		)

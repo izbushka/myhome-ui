@@ -33,7 +33,11 @@ export class CommonEffects {
 		this.actions$.pipe(
 			ofType(CommonActions.appInit),
 			concatMap(() => {
-				let token = new URLSearchParams(window.location.search).get('token');
+				const url = new URLSearchParams(window.location.search);
+				let token = url.get('token');
+				if (url.get('error')) {
+					console.error(decodeURI(url.get('error')));
+				}
 				if (token) {
 					this.storage.set(StorageTypes.Local, StorageKeys.Token, token);
 				} else {

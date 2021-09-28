@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {concatMap, concatMapTo, filter, map, mapTo, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {catchError, concatMap, concatMapTo, filter, map, mapTo, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
 import {AppState} from '@store/rootReducer';
 import {AuthActions} from '@store/auth/actions';
@@ -13,6 +13,7 @@ import {AUTH_EXPIRATION_TIME} from '@entities/common.constants';
 import {RouterSelectors} from '@store/router/selectors';
 import {AuthApiService} from '@api/auth.api.service';
 import {mapApiActions} from '@shared/helpers/store/effects.helper';
+import {EMPTY, of} from 'rxjs';
 
 @Injectable()
 export class AuthEffects {
@@ -42,6 +43,7 @@ export class AuthEffects {
 				this.storage.delete(StorageTypes.Local, StorageKeys.Token);
 			}),
 			concatMapTo([
+				AuthActions.logout.requested(),
 				SensorsActions.resetState(),
 				SensorsActions.polling.stop(),
 				RouterActions.go({url: Pages.Login}),
@@ -75,6 +77,23 @@ export class AuthEffects {
 		this.actions$.pipe(
 			ofType(AuthActions.getUser.requested),
 			switchMap(() => this.authService.getUser().pipe(mapApiActions(AuthActions.getUser)))
+		)
+	);
+
+	logout$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(AuthActions.logout.requested),
+			withLatestFrom(this.store.select(AuthSelectors.token)),
+			filter(([, token]) => !!token),
+			switchMap(() =>
+				this.authService.logout().pipe(
+					map(() => AuthActions.removeToken()),
+					catchError((error: string) => {
+						console.error('logged out', error);
+						return of(AuthActions.removeToken());
+					})
+				)
+			)
 		)
 	);
 

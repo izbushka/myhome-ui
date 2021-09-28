@@ -9,5 +9,7 @@ export const AuthActions = {
 	authorize: createAction(desc('Authorize')),
 	unAuthorize: createAction(desc('UnAuthorize'), props<{payload?: string}>()),
 	setToken: createAction(desc('Set Token'), props<{payload?: string}>()),
+	removeToken: createAction(desc('Remove Token')),
 	getUser: getApiActions(desc('Get User'), props<{payload: AuthUser}>()),
+	logout: getApiActions(desc('Logout User')),
 };

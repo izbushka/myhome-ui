@@ -18,4 +18,10 @@ export class AuthApiService {
 			map((user) => AuthApiMapper.mapUser(user))
 		);
 	}
+
+	public logout(): Observable<void> {
+		const url = `${AUTH_BASE_URL}/logout`;
+
+		return this.http.get<void>(url).pipe(take(1));
+	}
 }
