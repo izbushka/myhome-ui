@@ -1,15 +1,14 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {AppState} from '@store/rootReducer';
-import {Observable} from 'rxjs';
-import {SensorGroup} from '@entities/sensors.interfaces';
-import {SensorsSelectors} from '@store/sensors/selectors';
-import {RouterActions} from '@store/router/actions';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {LeftPanelModes, Pages} from '@entities/common.interfaces';
-import {CommonActions} from '@store/common/actions';
+import {SensorGroup} from '@entities/sensors.interfaces';
+import {Store} from '@ngrx/store';
 import {AuthUser} from '@shared/entities/auth.interfaces';
 import {AuthSelectors} from '@store/auth/selectors';
-import {AuthActions} from '@store/auth/actions';
+import {CommonActions} from '@store/common/actions';
+import {AppState} from '@store/rootReducer';
+import {RouterActions} from '@store/router/actions';
+import {SensorsSelectors} from '@store/sensors/selectors';
+import {Observable} from 'rxjs';
 
 @Component({
 	selector: 'rpi-left-menu',
@@ -23,17 +22,13 @@ import {AuthActions} from '@store/auth/actions';
 	`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LeftMenuContainer implements OnInit {
+export class LeftMenuContainer {
 	sensorGroups$: Observable<SensorGroup[]>;
 	user$: Observable<AuthUser>;
 
 	constructor(private store: Store<AppState>) {
 		this.sensorGroups$ = this.store.select(SensorsSelectors.sensorGroups.list);
 		this.user$ = this.store.select(AuthSelectors.user);
-	}
-
-	public ngOnInit(): void {
-		this.store.dispatch(AuthActions.getUser.requested());
 	}
 
 	public go(page: string | string[]): void {

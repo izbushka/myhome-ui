@@ -1,11 +1,11 @@
 import {ChangeDetectionStrategy, Component, HostListener, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {AppState} from '@store/rootReducer';
 import {LeftPanelModes} from '@entities/common.interfaces';
-import {Observable} from 'rxjs';
-import {CommonSelectors} from '@store/common/selectors';
+import {Store} from '@ngrx/store';
 import {CommonActions} from '@store/common/actions';
+import {CommonSelectors} from '@store/common/selectors';
+import {AppState} from '@store/rootReducer';
 import {SensorsActions} from '@store/sensors/actions';
+import {Observable} from 'rxjs';
 
 @Component({
 	selector: 'rpi-root',

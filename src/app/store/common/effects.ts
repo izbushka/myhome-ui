@@ -8,8 +8,7 @@ import {CommonActions} from '@store/common/actions';
 import {CommonSelectors} from '@store/common/selectors';
 import {AppState} from '@store/rootReducer';
 import {RouterActions} from '@store/router/actions';
-import {SensorsActions} from '@store/sensors/actions';
-import {concatMap, filter, map, mapTo, withLatestFrom} from 'rxjs/operators';
+import {filter, map, mapTo, withLatestFrom} from 'rxjs/operators';
 
 @Injectable()
 export class CommonEffects {
@@ -32,7 +31,7 @@ export class CommonEffects {
 	appInit$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(CommonActions.appInit),
-			concatMap(() => {
+			map(() => {
 				const url = new URLSearchParams(window.location.search);
 				let token = url.get('token');
 				if (url.get('error')) {
@@ -43,11 +42,7 @@ export class CommonEffects {
 				} else {
 					token = this.storage.get<string>(StorageTypes.Local, StorageKeys.Token);
 				}
-				return [
-					AuthActions.setToken({payload: token}),
-					AuthActions.getUser.requested(),
-					SensorsActions.polling.start(),
-				];
+				return AuthActions.setToken({payload: token});
 			})
 		)
 	);

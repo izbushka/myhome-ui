@@ -1,30 +1,30 @@
 import {Injectable} from '@angular/core';
+import {AuthApiService} from '@api/auth.api.service';
+import {AUTH_EXPIRATION_TIME} from '@entities/common.constants';
+import {Pages, StorageKeys} from '@entities/common.interfaces';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {catchError, concatMap, concatMapTo, filter, map, mapTo, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
-import {AppState} from '@store/rootReducer';
+import {mapApiActions} from '@shared/helpers/store/effects.helper';
+import {DataStorageService, StorageTypes} from '@shared/services/data-storage.service';
 import {AuthActions} from '@store/auth/actions';
 import {AuthSelectors} from '@store/auth/selectors';
-import {Pages, StorageKeys} from '@entities/common.interfaces';
-import {SensorsActions} from '@store/sensors/actions';
+import {AppState} from '@store/rootReducer';
 import {RouterActions} from '@store/router/actions';
-import {DataStorageService, StorageTypes} from '@shared/services/data-storage.service';
-import {AUTH_EXPIRATION_TIME} from '@entities/common.constants';
 import {RouterSelectors} from '@store/router/selectors';
-import {AuthApiService} from '@api/auth.api.service';
-import {mapApiActions} from '@shared/helpers/store/effects.helper';
-import {EMPTY, of} from 'rxjs';
+import {SensorsActions} from '@store/sensors/actions';
+import {of} from 'rxjs';
+import {catchError, concatMap, concatMapTo, filter, map, mapTo, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 
 @Injectable()
 export class AuthEffects {
 	authorized$ = createEffect(() =>
 		this.actions$.pipe(
-			ofType(AuthActions.authorize),
+			ofType(AuthActions.getUser.succeeded),
 			withLatestFrom(this.store.select(AuthSelectors.requestedPage), this.store.select(RouterSelectors.url)),
 			map(([, requestedPage, url]) => {
 				let page = requestedPage || url;
 				if (page === Pages.Login || !page) {
-					page = Pages.Dashboard;
+					page = Pages.Sensors;
 				}
 				return page;
 			}),
@@ -34,6 +34,10 @@ export class AuthEffects {
 				SensorsActions.polling.start(),
 			])
 		)
+	);
+
+	authorize$ = createEffect(() =>
+		this.actions$.pipe(ofType(AuthActions.authorize), mapTo(AuthActions.getUser.requested()))
 	);
 
 	unauthorized$ = createEffect(() =>
@@ -60,15 +64,6 @@ export class AuthEffects {
 				}
 			}),
 			// authorize
-			mapTo(AuthActions.authorize())
-		)
-	);
-
-	authOk$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType(SensorsActions.getSensors.succeeded),
-			withLatestFrom(this.store.select(RouterSelectors.url)),
-			filter(([, url]) => url === Pages.Login),
 			mapTo(AuthActions.authorize())
 		)
 	);

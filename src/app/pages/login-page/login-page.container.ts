@@ -5,7 +5,7 @@ import {AuthActions} from '@store/auth/actions';
 import {AuthSelectors} from '@store/auth/selectors';
 import {AppState} from '@store/rootReducer';
 import {RouterSelectors} from '@store/router/selectors';
-import {filter, withLatestFrom} from 'rxjs/operators';
+import {take, withLatestFrom} from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -19,7 +19,11 @@ export class LoginPageContainer implements OnInit {
 	public ngOnInit(): void {
 		this.store
 			.select(AuthSelectors.user)
-			.pipe(withLatestFrom(this.store.select(RouterSelectors.selectQueryParam('logout'))), untilDestroyed(this))
+			.pipe(
+				withLatestFrom(this.store.select(RouterSelectors.selectQueryParam('logout'))),
+				take(1),
+				untilDestroyed(this)
+			)
 			.subscribe(([user, logout]) => {
 				if (user?.authorized) {
 					this.store.dispatch(AuthActions.logout.requested());

@@ -1,20 +1,11 @@
-import {
-	ChangeDetectionStrategy,
-	Component,
-	EventEmitter,
-	Input,
-	OnChanges,
-	Output,
-	TrackByFunction,
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
+import {Period} from '@entities/common.interfaces';
+import {NgChanges} from '@entities/ng-changes.types';
+import {SENSORS_CHART_OPTIONS} from '@entities/sensors.constants';
 import {Sensor, SensorChartPoint, SensorLog} from '@entities/sensors.interfaces';
 import {LoadingStatus} from '@entities/store.interfaces';
-import {Period} from '@entities/common.interfaces';
 import {Chart} from 'angular-highcharts';
-import {NgChanges} from '@entities/ng-changes.types';
 import {take} from 'rxjs/operators';
-import {Highcharts} from 'highcharts/modules/data';
-import {SENSORS_CHART_OPTIONS} from '@entities/sensors.constants';
 
 @Component({
 	selector: 'rpi-sensor-details-component',
