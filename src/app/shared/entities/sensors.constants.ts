@@ -3,7 +3,7 @@ import {Highcharts} from 'highcharts/modules/data';
 import {SensorGroup, SensorGroups} from '@entities/sensors.interfaces';
 
 export const API_BASE_URL = 'https://rpi.xvv.be/sensors';
-export const AUTH_BASE_URL = 'https://auth.rpi.xvv.be/auth';
+export const AUTH_BASE_URL = 'https://rpi.xvv.be/auth';
 export const GOOGLE_AUTH_URL = AUTH_BASE_URL + '/google/login';
 
 export const SENSORS_CHART_OPTIONS: Highcharts.Options = {
