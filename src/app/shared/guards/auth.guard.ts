@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
 				if (!allow) {
 					this.store.dispatch(AuthActions.unAuthorize({payload: state.url}));
 				}
-				if (route.routeConfig.path == Pages.DbTables && !user.authorized) {
+				if (route.routeConfig.path == Pages.DbTables && !user.isAdmin) {
 					this.store.dispatch(AuthActions.unAuthorize({payload: ''}));
 					allow = false;
 				}
