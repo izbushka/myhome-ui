@@ -50,3 +50,9 @@ export const SENSORS_FAVORITES_GROUP: SensorGroup = {
 	members: [],
 	icon: 'star_border',
 };
+
+export const SENSORS_SEARCH_GROUP: SensorGroup = {
+	name: SensorGroups.SearchResults,
+	members: [],
+	icon: 'search',
+};

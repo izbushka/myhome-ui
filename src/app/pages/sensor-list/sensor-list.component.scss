@@ -1,0 +1,35 @@
+:host {
+	.search {
+		background: rgba(var(--black-rgb), 0.4);
+		border-radius: var(--offset-l);
+		bottom: var(--offset);
+		display: flex;
+		flex-direction: row;
+		padding: var(--offset-s);
+		position: fixed;
+		right: var(--offset);
+
+		.input {
+			background: transparent;
+			border: 0;
+			border-radius: var(--offset-s);
+			margin: 0;
+			outline: none;
+			padding: 0;
+			transition: width 0.5s;
+			transition: width margin 0.5s;
+			width: 0;
+		}
+
+		&:hover {
+			padding-left: var(--offset);
+
+			.input {
+				background: var(--grey7);
+				margin: 0 var(--offset-s) 0 0;
+				padding: 0 var(--offset-s);
+				width: 10rem;
+			}
+		}
+	}
+}

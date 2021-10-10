@@ -1,5 +1,5 @@
 import {createReducer, on} from '@ngrx/store';
-import {Icon, Sensor, SensorChartPoint, SensorGroup} from '@entities/sensors.interfaces';
+import {Icon, MappedSensors, Sensor, SensorChartPoint, SensorGroup} from '@entities/sensors.interfaces';
 import {LoadingStatus, status} from '@entities/store.interfaces';
 import {nameOfFactory} from '@entities/nameof.constants';
 import {set} from '@shared/helpers/store/immutable.helper';
@@ -7,7 +7,7 @@ import {SensorsActions} from '@store/sensors/actions';
 import {getApiActionReducers} from '@shared/helpers/store/reducers.helper';
 
 export interface SensorsState {
-	sensors: Sensor[];
+	sensors: MappedSensors;
 	sensorsLoadingStatus: LoadingStatus;
 	sensorDetails: Sensor;
 	sensorDetailsLoadingStatus: LoadingStatus;
