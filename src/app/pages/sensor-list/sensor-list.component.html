@@ -10,7 +10,8 @@
 		</div>
 	</ng-container>
 	<div class="search">
-		<input class="input" matInput [formControl]="ctrl" />
-		<mat-icon>search</mat-icon>
+		<input class="input" matInput spellcheck="false" autocomplete="off" [formControl]="ctrl" />
+		<mat-icon *ngIf="ctrl?.value?.length" (click)="ctrl.setValue('')">clear</mat-icon>
+		<mat-icon *ngIf="!ctrl?.value?.length">search</mat-icon>
 	</div>
 </ng-container>
