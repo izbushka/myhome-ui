@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {PageParams} from '@entities/common.interfaces';
 import {SENSORS_FAVORITES_GROUP, SENSORS_SEARCH_GROUP} from '@entities/sensors.constants';
 import {MappedSensors, Sensor, SensorGroup, SensorGroups} from '@entities/sensors.interfaces';
@@ -6,6 +6,7 @@ import {LoadingStatus} from '@entities/store.interfaces';
 import {Store} from '@ngrx/store';
 import {AppState} from '@store/rootReducer';
 import {RouterSelectors} from '@store/router/selectors';
+import {SensorsActions} from '@store/sensors/actions';
 import {SensorsSelectors} from '@store/sensors/selectors';
 import {combineLatest, Observable} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
@@ -21,7 +22,7 @@ import {map, withLatestFrom} from 'rxjs/operators';
 	`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SensorListContainer {
+export class SensorListContainer implements OnInit {
 	readonly sensorGroups$: Observable<SensorGroup[]>;
 	readonly sensors$: Observable<MappedSensors>;
 	readonly loadingStatus$: Observable<LoadingStatus>;
@@ -30,6 +31,10 @@ export class SensorListContainer {
 		this.sensors$ = this.getFilteredSensors();
 		this.sensorGroups$ = this.getSensorGroups();
 		this.loadingStatus$ = this.store.select(SensorsSelectors.sensors.loadingStatus);
+	}
+
+	public ngOnInit(): void {
+		this.store.dispatch(SensorsActions.localSearch({text: ''}));
 	}
 
 	private getSensorGroups(): Observable<SensorGroup[]> {

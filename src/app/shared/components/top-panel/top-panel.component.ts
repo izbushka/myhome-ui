@@ -15,6 +15,7 @@ import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 })
 export class TopPanelComponent implements OnChanges, OnInit {
 	@Input() isSideBarOpened: boolean;
+	@Input() curPage: Pages;
 	@Input() lastUpdate: number;
 
 	@Output() setLeftPanelState = new EventEmitter<boolean>();

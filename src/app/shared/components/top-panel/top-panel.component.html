@@ -7,7 +7,7 @@
 		<mat-icon class="offline blink" *ngIf="!isFresh">sync_problem</mat-icon>
 	</div>
 	<div class="shortcuts">
-		<div class="search">
+		<div class="search" *ngIf="curPage?.includes(pages.Sensors)">
 			<input class="input" #searchInput matInput spellcheck="false" autocomplete="off" [formControl]="ctrl" />
 			<mat-icon *ngIf="ctrl?.value?.length" (click)="ctrl.setValue('')">search_off</mat-icon>
 			<mat-icon *ngIf="!ctrl?.value?.length" (mouseenter)="searchInput.focus()" (click)="searchInput.focus()">
