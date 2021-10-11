@@ -29,7 +29,7 @@ export class LeftMenuComponent implements OnInit {
 
 	private onResize(): void {
 		fromEvent(window, 'resize')
-			.pipe(untilDestroyed(this), debounceTime(200))
+			.pipe(debounceTime(200), untilDestroyed(this))
 			.subscribe(() => {
 				this.setMode.emit(this.menuMode());
 			});

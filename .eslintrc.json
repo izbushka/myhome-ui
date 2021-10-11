@@ -20,7 +20,8 @@
 				"plugin:@typescript-eslint/recommended-requiring-type-checking",
 				"plugin:@angular-eslint/recommended",
 				"plugin:@angular-eslint/template/process-inline-templates",
-				"plugin:prettier/recommended"
+				"plugin:prettier/recommended",
+				"plugin:rxjs/recommended"
 			],
 			"rules": {
 				"comma-dangle": [
@@ -238,7 +239,16 @@
 							"error"
 						]
 					}
-				]
+				],
+				"rxjs/no-unsafe-takeuntil": [
+					"error",
+					{
+						"alias": [
+							"untilDestroyed"
+						]
+					}
+				],
+				"rxjs/no-implicit-any-catch": "off"
 			}
 		},
 		// NOTE: WE ARE NOT APPLYING PRETTIER IN THIS OVERRIDE, ONLY @ANGULAR-ESLINT/TEMPLATE

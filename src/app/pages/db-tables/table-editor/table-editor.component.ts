@@ -4,7 +4,6 @@ import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {GeneralTableData} from '@shared/entities/administration.interfaces';
 import {NgChanges} from '@shared/entities/ng-changes.types';
 import {DbTablesHelper} from '@shared/helpers/db-tables/db-tables.helper';
-import {Data} from 'highcharts';
 
 @UntilDestroy()
 @Component({
