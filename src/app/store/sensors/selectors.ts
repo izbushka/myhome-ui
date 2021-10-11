@@ -36,6 +36,8 @@ export namespace SensorsSelectors {
 		map: createSelector(getState, (state): MappedIcons => SensorsHelper.mapIcons(state.icons)),
 	};
 
+	export const localSearch = createStateSelector(getState, 'localSearch');
+
 	export const sensorDetails = {
 		logs: createSelector(getState, (state): SensorLog[] => state.sensorDetails?.logs),
 		loadingStatus: createStateSelector(getState, 'sensorDetailsLoadingStatus'),

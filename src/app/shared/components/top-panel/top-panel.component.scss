@@ -3,6 +3,9 @@
 
 	.title {
 		cursor: pointer;
+		flex-shrink: 1;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.top-toolbar {
@@ -20,10 +23,44 @@
 		}
 
 		.shortcuts {
+			align-items: center;
 			display: flex;
 
 			.mat-icon {
 				margin-left: var(--offset);
+			}
+		}
+	}
+
+	.search {
+		// background: rgba(var(--black-rgb), 0.4);
+		// border-radius: var(--offset-l);
+		display: flex;
+		flex-direction: row;
+		// padding: var(--offset-xs);
+
+		.mat-icon {
+			cursor: pointer;
+		}
+
+		.input {
+			border: 0;
+			border-radius: var(--offset-s);
+			caret-color: transparent;
+			margin: 0;
+			outline: none;
+			padding: 0;
+			transition: width 0.5s;
+			width: 0;
+		}
+
+		&:hover {
+			.input {
+				background: var(--grey7);
+				caret-color: rgba(var(--black-rgb), 0.8);
+				margin: 0;
+				padding: 0 var(--offset-s);
+				width: 10rem;
 			}
 		}
 	}

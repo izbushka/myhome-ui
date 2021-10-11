@@ -7,6 +7,7 @@ import {Store} from '@ngrx/store';
 import {RouterActions} from '@store/router/actions';
 import {SensorsSelectors} from '@store/sensors/selectors';
 import {throttleTime} from 'rxjs/operators';
+import {SensorsActions} from '@store/sensors/actions';
 
 @Component({
 	selector: 'rpi-top-panel',
@@ -16,6 +17,7 @@ import {throttleTime} from 'rxjs/operators';
 			[lastUpdate]="lastUpdate$ | async"
 			(setLeftPanelState)="setLeftPanelState($event)"
 			(go)="go($event)"
+			(doSearch)="doSearch($event)"
 		></rpi-top-panel-component>
 	`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,5 +37,9 @@ export class TopPanelContainer {
 
 	public go(page: string | string[]): void {
 		this.store.dispatch(RouterActions.go({url: page}));
+	}
+
+	public doSearch(str: string): void {
+		this.store.dispatch(SensorsActions.localSearch({text: str}));
 	}
 }

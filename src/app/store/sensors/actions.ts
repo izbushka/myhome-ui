@@ -24,6 +24,7 @@ export const SensorsActions = {
 			props<{payload: SensorsResponse['timestamp']}>()
 		),
 	},
+	localSearch: createAction(desc('Sensor List: local search'), props<{text: string}>()),
 	getSensorDetails: getApiActions(desc('Get Sensor Details'), props<{payload: Sensor}>()),
 	getSensorChart: getApiActionsWithPayload(
 		desc('Get Sensor Chart'),

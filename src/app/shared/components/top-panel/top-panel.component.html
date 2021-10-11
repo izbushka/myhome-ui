@@ -7,6 +7,13 @@
 		<mat-icon class="offline blink" *ngIf="!isFresh">sync_problem</mat-icon>
 	</div>
 	<div class="shortcuts">
+		<div class="search">
+			<input class="input" #searchInput matInput spellcheck="false" autocomplete="off" [formControl]="ctrl" />
+			<mat-icon *ngIf="ctrl?.value?.length" (click)="ctrl.setValue('')">search_off</mat-icon>
+			<mat-icon *ngIf="!ctrl?.value?.length" (mouseenter)="searchInput.focus()" (click)="searchInput.focus()">
+				search
+			</mat-icon>
+		</div>
 		<mat-icon (click)="go.emit([pages.Sensors, groups.Favorites])">star_border</mat-icon>
 		<mat-icon (click)="go.emit([pages.Sensors, groups.Light])">lightbulb_outline</mat-icon>
 		<mat-icon (click)="go.emit([pages.Sensors, groups.AC])">ac_unit</mat-icon>

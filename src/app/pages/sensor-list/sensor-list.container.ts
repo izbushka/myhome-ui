@@ -1,14 +1,14 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {PageParams} from '@entities/common.interfaces';
+import {SENSORS_FAVORITES_GROUP, SENSORS_SEARCH_GROUP} from '@entities/sensors.constants';
+import {MappedSensors, Sensor, SensorGroup, SensorGroups} from '@entities/sensors.interfaces';
+import {LoadingStatus} from '@entities/store.interfaces';
 import {Store} from '@ngrx/store';
 import {AppState} from '@store/rootReducer';
-import {SensorsSelectors} from '@store/sensors/selectors';
-import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
-import {MappedSensors, Sensor, SensorGroup, SensorGroups} from '@entities/sensors.interfaces';
-import {map} from 'rxjs/operators';
 import {RouterSelectors} from '@store/router/selectors';
-import {PageParams} from '@entities/common.interfaces';
-import {LoadingStatus} from '@entities/store.interfaces';
-import {SENSORS_FAVORITES_GROUP, SENSORS_SEARCH_GROUP} from '@entities/sensors.constants';
+import {SensorsSelectors} from '@store/sensors/selectors';
+import {combineLatest, Observable} from 'rxjs';
+import {map, withLatestFrom} from 'rxjs/operators';
 
 @Component({
 	selector: 'rpi-sensor-list',
@@ -17,7 +17,6 @@ import {SENSORS_FAVORITES_GROUP, SENSORS_SEARCH_GROUP} from '@entities/sensors.c
 			[sensorGroups]="sensorGroups$ | async"
 			[sensors]="sensors$ | async"
 			[loadingStatus]="loadingStatus$ | async"
-			(doSearch)="search$.next($event)"
 		></rpi-sensor-list-component>
 	`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,7 +25,6 @@ export class SensorListContainer {
 	readonly sensorGroups$: Observable<SensorGroup[]>;
 	readonly sensors$: Observable<MappedSensors>;
 	readonly loadingStatus$: Observable<LoadingStatus>;
-	readonly search$ = new BehaviorSubject<string>('');
 
 	constructor(private store: Store<AppState>) {
 		this.sensors$ = this.getFilteredSensors();
@@ -39,16 +37,13 @@ export class SensorListContainer {
 			this.store.select(SensorsSelectors.sensorGroups.list),
 			this.store.select(RouterSelectors.selectRouteParam(PageParams.GroupId)),
 			this.store.select(SensorsSelectors.sensors.switchedOn),
-			this.search$,
 			this.sensors$,
 		]).pipe(
+			withLatestFrom(this.store.select(SensorsSelectors.localSearch)),
 			map(
-				([groups, groupId, switchedOn, search, filtered]: [
-					SensorGroup[],
-					string,
-					Sensor['id'][],
-					string,
-					MappedSensors
+				([[groups, groupId, switchedOn, filtered], search]: [
+					[SensorGroup[], string, Sensor['id'][], MappedSensors],
+					string
 				]) => {
 					if (groupId === SensorGroups.Favorites) {
 						return [
@@ -73,7 +68,10 @@ export class SensorListContainer {
 	}
 
 	private getFilteredSensors(): Observable<MappedSensors> {
-		return combineLatest([this.store.select(SensorsSelectors.sensors.map), this.search$]).pipe(
+		return combineLatest([
+			this.store.select(SensorsSelectors.sensors.map),
+			this.store.select(SensorsSelectors.localSearch),
+		]).pipe(
 			map(([sensors, search]) => {
 				if (!search) {
 					return sensors;

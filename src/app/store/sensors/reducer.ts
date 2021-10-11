@@ -16,6 +16,7 @@ export interface SensorsState {
 	lastUpdate: number;
 	icons: Icon[];
 	groups: Set<SensorGroup>;
+	localSearch: string;
 }
 
 export const initialSensorsState: SensorsState = {
@@ -28,6 +29,7 @@ export const initialSensorsState: SensorsState = {
 	lastUpdate: 0,
 	icons: null,
 	groups: null,
+	localSearch: '',
 };
 
 export const props = nameOfFactory<SensorsState>();
@@ -54,6 +56,7 @@ export const sensorsReducer = createReducer(
 
 	on(SensorsActions.getSensors.update, (state, {payload}) => set(props('sensors'), payload, state)),
 	on(SensorsActions.getSensors.setTimestamp, (state, {payload}) => set(props('lastUpdate'), payload, state)),
+	on(SensorsActions.localSearch, (state, {text}) => set(props('localSearch'), text, state)),
 	// groups
 	on(SensorsActions.setSensorGroups, (state, {payload}) => set(props('groups'), payload, state))
 );
