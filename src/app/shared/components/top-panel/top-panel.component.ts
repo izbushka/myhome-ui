@@ -22,14 +22,18 @@ export class TopPanelComponent implements OnChanges, OnInit {
 	@Output() go = new EventEmitter<string | string[]>();
 	@Output() doSearch = new EventEmitter<string>();
 
-	ctrl = new FormControl();
 	readonly pages = Pages;
 	readonly groups = SensorGroups;
+	ctrl = new FormControl();
 	isFresh = true;
+	wasPrevPageSensorsList = false;
 
 	public ngOnInit(): void {
 		this.ctrl.valueChanges.pipe(debounceTime(200), untilDestroyed(this)).subscribe((val: string) => {
 			this.doSearch.emit(val.toLowerCase());
+			if (!this.isSensorsListPage() && val) {
+				this.go.emit(Pages.Sensors);
+			}
 		});
 	}
 
@@ -37,9 +41,21 @@ export class TopPanelComponent implements OnChanges, OnInit {
 		if (changes.lastUpdate) {
 			this.isFresh = this.lastUpdate && this.lastUpdate + 60 > new Date().getTime() / 1000;
 		}
+
+		if (changes.curPage) {
+			const isSensorsList = this.isSensorsListPage();
+			if (!isSensorsList || this.wasPrevPageSensorsList) {
+				this.ctrl.setValue('');
+			}
+			this.wasPrevPageSensorsList = isSensorsList;
+		}
 	}
 
 	public toggleSideBar(): void {
 		this.setLeftPanelState.emit(!this.isSideBarOpened);
+	}
+
+	private isSensorsListPage(): boolean {
+		return this.curPage?.includes(Pages.Sensors);
 	}
 }

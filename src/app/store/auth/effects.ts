@@ -23,16 +23,18 @@ export class AuthEffects {
 			withLatestFrom(this.store.select(AuthSelectors.requestedPage), this.store.select(RouterSelectors.url)),
 			map(([, requestedPage, url]) => {
 				let page = requestedPage || url;
-				if (page === Pages.Login || !page) {
+				if (page === Pages.Login) {
 					page = Pages.Sensors;
 				}
 				return page;
 			}),
-			concatMap((page) => [
-				RouterActions.go({url: page}),
-				// TODO: restart polling in router effects after navigation to !login
-				SensorsActions.polling.start(),
-			])
+			concatMap((page) => {
+				const actions = [SensorsActions.polling.start()];
+				if (page) {
+					actions.push(RouterActions.go({url: page}));
+				}
+				return actions;
+			})
 		)
 	);
 
