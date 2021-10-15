@@ -20,11 +20,10 @@
 		<div class="sensor-name">
 			{{ sensor.name }}
 		</div>
-		<mat-icon class="favourites" (click)="toggleFavourites.emit()" *ngIf="isFavourite !== null">{{
+		<mat-icon class="favourites" (click)="toggleFavourites.emit()" *ngIf="isFavourite !== undefined">{{
 			isFavourite ? 'star' : 'star_border'
 		}}</mat-icon>
 	</div>
-
 
 	<rpi-sensor-status [sensor]="sensor"></rpi-sensor-status>
 	<div class="down-right">
