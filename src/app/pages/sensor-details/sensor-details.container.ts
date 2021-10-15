@@ -18,6 +18,7 @@ import {LoadingStatus} from '@entities/store.interfaces';
 			[logs]="sensorLogs$ | async"
 			[loadingStatus]="loadingStatus$ | async"
 			[sensorChart]="chart$ | async"
+			[isFavourite]="isFavourite$ | async"
 			[chartLoadingStatus]="chartLoadingStatus$ | async"
 			(updateChart)="updateChart($event)"
 		></rpi-sensor-details-component>
@@ -26,6 +27,7 @@ import {LoadingStatus} from '@entities/store.interfaces';
 })
 export class SensorDetailsContainer implements OnInit {
 	sensor$: Observable<Sensor>;
+	isFavourite$: Observable<boolean>;
 	sensorLogs$: Observable<SensorLog[]>;
 	loadingStatus$: Observable<LoadingStatus>;
 	chart$: Observable<SensorChartPoint[]>;
@@ -36,6 +38,11 @@ export class SensorDetailsContainer implements OnInit {
 			this.store.select(SensorsSelectors.sensors.map),
 			this.store.select(RouterSelectors.selectRouteParam(PageParams.SensorId)),
 		]).pipe(map(([sensors, sensorId]) => sensors?.[+sensorId]));
+
+		this.isFavourite$ = combineLatest([
+			this.store.select(SensorsSelectors.favourites),
+			this.store.select(RouterSelectors.selectRouteParam(PageParams.SensorId)),
+		]).pipe(map(([favourites, sensorId]) => favourites.includes(+sensorId)));
 
 		this.sensorLogs$ = this.store.select(SensorsSelectors.sensorDetails.logs);
 		this.loadingStatus$ = this.store.select(SensorsSelectors.sensorDetails.loadingStatus);

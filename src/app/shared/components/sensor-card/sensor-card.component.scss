@@ -47,4 +47,11 @@
 		visibility: visible;
 	}
 
+	.favourites {
+		display: none;
+	}
+
+	&:hover .favourites {
+		display: inline-block;
+	}
 }

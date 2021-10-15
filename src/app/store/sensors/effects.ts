@@ -27,6 +27,7 @@ import {SENSORS_POLLING_INTERVAL} from '@entities/common.constants';
 import {RouterSelectors} from '@store/router/selectors';
 import {PageParams, Pages} from '@entities/common.interfaces';
 import {mapApiActions} from '@shared/helpers/store/effects.helper';
+import {ErrorPayload} from '../../shared/helpers/store/actions.helper';
 
 @Injectable()
 export class SensorsEffects {
@@ -94,6 +95,27 @@ export class SensorsEffects {
 		this.actions$.pipe(
 			ofType(SensorsActions.getIcons.requested),
 			switchMap(() => this.sensorsApiService.getIcons().pipe(mapApiActions(SensorsActions.getIcons)))
+		)
+	);
+
+	getFavourites$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(SensorsActions.getFavourites.requested),
+			withLatestFrom(this.store.select(SensorsSelectors.favourites)),
+			filter(([, favourites]) => favourites.length === 0),
+			switchMap(() => this.sensorsApiService.getFavourites().pipe(mapApiActions(SensorsActions.getFavourites)))
+		)
+	);
+
+	toggleFavourites$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(SensorsActions.toggleFavourites.requested),
+			switchMap(({id}) =>
+				this.sensorsApiService.toggleFavourites(id).pipe(
+					map((payload) => SensorsActions.getFavourites.succeeded({payload})),
+					catchError((error: ErrorPayload) => of(SensorsActions.toggleFavourites.failed(error)))
+				)
+			)
 		)
 	);
 

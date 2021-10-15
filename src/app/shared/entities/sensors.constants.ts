@@ -51,6 +51,12 @@ export const SENSORS_FAVORITES_GROUP: SensorGroup = {
 	icon: 'star_border',
 };
 
+export const SENSORS_SWITCHED_ON_GROUP: SensorGroup = {
+	name: SensorGroups.SwitchedOn,
+	members: [],
+	icon: 'power_settings_new',
+};
+
 export const SENSORS_SEARCH_GROUP: SensorGroup = {
 	name: SensorGroups.SearchResults,
 	members: [],

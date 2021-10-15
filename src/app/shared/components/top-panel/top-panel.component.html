@@ -14,6 +14,7 @@
 				search
 			</mat-icon>
 		</div>
+		<mat-icon (click)="go.emit([pages.Sensors, groups.SwitchedOn])">power_settings_new</mat-icon>
 		<mat-icon (click)="go.emit([pages.Sensors, groups.Favorites])">star_border</mat-icon>
 		<mat-icon (click)="go.emit([pages.Sensors, groups.Light])">lightbulb_outline</mat-icon>
 		<mat-icon (click)="go.emit([pages.Sensors, groups.AC])">ac_unit</mat-icon>

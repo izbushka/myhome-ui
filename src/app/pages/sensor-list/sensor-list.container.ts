@@ -9,6 +9,7 @@ import {RouterSelectors} from '@store/router/selectors';
 import {SensorsSelectors} from '@store/sensors/selectors';
 import {combineLatest, Observable} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
+import {SENSORS_SWITCHED_ON_GROUP} from '../../shared/entities/sensors.constants';
 
 @Component({
 	selector: 'rpi-sensor-list',
@@ -39,16 +40,28 @@ export class SensorListContainer {
 			this.store.select(SensorsSelectors.sensors.switchedOn),
 			this.sensors$,
 		]).pipe(
-			withLatestFrom(this.store.select(SensorsSelectors.localSearch)),
+			withLatestFrom(
+				this.store.select(SensorsSelectors.localSearch),
+				this.store.select(SensorsSelectors.favourites)
+			),
 			map(
-				([[groups, groupId, switchedOn, filtered], search]: [
+				([[groups, groupId, switchedOn, filtered], search, favourites]: [
 					[SensorGroup[], string, Sensor['id'][], MappedSensors],
-					string
+					string,
+					Sensor['id'][]
 				]) => {
 					if (groupId === SensorGroups.Favorites) {
 						return [
 							{
 								...SENSORS_FAVORITES_GROUP,
+								members: favourites,
+							},
+						];
+					}
+					if (groupId === SensorGroups.SwitchedOn) {
+						return [
+							{
+								...SENSORS_SWITCHED_ON_GROUP,
 								members: switchedOn,
 							},
 						];

@@ -29,7 +29,7 @@ export class AuthEffects {
 				return page;
 			}),
 			concatMap((page) => {
-				const actions = [SensorsActions.polling.start()];
+				const actions = [SensorsActions.polling.start(), SensorsActions.getFavourites.requested()];
 				if (page) {
 					actions.push(RouterActions.go({url: page}));
 				}

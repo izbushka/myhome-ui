@@ -6,22 +6,10 @@ import {SensorListRouterModule} from '@pages/sensor-list/sensor-list.router.modu
 import {GroupCardModule} from '@shared/components/group-card/group-card.module';
 import {SpinnerModule} from '@shared/components/spinner/spinner.module';
 import {SensorCardModule} from '@shared/components/sensor-card/sensor-card.module';
-import {MatIconModule} from '@angular/material/icon';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
 	declarations: [SensorListComponent, SensorListContainer],
-	imports: [
-		CommonModule,
-		SensorListRouterModule,
-		GroupCardModule,
-		SpinnerModule,
-		SensorCardModule,
-		MatIconModule,
-		ReactiveFormsModule,
-		MatInputModule,
-	],
+	imports: [CommonModule, SensorListRouterModule, GroupCardModule, SpinnerModule, SensorCardModule],
 	exports: [SensorListContainer],
 })
 export class SensorListModule {}

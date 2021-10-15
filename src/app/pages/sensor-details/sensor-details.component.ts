@@ -15,6 +15,7 @@ import {take} from 'rxjs/operators';
 })
 export class SensorDetailsComponent implements OnChanges {
 	@Input() sensor: Sensor;
+	@Input() isFavourite: boolean;
 	@Input() logs: SensorLog[];
 	@Input() loadingStatus: LoadingStatus;
 	@Input() sensorChart: SensorChartPoint[];

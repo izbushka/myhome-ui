@@ -15,6 +15,7 @@ export interface SensorsState {
 	sensorChartLoadingStatus: LoadingStatus;
 	lastUpdate: number;
 	icons: Icon[];
+	favourites: Sensor['id'][];
 	groups: Set<SensorGroup>;
 	localSearch: string;
 }
@@ -28,6 +29,7 @@ export const initialSensorsState: SensorsState = {
 	sensorChartLoadingStatus: null,
 	lastUpdate: 0,
 	icons: null,
+	favourites: [],
 	groups: null,
 	localSearch: '',
 };
@@ -41,6 +43,8 @@ export const sensorsReducer = createReducer(
 	on(SensorsActions.resetState, () => initialSensorsState),
 	// icons
 	on(SensorsActions.getIcons.succeeded, (state, {payload}) => set(props('icons'), payload, state)),
+	// favourites
+	on(SensorsActions.getFavourites.succeeded, (state, {payload}) => set(props('favourites'), payload, state)),
 	// sensor details
 	...apiActionsReducers(SensorsActions.getSensorDetails, 'sensorDetails'),
 	// sensor chart

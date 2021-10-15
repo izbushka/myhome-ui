@@ -1,20 +1,34 @@
 <mat-card class="card" *ngIf="sensor">
-	<div class="name" (click)="toDetails.emit(sensor.id)">
-		<mat-icon [matTooltip]="sensor|json" matTooltipShowDelay=2000 matTooltipClass="tooltip-no-wrap" *ngIf="sensor.readonly">{{sensor.icon}}</mat-icon>
-		<mat-icon [matTooltip]="sensor|json" matTooltipShowDelay=2000 matTooltipClass="tooltip-no-wrap" *ngIf="!sensor.readonly" rpiSensorState [sensor]="sensor">
-			{{sensor.icon}}
+	<div class="name" (click)="toDetails.emit()">
+		<mat-icon
+			[matTooltip]="sensor | json"
+			matTooltipShowDelay="2000"
+			matTooltipClass="tooltip-no-wrap"
+			*ngIf="sensor.readonly"
+			>{{ sensor.icon }}</mat-icon
+		>
+		<mat-icon
+			[matTooltip]="sensor | json"
+			matTooltipShowDelay="2000"
+			matTooltipClass="tooltip-no-wrap"
+			*ngIf="!sensor.readonly"
+			rpiSensorState
+			[sensor]="sensor"
+		>
+			{{ sensor.icon }}
 		</mat-icon>
 		<div class="sensor-name">
-			{{sensor.name}}
+			{{ sensor.name }}
 		</div>
+		<mat-icon class="favourites" (click)="toggleFavourites.emit()" *ngIf="isFavourite !== null">{{
+			isFavourite ? 'star' : 'star_border'
+		}}</mat-icon>
 	</div>
+
+
 	<rpi-sensor-status [sensor]="sensor"></rpi-sensor-status>
 	<div class="down-right">
-		<span class="id">
-			id: {{sensor.id}}
-		</span>
-		{{sensor.lastChange|timeAgo}}
+		<span class="id"> id: {{ sensor.id }} </span>
+		{{ sensor.lastChange | timeAgo }}
 	</div>
 </mat-card>
-
-

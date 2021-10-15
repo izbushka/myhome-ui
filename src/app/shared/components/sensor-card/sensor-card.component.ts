@@ -9,5 +9,7 @@ import {Sensor} from '@entities/sensors.interfaces';
 })
 export class SensorCardComponent {
 	@Input() sensor: Sensor;
-	@Output() toDetails = new EventEmitter<number>();
+	@Input() isFavourite: boolean;
+	@Output() toDetails = new EventEmitter<void>();
+	@Output() toggleFavourites = new EventEmitter<void>();
 }

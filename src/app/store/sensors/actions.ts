@@ -42,4 +42,10 @@ export const SensorsActions = {
 		stopByVisibility: createAction(desc('Stop Sensors Polling by Page Visibility API')),
 	},
 	getIcons: getApiActions(desc('Get Icons'), props<{payload: Icon[]}>()),
+	getFavourites: getApiActions(desc('Get Favourites List'), props<{payload: Sensor['id'][]}>()),
+	toggleFavourites: getApiActionsWithPayload(
+		desc('Add/remove from Favourites List'),
+		props<{id: Sensor['id']}>(),
+		props<{payload: Sensor['id'][]}>()
+	),
 };

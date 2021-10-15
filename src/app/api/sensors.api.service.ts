@@ -34,6 +34,18 @@ export class SensorsApiService {
 		return this.http.get<IconsApiResponse>(url).pipe(take(1));
 	}
 
+	public getFavourites(): Observable<Sensor['id'][]> {
+		const url = `${API_BASE_URL}/favourites`;
+
+		return this.http.get<Sensor['id'][]>(url).pipe(take(1));
+	}
+
+	public toggleFavourites(id: Sensor['id']): Observable<Sensor['id'][]> {
+		const url = `${API_BASE_URL}/favourites/toggle/${id}`;
+
+		return this.http.get<Sensor['id'][]>(url).pipe(take(1));
+	}
+
 	public getSensorDetails(id: Sensor['id']): Observable<Sensor> {
 		const url = `${API_BASE_URL}/states/${id}`;
 

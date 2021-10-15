@@ -37,6 +37,7 @@ export namespace SensorsSelectors {
 	};
 
 	export const localSearch = createStateSelector(getState, 'localSearch');
+	export const favourites = createStateSelector(getState, 'favourites');
 
 	export const sensorDetails = {
 		logs: createSelector(getState, (state): SensorLog[] => state.sensorDetails?.logs),
