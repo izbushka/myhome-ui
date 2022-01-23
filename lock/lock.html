@@ -1,9 +1,11 @@
 <html>
 <head>
 	<meta http-equiv='content-type' content='text/html; charset=utf-8'>
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Google+Sans:400,500&amp;display=swap">
 	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-	<link rel="apple-touch-icon" href="/apple-home-screen-icon.png">
-	<meta http-equiv="Cache-Control" content="max-age=604800, stale-while-revalidate=604800, stale-if-error=604800, immutable, public">
+	<link rel='apple-touch-icon' href='/apple-home-screen-icon.png'>
+	<meta http-equiv='Cache-Control'
+		  content='max-age=604800, stale-while-revalidate=604800, stale-if-error=604800, immutable, public'>
 
 	<title>Home Door</title>
 	<style>
@@ -166,12 +168,12 @@
 
 		@-webkit-keyframes rotating /* Safari and Chrome */
 		{
-			from {
+			to {
 				-webkit-transform: rotate(0deg);
 				-o-transform: rotate(0deg);
 				transform: rotate(0deg);
 			}
-			to {
+			from {
 				-webkit-transform: rotate(360deg);
 				-o-transform: rotate(360deg);
 				transform: rotate(360deg);
@@ -179,14 +181,14 @@
 		}
 
 		@keyframes rotating {
-			from {
+			to {
 				-ms-transform: rotate(0deg);
 				-moz-transform: rotate(0deg);
 				-webkit-transform: rotate(0deg);
 				-o-transform: rotate(0deg);
 				transform: rotate(0deg);
 			}
-			to {
+			from {
 				-ms-transform: rotate(360deg);
 				-moz-transform: rotate(360deg);
 				-webkit-transform: rotate(360deg);
@@ -201,6 +203,25 @@
 			-ms-animation: rotating 2s linear infinite;
 			-o-animation: rotating 2s linear infinite;
 			animation: rotating 2s linear infinite;
+		}
+
+		.login {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-top: 1rem;
+			visibility: hidden;
+		}
+
+		.login a {
+			display: inline-block;
+			text-decoration: none;
+			background-color: #4285f4;
+			padding: 0.8rem 2rem;
+			color: #fff;
+			box-shadow: 1px 1px 2px 1px #000000a8;
+			font-family: "Google Sans";
+			cursor: pointer;
 		}
 
 	</style>
@@ -237,12 +258,22 @@
 	</div>
 </div>
 
+<div class='login' id='signin'>
+	<a href='https://rpi.xvv.be/auth/google/login?target=https://rpi.xvv.be/auth/?target=/lock.html'>
+		Sign in with Google
+	</a>
+</div>
+
 <script>
 	window.onfocus = getState;
+	// const apiUrl = 'http://192.168.68.2';
+	const apiUrl = 'https://rpi.xvv.be';
 
 	const slider = document.getElementById('slider');
 	const thumb = slider.querySelector('.thumb');
 	const status = document.body;
+	const signin = document.getElementById('signin');
+
 	let loaderTimeout;
 	let loading = false;
 	let isDoorLocked = false;
@@ -270,8 +301,14 @@
 			setStatus('loading');
 		}, 1000);
 
-		fetch('http://192.168.68.2/sensors/states')
+		fetch(`${apiUrl}/sensors/states`)
 			.then((response) => {
+				if (response.status === 403) {
+					signin.style.visibility = 'visible';
+					setStatus('loading')
+				} else {
+					signin.style.visibility = 'hidden';
+				}
 				return response.json();
 			})
 			.then((data) => {
@@ -288,7 +325,7 @@
 			}).catch((e) => {
 				clearTimeout(loaderTimeout);
 				if (!document.hidden) {
-					setTimeout(getState, 200);
+					setTimeout(getState, 400);
 				}
 				loading = false;
 			},
@@ -298,11 +335,11 @@
 	function setLockStatus(lock) {
 		setStatus('loading');
 		if (lock) {
-			fetch('http://192.168.68.2/sensors/closeLock').then(() => {
+			fetch(`${apiUrl}/sensors/closeLock`).then(() => {
 				getState();
 			});
 		} else {
-			fetch('http://192.168.68.2/sensors/openLock').then(() => {
+			fetch(`${apiUrl}/sensors/openLock`).then(() => {
 				getState();
 			});
 		}
@@ -364,7 +401,7 @@
 			document.removeEventListener('touchmove', onMouseMove);
 
 			if (currentOffset * 1.05 >= rightEdge) {
-				setLockStatus(!isDoorLocked)
+				setLockStatus(!isDoorLocked);
 			}
 
 			currentOffset = 0;
