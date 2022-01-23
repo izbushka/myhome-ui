@@ -1,0 +1,377 @@
+<html>
+<head>
+	<meta http-equiv='content-type' content='text/html; charset=utf-8'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+	<link rel="apple-touch-icon" href="/apple-home-screen-icon.png">
+	<meta http-equiv="Cache-Control" content="max-age=604800, stale-while-revalidate=604800, stale-if-error=604800, immutable, public">
+
+	<title>Home Door</title>
+	<style>
+		body {
+			background: black;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+		}
+
+		.container {
+			padding: 5px;
+			background-image: -webkit-linear-gradient(#777, #444 50%, #333 50%, black);
+			background-repeat: no-repeat;
+			display: flex;
+		}
+
+		* {
+			-webkit-user-select: none;
+		}
+
+		@-webkit-keyframes animated {
+			from {
+				background-position: -300px 0;
+			}
+			to {
+				background-position: 300px 0;
+			}
+		}
+
+		.animated {
+			-webkit-animation: animated 2s linear infinite;
+			-webkit-background-clip: text;
+			background-color: #999;
+			background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+			background-repeat: no-repeat;
+			color: transparent;
+			font-family: Arial, Helvetica, Sans-serif;
+			font-size: 17px;
+			line-height: 20px;
+			position: relative;
+			text-transform: lowercase;
+			top: 1px;
+			width: 100%;
+			text-align: center;
+		}
+
+		.thumb {
+			background-image: -webkit-linear-gradient(#fff, #d9d9d9 45%, #ccc 45%, #bbb);
+			border-radius: 5px;
+			cursor: pointer;
+			left: 0px;
+			height: 26px;
+			position: absolute;
+			top: 2px;
+			width: 35px;
+			margin-left: 2px;
+		}
+
+		.thumb .bar {
+			background-color: #666;
+			left: 7px;
+			height: 5px;
+			top: 11px;
+			width: 14px;
+			position: absolute;
+		}
+
+		.thumb .bars {
+			background-color: rgba(255, 255, 255, 0.6);
+			left: 7px;
+			height: 5px;
+			top: 12px;
+			width: 14px;
+			position: absolute;
+		}
+
+		.thumb .bars2 {
+			background-color: rgba(0, 0, 0, 0.6);
+			left: 7px;
+			height: 5px;
+			top: 10px;
+			width: 14px;
+			position: absolute;
+		}
+
+		.thumb .triangle {
+			border: 6px solid transparent;
+			border-left-color: #666;
+			left: 20px;
+			position: absolute;
+			top: 7px;
+		}
+
+		.thumb .triangles {
+			border: 6px solid transparent;
+			border-left-color: rgba(255, 255, 255, 0.6);
+			left: 20px;
+			position: absolute;
+			top: 8px;
+		}
+
+		.thumb .triangles2 {
+			border: 6px solid transparent;
+			border-left-color: rgba(0, 0, 0, 0.6);
+			left: 20px;
+			position: absolute;
+			top: 6px;
+		}
+
+		.slider {
+			flex: 1;
+			background-image: -webkit-linear-gradient(black, #222 60%, #242424 60%, #444);
+			border: 1px solid #777;
+			border-radius: 5px;
+			margin: 10px 15%;
+			padding: 5px 5px 5px 5px;
+			position: relative;
+		}
+
+		.status {
+			background: #777;
+			height: 60%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.status .icon {
+			width: 30vw;
+			height: 30vw;
+			fill: red
+		}
+
+		.icon.closed {
+			fill: #00ff00;
+		}
+
+		.icon.loading {
+			fill: grey;
+		}
+
+		.opened .slider .closed,
+		.opened .slider .loading,
+		.closed .slider .opened,
+		.closed .slider .loading,
+		.loading .slider .opened,
+		.loading .slider .closed,
+		.loading .slider .thumb,
+		.opened .status .closed,
+		.opened .status .loading,
+		.closed .status .opened,
+		.closed .status .loading,
+		.loading .status .closed,
+		.loading .status .opened {
+			display: none;
+		}
+
+
+		@-webkit-keyframes rotating /* Safari and Chrome */
+		{
+			from {
+				-webkit-transform: rotate(0deg);
+				-o-transform: rotate(0deg);
+				transform: rotate(0deg);
+			}
+			to {
+				-webkit-transform: rotate(360deg);
+				-o-transform: rotate(360deg);
+				transform: rotate(360deg);
+			}
+		}
+
+		@keyframes rotating {
+			from {
+				-ms-transform: rotate(0deg);
+				-moz-transform: rotate(0deg);
+				-webkit-transform: rotate(0deg);
+				-o-transform: rotate(0deg);
+				transform: rotate(0deg);
+			}
+			to {
+				-ms-transform: rotate(360deg);
+				-moz-transform: rotate(360deg);
+				-webkit-transform: rotate(360deg);
+				-o-transform: rotate(360deg);
+				transform: rotate(360deg);
+			}
+		}
+
+		.rotating {
+			-webkit-animation: rotating 2s linear infinite;
+			-moz-animation: rotating 2s linear infinite;
+			-ms-animation: rotating 2s linear infinite;
+			-o-animation: rotating 2s linear infinite;
+			animation: rotating 2s linear infinite;
+		}
+
+	</style>
+
+</head>
+<body class='loading'>
+<div class='status'>
+	<svg class='icon closed' xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>
+		<path
+			d='M14 9v2h-4v-2c0-1.104.897-2 2-2s2 .896 2 2zm10 3c0 6.627-5.373 12-12 12s-12-5.373-12-12 5.373-12 12-12 12 5.373 12 12zm-8-1h-1v-2c0-1.656-1.343-3-3-3s-3 1.344-3 3v2h-1v6h8v-6z' />
+	</svg>
+	<svg class='icon opened' xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>
+		<path
+			d='M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 17h-8v-6h2v-2c0-1.103-.897-2-2-2s-2 .897-2 2v1h-1v-1c0-1.656 1.343-3 3-3s3 1.344 3 3v2h5v6z' />
+	</svg>
+	<svg class='icon loading rotating' xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>
+		<path
+			d='M23 12c0 1.042-.154 2.045-.425 3h-2.101c.335-.94.526-1.947.526-3 0-4.962-4.037-9-9-9-1.706 0-3.296.484-4.655 1.314l1.858 2.686h-6.994l2.152-7 1.849 2.673c1.684-1.049 3.659-1.673 5.79-1.673 6.074 0 11 4.925 11 11zm-6.354 7.692c-1.357.826-2.944 1.308-4.646 1.308-4.962 0-9-4.038-9-9 0-1.053.191-2.06.525-3h-2.1c-.271.955-.425 1.958-.425 3 0 6.075 4.925 11 11 11 2.127 0 4.099-.621 5.78-1.667l1.853 2.667 2.152-6.989h-6.994l1.855 2.681z' />
+	</svg>
+</div>
+<div class='container'>
+	<div class='slider' id='slider'>
+		<div class='animated closed'>Slide to open</div>
+		<div class='animated opened'>Slide to close</div>
+		<div class='animated loading'>Loading...</div>
+		<div class='thumb'>
+			<span class='bars2'></span>
+			<span class='bars'></span>
+			<span class='bar'></span>
+			<span class='triangles2'></span>
+			<span class='triangles'></span>
+			<span class='triangle'></span>
+		</div>
+	</div>
+</div>
+
+<script>
+	window.onfocus = getState;
+
+	const slider = document.getElementById('slider');
+	const thumb = slider.querySelector('.thumb');
+	const status = document.body;
+	let loaderTimeout;
+	let loading = false;
+	let isDoorLocked = false;
+
+	const thumbWidth = 42;
+	let rightEdge = slider.offsetWidth - thumbWidth;
+	let currentOffset = 0;
+
+	thumb.onmousedown = dragStart;
+	thumb.ontouchstart = dragStart;
+
+	thumb.ondragstart = function() {
+		return false;
+	};
+
+	getState();
+
+	function getState() {
+		if (loading) {
+			return;
+		}
+		loading = true;
+
+		loaderTimeout = setTimeout(() => {
+			setStatus('loading');
+		}, 1000);
+
+		fetch('http://192.168.68.2/sensors/states')
+			.then((response) => {
+				return response.json();
+			})
+			.then((data) => {
+				clearTimeout(loaderTimeout);
+				const doorState = data.sensors.find((data) => data.sensor_id === 2).state;
+				setStatus(doorState === 'ON' ? 'closed' : 'opened');
+				setTimeout(() => {
+					if (!document.hidden) {
+						getState();
+					}
+				}, 2000);
+				loading = false;
+
+			}).catch((e) => {
+				clearTimeout(loaderTimeout);
+				if (!document.hidden) {
+					setTimeout(getState, 200);
+				}
+				loading = false;
+			},
+		);
+	}
+
+	function setLockStatus(lock) {
+		setStatus('loading');
+		if (lock) {
+			fetch('http://192.168.68.2/sensors/closeLock').then(() => {
+				getState();
+			});
+		} else {
+			fetch('http://192.168.68.2/sensors/openLock').then(() => {
+				getState();
+			});
+		}
+	}
+
+	function setStatus(state) {
+		switch (state) {
+			case 'opened':
+				isDoorLocked = false;
+				status.classList.remove('closed');
+				status.classList.remove('loading');
+				status.classList.add('opened');
+				break;
+			case 'closed':
+				isDoorLocked = true;
+				status.classList.remove('opened');
+				status.classList.remove('loading');
+				status.classList.add('closed');
+				break;
+			case 'loading':
+				status.classList.remove('closed');
+				status.classList.remove('opened');
+				status.classList.add('loading');
+				break;
+		}
+	}
+
+	function dragStart(event) {
+		event.preventDefault(); // предотвратить запуск выделения (действие браузера)
+		currentOffset = 0;
+		let shiftX = (event.clientX ?? event.touches[0].clientX) - thumb.getBoundingClientRect().left;
+		// shiftY здесь не нужен, слайдер двигается только по горизонтали
+
+		document.addEventListener('mousemove', onMouseMove);
+		document.addEventListener('mouseup', onMouseUp);
+		document.addEventListener('touchmove', onMouseMove);
+		document.addEventListener('touchend', onMouseUp);
+
+		function onMouseMove(event) {
+			const x = event.clientX ?? event.touches[0].clientX;
+			currentOffset = x - shiftX - slider.getBoundingClientRect().left;
+
+			// курсор вышел из слайдера => оставить бегунок в его границах.
+			if (currentOffset < 0) {
+				currentOffset = 0;
+			}
+
+			if (currentOffset > rightEdge) {
+				currentOffset = rightEdge;
+			}
+
+			thumb.style.left = currentOffset + 'px';
+		}
+
+		function onMouseUp(event) {
+			document.removeEventListener('mouseup', onMouseUp);
+			document.removeEventListener('mousemove', onMouseMove);
+			document.removeEventListener('touchend', onMouseUp);
+			document.removeEventListener('touchmove', onMouseMove);
+
+			if (currentOffset * 1.05 >= rightEdge) {
+				setLockStatus(!isDoorLocked)
+			}
+
+			currentOffset = 0;
+			thumb.style.left = 0 + 'px';
+		}
+
+	};
+</script>
+</body>
+</html>
