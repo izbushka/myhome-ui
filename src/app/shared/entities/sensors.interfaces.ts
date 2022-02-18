@@ -140,8 +140,8 @@ export enum AcMode {
 
 export enum SensorGroups {
 	Favorites = 'favorites',
-	SearchResults = 'Search Results',
-	SwitchedOn = 'Switched On',
+	SearchResults = 'SearchResults',
+	SwitchedOn = 'SwitchedOn',
 	AC = 'air-conditioner',
 	Light = 'light-switch',
 }

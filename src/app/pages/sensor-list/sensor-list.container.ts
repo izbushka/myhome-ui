@@ -74,7 +74,18 @@ export class SensorListContainer {
 							},
 						];
 					}
-					return groupId ? [groups.find((item) => item.name === groupId)] : groups;
+
+					if (!groupId) {
+						return groups;
+					}
+
+					const requestedGroup = groups.find((item) => item.name === groupId);
+
+					if (!requestedGroup) {
+						return groups;
+					}
+
+					return [requestedGroup];
 				}
 			)
 		);
