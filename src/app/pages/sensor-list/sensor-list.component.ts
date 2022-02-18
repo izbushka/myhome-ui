@@ -18,6 +18,6 @@ export class SensorListComponent {
 	}
 
 	public trackGroup(i: number, group: SensorGroup): Sensor['group'] {
-		return group.name;
+		return group?.name;
 	}
 }
