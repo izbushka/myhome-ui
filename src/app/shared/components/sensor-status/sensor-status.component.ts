@@ -3,6 +3,7 @@ import {Sensor, SensorFullState, SensorGroups, SensorState} from '@entities/sens
 import {MatDialog} from '@angular/material/dialog';
 import {AcControlContainer} from '@shared/components/ac-control/ac-control.container';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
+import {ScheduleStateContainer} from '@shared/components/schedule-state/schedule-state.container';
 
 @Component({
 	selector: 'rpi-sensor-status-component',
@@ -19,7 +20,7 @@ export class SensorStatusComponent {
 	state: SensorState;
 	groups = SensorGroups;
 
-	constructor(public dialog: MatDialog) {}
+	constructor(private dialog: MatDialog) {}
 
 	public toggle(state: MatSlideToggleChange): void {
 		const newState = state.checked ? SensorState.On : SensorState.Off;
@@ -34,8 +35,16 @@ export class SensorStatusComponent {
 		});
 	}
 
-	public openAcControl(): void {
-		this.dialog.open(AcControlContainer, {
+	public openSettings(): void {
+		if (this.sensor.group === SensorGroups.AC) {
+			this.dialog.open(AcControlContainer, {
+				width: '500px',
+				height: 'fit-content',
+				data: this.sensor,
+			});
+			return;
+		}
+		this.dialog.open(ScheduleStateContainer, {
 			width: '500px',
 			height: 'fit-content',
 			data: this.sensor,

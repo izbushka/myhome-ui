@@ -5,6 +5,6 @@ import {SensorStateDirective} from '@shared/directives/sensor-state.directive';
 @NgModule({
 	declarations: [SensorStateDirective],
 	imports: [CommonModule],
-	exports: [SensorStateDirective],
+	exports: [SensorStateDirective, CommonModule],
 })
 export class SharedModule {}

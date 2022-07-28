@@ -1,0 +1,48 @@
+<div [formGroup]="form" mat-dialog-content>
+	<h1 class="title">
+        <span class="title-name">
+            {{sensor.name}}
+        </span>
+		<span>
+            [{{sensor.sensorState}}]
+        </span>
+	</h1>
+	<div *ngIf="sensor">
+		<div class="table">
+			<div class="line">
+				<div>State</div>
+				<div class="right">
+					<mat-slide-toggle formControlName="state"></mat-slide-toggle>
+				</div>
+			</div>
+			<div class="line">
+				<div>Schedule Time</div>
+				<div class="right">
+					<mat-form-field>
+						<input formControlName="date" matInput type="datetime-local">
+					</mat-form-field>
+				</div>
+			</div>
+			<mat-slider
+				(input)="addMinutes($event.value)"
+				[displayWith]="formatSlider"
+				[style.width]="'99%'"
+				max="120"
+				min="1"
+				thumbLabel
+				tickInterval="1"
+			></mat-slider>
+		</div>
+	</div>
+	<rpi-list-of-schedules [sensorId]="sensor.id"></rpi-list-of-schedules>
+</div>
+<div mat-dialog-actions>
+	<div class="flex buttons">
+		<div>
+			<button (click)="setSchedule()" mat-button>Add Schedule</button>
+		</div>
+		<div>
+			<button (click)="closeModal.emit()" mat-button>Close</button>
+		</div>
+	</div>
+</div>

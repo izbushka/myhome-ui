@@ -1,0 +1,29 @@
+<h1 *ngIf="!sensorId" class="title">
+	<span class="title-name">
+		Scheduled Events
+	</span>
+</h1>
+<div *ngIf="!sensorId && !schedules?.length" class="no-data">
+	There Are No Active Schedules
+</div>
+<div *ngFor="let schedule of schedules" [class.single]="sensorId" class="line">
+	<div class="name">
+		{{sensors[schedule.id].name}}
+	</div>
+	<div class="date">
+		{{schedule.timestamp * 1000 | date: 'YYYY-MM-dd HH:mm'}}
+	</div>
+	<div class="state">
+		{{schedule.state}}
+	</div>
+	<mat-icon (click)="deleteSchedule.emit(schedule.scheduleId)" class="actions">
+		delete
+	</mat-icon>
+</div>
+<div *ngIf="!sensorId" mat-dialog-actions>
+	<div class="flex buttons">
+		<div>
+			<button (click)="closeModal.emit()" mat-button>Close</button>
+		</div>
+	</div>
+</div>

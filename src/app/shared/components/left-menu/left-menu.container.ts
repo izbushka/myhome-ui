@@ -9,6 +9,8 @@ import {AppState} from '@store/rootReducer';
 import {RouterActions} from '@store/router/actions';
 import {SensorsSelectors} from '@store/sensors/selectors';
 import {Observable} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {ListOfSchedulesContainer} from '@shared/components/list-of-schedules/list-of-schedules.container';
 
 @Component({
 	selector: 'rpi-left-menu',
@@ -17,6 +19,7 @@ import {Observable} from 'rxjs';
 			[groups]="sensorGroups$ | async"
 			[user]="user$ | async"
 			(go)="go($event)"
+			(showSchedules)="showSchedules()"
 			(setMode)="setMode($event)"
 		></rpi-left-menu-component>
 	`,
@@ -26,7 +29,7 @@ export class LeftMenuContainer {
 	sensorGroups$: Observable<SensorGroup[]>;
 	user$: Observable<AuthUser>;
 
-	constructor(private store: Store<AppState>) {
+	constructor(private store: Store<AppState>, private dialog: MatDialog) {
 		this.sensorGroups$ = this.store.select(SensorsSelectors.sensorGroups.list);
 		this.user$ = this.store.select(AuthSelectors.user);
 	}
@@ -42,5 +45,13 @@ export class LeftMenuContainer {
 
 	public setMode(mode: LeftPanelModes): void {
 		this.store.dispatch(CommonActions.setLeftPanelMode({mode}));
+	}
+
+	public showSchedules(): void {
+		this.dialog.open(ListOfSchedulesContainer, {
+			width: '500px',
+			height: 'fit-content',
+			data: {id: null},
+		});
 	}
 }

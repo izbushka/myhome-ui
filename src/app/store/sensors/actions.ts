@@ -3,6 +3,7 @@ import {StoreModules} from '@entities/store.interfaces';
 import {
 	Icon,
 	MappedSensors,
+	ScheduledState,
 	Sensor,
 	SensorFullState,
 	SensorGroup,
@@ -35,6 +36,17 @@ export const SensorsActions = {
 		desc('Switch Sensors'),
 		props<{sensorId: Sensor['id']; state: SensorState | SensorFullState}>()
 	),
+	addSchedule: getApiActionsWithPayload(
+		desc('Add Schedule'),
+		props<{payload: ScheduledState}>(),
+		props<{payload: ScheduledState[]}>()
+	),
+	deleteSchedule: getApiActionsWithPayload(
+		desc('Delete Schedule'),
+		props<{scheduleId: ScheduledState['scheduleId']}>(),
+		props<{payload: ScheduledState[]}>()
+	),
+	getSchedules: getApiActions(desc('get Schedule'), props<{payload: ScheduledState[]}>()),
 	setSensorGroups: createAction(desc('Set Sensor Groups'), props<{payload: Set<SensorGroup>}>()),
 	polling: {
 		start: createAction(desc('Start Sensors Polling')),

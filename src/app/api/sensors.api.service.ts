@@ -3,6 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {
 	IconsApiResponse,
 	MappedIcons,
+	ScheduledState,
+	SchedulesApiItem,
 	Sensor,
 	SensorFullState,
 	SensorsApiResponse,
@@ -15,6 +17,7 @@ import {SensorsApiMapper} from '@api/sensors.api.mapper';
 import {Observable} from 'rxjs';
 import {Period} from '@entities/common.interfaces';
 
+/* eslint-disable @typescript-eslint/naming-convention */
 @Injectable()
 export class SensorsApiService {
 	constructor(private http: HttpClient) {}
@@ -32,6 +35,26 @@ export class SensorsApiService {
 		const url = `${API_BASE_URL}/icons`;
 
 		return this.http.get<IconsApiResponse>(url).pipe(take(1));
+	}
+
+	public addSchedule(data: ScheduledState): Observable<ScheduledState[]> {
+		const url = `${API_BASE_URL}/schedules`;
+
+		return this.http.post<SchedulesApiItem[]>(url, data).pipe(take(1), map(SensorsApiMapper.mapSchedules));
+	}
+
+	public deleteSchedule(scheduleId: ScheduledState['scheduleId']): Observable<ScheduledState[]> {
+		const url = `${API_BASE_URL}/schedules`;
+
+		return this.http
+			.delete<SchedulesApiItem[]>(url, {body: {schedule_id: scheduleId}})
+			.pipe(take(1), map(SensorsApiMapper.mapSchedules));
+	}
+
+	public getSchedules(): Observable<ScheduledState[]> {
+		const url = `${API_BASE_URL}/schedules`;
+
+		return this.http.get<SchedulesApiItem[]>(url).pipe(take(1), map(SensorsApiMapper.mapSchedules));
 	}
 
 	public getFavourites(): Observable<Sensor['id'][]> {

@@ -17,6 +17,7 @@ export class LeftMenuComponent implements OnInit {
 	@Input() groups: SensorGroup[];
 	@Input() user: AuthUser;
 	@Output() go = new EventEmitter<string | string[]>();
+	@Output() showSchedules = new EventEmitter<void>();
 
 	@Output() setMode = new EventEmitter<LeftPanelModes>();
 

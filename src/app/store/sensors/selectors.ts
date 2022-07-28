@@ -2,9 +2,10 @@ import {AppState} from '@store/rootReducer';
 import {SensorsState} from '@store/sensors/reducer';
 import {status, StoreModules} from '@entities/store.interfaces';
 import {createSelector} from '@ngrx/store';
-import {MappedIcons, Sensor, SensorLog, SensorState} from '@entities/sensors.interfaces';
+import {MappedIcons, ScheduledState, Sensor, SensorLog, SensorState} from '@entities/sensors.interfaces';
 import {SensorsHelper} from '@shared/helpers/sensors.helper';
 import {createStateSelector} from '@shared/helpers/store/selectors.helper';
+import {MemoizedSelector} from '@ngrx/store/src/selector';
 
 const getState = (state: AppState): SensorsState => state[StoreModules.Sensors];
 // const selector = createSelectorForGivenModule(getState);
@@ -35,6 +36,11 @@ export namespace SensorsSelectors {
 		list: createStateSelector(getState, 'icons'),
 		map: createSelector(getState, (state): MappedIcons => SensorsHelper.mapIcons(state.icons)),
 	};
+
+	export const schedules = createSelector(getState, (state) => state.schedules);
+	export const schedulesLoadingStatus = createSelector(getState, (state) => state.schedulesLoadingStatus);
+	export const sensorSchedules = (id: Sensor['id']): MemoizedSelector<AppState, ScheduledState[]> =>
+		createSelector(getState, (state) => state.schedules.filter((item) => item.id === id));
 
 	export const localSearch = createStateSelector(getState, 'localSearch');
 	export const favourites = createStateSelector(getState, 'favourites');

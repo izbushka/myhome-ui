@@ -1,5 +1,5 @@
 import {createReducer, on} from '@ngrx/store';
-import {Icon, MappedSensors, Sensor, SensorChartPoint, SensorGroup} from '@entities/sensors.interfaces';
+import {Icon, MappedSensors, ScheduledState, Sensor, SensorChartPoint, SensorGroup} from '@entities/sensors.interfaces';
 import {LoadingStatus, status} from '@entities/store.interfaces';
 import {nameOfFactory} from '@entities/nameof.constants';
 import {set} from '@shared/helpers/store/immutable.helper';
@@ -18,6 +18,8 @@ export interface SensorsState {
 	favourites: Sensor['id'][];
 	groups: Set<SensorGroup>;
 	localSearch: string;
+	schedules: ScheduledState[];
+	schedulesLoadingStatus: LoadingStatus;
 }
 
 export const initialSensorsState: SensorsState = {
@@ -32,6 +34,8 @@ export const initialSensorsState: SensorsState = {
 	favourites: [],
 	groups: null,
 	localSearch: '',
+	schedules: [],
+	schedulesLoadingStatus: status.default,
 };
 
 export const props = nameOfFactory<SensorsState>();
@@ -57,7 +61,10 @@ export const sensorsReducer = createReducer(
 	on(SensorsActions.getSensors.failed, (state, {error}) =>
 		set(props('sensorsLoadingStatus'), status.error(error), state)
 	),
-
+	// schedules
+	...apiActionsReducers(SensorsActions.addSchedule, 'schedules'),
+	...apiActionsReducers(SensorsActions.getSchedules, 'schedules'),
+	...apiActionsReducers(SensorsActions.deleteSchedule, 'schedules'),
 	on(SensorsActions.getSensors.update, (state, {payload}) => set(props('sensors'), payload, state)),
 	on(SensorsActions.getSensors.setTimestamp, (state, {payload}) => set(props('lastUpdate'), payload, state)),
 	on(SensorsActions.localSearch, (state, {text}) => set(props('localSearch'), text, state)),

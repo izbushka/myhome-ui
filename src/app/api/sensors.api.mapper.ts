@@ -1,7 +1,23 @@
-import {MappedIcons, Sensor, SensorsApiResponse, SensorsResponse} from '@entities/sensors.interfaces';
+import {
+	MappedIcons,
+	ScheduledState,
+	SchedulesApiItem,
+	Sensor,
+	SensorsApiResponse,
+	SensorsResponse,
+} from '@entities/sensors.interfaces';
 import {SensorsHelper} from '@shared/helpers/sensors.helper';
 
 export class SensorsApiMapper {
+	public static mapSchedules(data: SchedulesApiItem[]): ScheduledState[] {
+		return data.map((item) => ({
+			id: item.sensor_id,
+			scheduleId: item.schedule_id,
+			timestamp: item.timestamp,
+			state: item.state,
+		}));
+	}
+
 	public static mapSensors(data: SensorsApiResponse, icons: MappedIcons): SensorsResponse {
 		return {
 			timestamp: data.timestamp,

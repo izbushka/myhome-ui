@@ -98,6 +98,31 @@ export class SensorsEffects {
 		)
 	);
 
+	setSchedule$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(SensorsActions.addSchedule.requested),
+			switchMap(({payload}) =>
+				this.sensorsApiService.addSchedule(payload).pipe(mapApiActions(SensorsActions.addSchedule))
+			)
+		)
+	);
+
+	deleteSchedule$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(SensorsActions.deleteSchedule.requested),
+			switchMap(({scheduleId}) =>
+				this.sensorsApiService.deleteSchedule(scheduleId).pipe(mapApiActions(SensorsActions.deleteSchedule))
+			)
+		)
+	);
+
+	getSchedule$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(SensorsActions.getSchedules.requested),
+			switchMap(() => this.sensorsApiService.getSchedules().pipe(mapApiActions(SensorsActions.getSchedules)))
+		)
+	);
+
 	getFavourites$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(SensorsActions.getFavourites.requested),

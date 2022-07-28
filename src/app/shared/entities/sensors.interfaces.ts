@@ -83,6 +83,20 @@ export interface AcState extends SensorFullState {
 	state: SensorState;
 }
 
+export interface ScheduledState {
+	scheduleId?: number;
+	id: Sensor['id'];
+	timestamp: number;
+	state: SensorState;
+}
+
+export interface SchedulesApiItem {
+	schedule_id: number;
+	sensor_id: Sensor['id'];
+	timestamp: number;
+	state: SensorState;
+}
+
 export enum SensorState {
 	On = 'on',
 	Off = 'off',

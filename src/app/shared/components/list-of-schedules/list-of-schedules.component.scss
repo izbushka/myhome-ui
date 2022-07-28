@@ -1,0 +1,30 @@
+:host {
+	.line {
+		align-content: center;
+		align-items: center;
+		display: grid;
+		grid-template-columns: 1fr 1fr 50px 30px;
+		justify-content: center;
+
+		&.single {
+			grid-template-columns: 1fr 50px 30px;
+
+			.name {
+				display: none;
+			}
+		}
+
+		.actions {
+			color: transparent;
+			cursor: pointer;
+			font-size: 14px;
+			height: 14px;
+			line-height: 14px;
+			width: 14px;
+		}
+
+		&:hover .actions {
+			color: var(--white);
+		}
+	}
+}

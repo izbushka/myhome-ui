@@ -19,13 +19,13 @@ import {SensorsActions} from '@store/sensors/actions';
 })
 export class AcControlContainer {
 	constructor(
-		public dialogRef: MatDialogRef<AcControlContainer>,
+		private acControlDialogRef: MatDialogRef<AcControlContainer>,
 		private store: Store<AppState>,
 		@Inject(MAT_DIALOG_DATA) public sensor: Sensor
 	) {}
 
 	public closeModal(): void {
-		this.dialogRef.close();
+		this.acControlDialogRef.close();
 	}
 
 	public setState(state: AcState): void {

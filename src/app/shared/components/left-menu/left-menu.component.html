@@ -9,18 +9,23 @@
 		All Sensors
 	</mat-list-item>
 
-	<mat-list-item *ngFor="let group of groups" class="level2" (click)="go.emit([pages.Sensors, group.name])">
+	<mat-list-item (click)="go.emit([pages.Sensors, group.name])" *ngFor="let group of groups" class="level2">
 		<mat-icon>{{ group.icon }}</mat-icon>
 		{{ group.name | titlecase }}
 	</mat-list-item>
 
-	<mat-list-item *ngIf="user?.isAdmin" (click)="go.emit(pages.DbTables)">
+	<mat-list-item (click)="showSchedules.emit()">
+		<mat-icon>schedule</mat-icon>
+		Schedules
+	</mat-list-item>
+
+	<mat-list-item (click)="go.emit(pages.DbTables)" *ngIf="user?.isAdmin">
 		<mat-icon>settings</mat-icon>
 		Administration
 	</mat-list-item>
 	<mat-list-item (click)="go.emit(pages.Login)">
 		<mat-icon>logout</mat-icon>
-		<span class="avatar" *ngIf="user?.picture" [style.background-image]="'url(' + user?.picture + ')'"></span>
+		<span *ngIf="user?.picture" [style.background-image]="'url(' + user?.picture + ')'" class="avatar"></span>
 		Logout
 	</mat-list-item>
 </mat-list>
