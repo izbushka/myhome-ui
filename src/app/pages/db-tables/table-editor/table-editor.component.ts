@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {GeneralTableData} from '@shared/entities/administration.interfaces';
 import {NgChanges} from '@shared/entities/ng-changes.types';
 import {DbTablesHelper} from '@shared/helpers/db-tables/db-tables.helper';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @UntilDestroy()
 @Component({
@@ -51,9 +51,9 @@ export class TableEditorComponent implements OnChanges {
 	private prepareForm(): void {
 		this.form = new FormGroup(
 			this.columns.reduce((acc, col) => {
-				acc[col] = new FormControl(this.row[col]);
+				acc[col] = new FormControl<string | number>(this.row[col]);
 				return acc;
-			}, {} as Record<string, FormControl>)
+			}, {} as Record<string, FormControl<string | number>>)
 		);
 
 		this.form.valueChanges.pipe(untilDestroyed(this)).subscribe((val) => {

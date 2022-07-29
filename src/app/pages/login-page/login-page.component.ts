@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Output} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
 import {GOOGLE_AUTH_URL} from '@shared/entities/sensors.constants';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
 	selector: 'rpi-login-page-component',
@@ -14,13 +14,13 @@ export class LoginPageComponent {
 	$googleAuthUrl = GOOGLE_AUTH_URL + '?target=' + window.location.origin + window.location.pathname;
 
 	authForm = new FormGroup({
-		login: new FormControl(''),
-		password: new FormControl(''),
+		login: new FormControl<string>(''),
+		password: new FormControl<string>(''),
 	});
 
 	public onSubmit(): void {
-		const username = this.authForm.controls.login.value as string;
-		const password = this.authForm.controls.password.value as string;
+		const username = this.authForm.controls.login.value;
+		const password = this.authForm.controls.password.value;
 		const token = btoa(`${username}:${password}`);
 		this.authorize.emit(token);
 	}

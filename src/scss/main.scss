@@ -42,24 +42,46 @@
 
 .blink {
 	animation: 2s blinker linear infinite;
-	animation: 2s blinker linear infinite;
-	animation: 2s blinker linear infinite;
 }
 
 @keyframes blinker {
-	0% { opacity: 1; }
-	50% { opacity: 0.1; }
-	100% { opacity: 1; }
+	0% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0.1;
+	}
+
+	100% {
+		opacity: 1;
+	}
 }
 
 @keyframes blinker {
-	0% { opacity: 1; }
-	50% { opacity: 0; }
-	100% { opacity: 1; }
+	0% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
 }
 
 @keyframes blinker {
-	0% { opacity: 1; }
-	50% { opacity: 0.1; }
-	100% { opacity: 1; }
+	0% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0.1;
+	}
+
+	100% {
+		opacity: 1;
+	}
 }

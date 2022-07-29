@@ -1,28 +1,22 @@
-<mat-card class="card" *ngIf="sensor">
-	<div class="name" (click)="toDetails.emit()">
+<mat-card *ngIf="sensor" class="card">
+	<div (click)="toDetails.emit()" class="name">
 		<mat-icon
-			[matTooltip]="sensor | json"
-			matTooltipShowDelay="2000"
-			matTooltipClass="tooltip-no-wrap"
 			*ngIf="sensor.readonly"
-			>{{ sensor.icon }}</mat-icon
+		>{{ sensor.icon }}</mat-icon
 		>
 		<mat-icon
-			[matTooltip]="sensor | json"
-			matTooltipShowDelay="2000"
-			matTooltipClass="tooltip-no-wrap"
 			*ngIf="!sensor.readonly"
-			rpiSensorState
 			[sensor]="sensor"
+			rpiSensorState
 		>
 			{{ sensor.icon }}
 		</mat-icon>
 		<div class="sensor-name">
 			{{ sensor.name }}
 		</div>
-		<mat-icon class="favourites" (click)="toggleFavourites.emit()" *ngIf="isFavourite !== undefined">{{
+		<mat-icon (click)="toggleFavourites.emit()" *ngIf="isFavourite !== undefined" class="favourites">{{
 			isFavourite ? 'star' : 'star_border'
-		}}</mat-icon>
+			}}</mat-icon>
 	</div>
 
 	<rpi-sensor-status [sensor]="sensor"></rpi-sensor-status>

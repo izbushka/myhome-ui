@@ -140,9 +140,10 @@
 				}
 			}
 		}
-	},
-	"defaultProject": "rpi",
-	"cli": {
-		"defaultCollection": "@angular-eslint/schematics"
+  },
+  "cli": {
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
 	}
 }

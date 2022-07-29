@@ -18,6 +18,10 @@
 			flex: 1;
 			gap: var(--offset-m);
 
+			.mat-icon {
+				flex: 0 0 var(--offset-l);
+			}
+
 			.sensor-name {
 				/* stylelint-disable */
 				-webkit-box-orient: vertical;

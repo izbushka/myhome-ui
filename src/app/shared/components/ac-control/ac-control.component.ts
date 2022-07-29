@@ -19,7 +19,7 @@ export class AcControlComponent implements OnChanges {
 	@Output() closeModal = new EventEmitter<void>();
 
 	readonly states = SensorState;
-	liveUpdate = new FormControl(true);
+	liveUpdate = new FormControl<boolean>(true);
 	acForm: FormGroup;
 	state: AcState;
 	modes = AcMode;
@@ -64,17 +64,17 @@ export class AcControlComponent implements OnChanges {
 
 	private initForm() {
 		this.acForm = new FormGroup({
-			state: new FormControl(''),
-			temperature: new FormControl(''),
-			mode: new FormControl(''),
-			fan: new FormControl(''),
-			swing: new FormControl(''),
-			turbo: new FormControl(''),
+			state: new FormControl<string>(''),
+			temperature: new FormControl<string>(''),
+			mode: new FormControl<string>(''),
+			fan: new FormControl<string>(''),
+			swing: new FormControl<string>(''),
+			turbo: new FormControl<string>(''),
 		});
 
 		this.acForm.valueChanges
 			.pipe(
-				filter(() => this.liveUpdate.value as boolean),
+				filter(() => this.liveUpdate.value),
 				untilDestroyed(this)
 			)
 			.subscribe((values: AcState) => {

@@ -24,12 +24,12 @@ export class TopPanelComponent implements OnChanges, OnInit {
 
 	readonly pages = Pages;
 	readonly groups = SensorGroups;
-	ctrl = new FormControl();
+	ctrl = new FormControl<string>('');
 	isFresh = true;
 	wasPrevPageSensorsList = false;
 
 	public ngOnInit(): void {
-		this.ctrl.valueChanges.pipe(debounceTime(200), untilDestroyed(this)).subscribe((val: string) => {
+		this.ctrl.valueChanges.pipe(debounceTime(200), untilDestroyed(this)).subscribe((val) => {
 			this.doSearch.emit(val.toLowerCase());
 			if (!this.isSensorsListPage() && val) {
 				this.go.emit(Pages.Sensors);

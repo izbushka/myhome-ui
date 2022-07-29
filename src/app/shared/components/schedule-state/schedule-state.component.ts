@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {ScheduledState, Sensor, SensorState} from '@entities/sensors.interfaces';
-import {FormControl, FormGroup} from '@angular/forms';
 import * as moment from 'moment';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
 	selector: 'rpi-schedule-state-component',
@@ -17,8 +17,8 @@ export class ScheduleStateComponent {
 	@Output() closeModal = new EventEmitter<void>();
 
 	form = new FormGroup({
-		state: new FormControl(false),
-		date: new FormControl(moment().format('YYYY-MM-DD HH:mm:00')),
+		state: new FormControl<boolean>(false),
+		date: new FormControl<string>(moment().format('YYYY-MM-DD HH:mm:00')),
 	});
 
 	public setSchedule(): void {
