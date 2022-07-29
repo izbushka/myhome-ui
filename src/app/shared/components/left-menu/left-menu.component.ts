@@ -5,6 +5,7 @@ import {fromEvent} from 'rxjs';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {debounceTime} from 'rxjs/operators';
 import {AuthUser} from '@shared/entities/auth.interfaces';
+import {environment} from '../../../../environments/environment';
 
 @UntilDestroy()
 @Component({
@@ -22,6 +23,7 @@ export class LeftMenuComponent implements OnInit {
 	@Output() setMode = new EventEmitter<LeftPanelModes>();
 
 	readonly pages = Pages;
+	readonly env = environment;
 
 	public ngOnInit(): void {
 		this.setMode.emit(this.menuMode());

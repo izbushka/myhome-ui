@@ -1,7 +1,8 @@
 :host {
 	display: block;
 	user-select: none;
-	width: 15rem;
+	width: 14rem;
+
 
 	.level2 {
 		margin-left: var(--offset);
@@ -22,5 +23,13 @@
 		height: 1.2rem;
 		margin-right: var(--offset-s);
 		width: 1.2rem;
+	}
+
+	.version {
+		bottom: 0;
+		color: var(--grey3);
+		font-size: 9px;
+		position: absolute;
+		right: var(--offset);
 	}
 }

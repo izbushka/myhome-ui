@@ -28,4 +28,7 @@
 		<span *ngIf="user?.picture" [style.background-image]="'url(' + user?.picture + ')'" class="avatar"></span>
 		Logout
 	</mat-list-item>
+	<div class="version">
+		v.{{env.releaseVersion}} ({{env.releaseDate}})
+	</div>
 </mat-list>
