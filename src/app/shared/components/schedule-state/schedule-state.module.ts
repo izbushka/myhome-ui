@@ -10,6 +10,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSliderModule} from '@angular/material/slider';
 import {ListOfSchedulesModule} from '@shared/components/list-of-schedules/list-of-schedules.module';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
 	declarations: [ScheduleStateComponent, ScheduleStateContainer],
@@ -23,6 +24,7 @@ import {ListOfSchedulesModule} from '@shared/components/list-of-schedules/list-o
 		MatSlideToggleModule,
 		MatSliderModule,
 		ListOfSchedulesModule,
+		MatSnackBarModule,
 	],
 	exports: [ScheduleStateContainer],
 })

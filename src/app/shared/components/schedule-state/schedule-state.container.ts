@@ -6,6 +6,8 @@ import {ScheduledState, Sensor} from '@entities/sensors.interfaces';
 import {SensorsActions} from '@store/sensors/actions';
 import {Observable} from 'rxjs';
 import {SensorsSelectors} from '@store/sensors/selectors';
+import * as moment from 'moment';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'rpi-schedule-state',
@@ -25,6 +27,7 @@ export class ScheduleStateContainer {
 	constructor(
 		private dialogRef: MatDialogRef<ScheduleStateContainer>,
 		private store: Store<AppState>,
+		private snackBar: MatSnackBar,
 		@Inject(MAT_DIALOG_DATA) public sensor: Sensor
 	) {
 		this.schedules$ = this.store.select(SensorsSelectors.sensorSchedules(this.sensor.id));
@@ -35,6 +38,11 @@ export class ScheduleStateContainer {
 	}
 
 	public setState(state: ScheduledState): void {
+		const scheduledTime = state.timestamp;
+		if (scheduledTime <= moment().unix()) {
+			this.snackBar.open('Scheduled time is in the past', null, {duration: 3000});
+			return;
+		}
 		this.store.dispatch(SensorsActions.addSchedule.requested({payload: state}));
 	}
 }
