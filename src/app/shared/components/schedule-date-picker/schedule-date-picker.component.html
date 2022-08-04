@@ -1,0 +1,17 @@
+<div class="line">
+	<div>Schedule Time</div>
+	<div class="right">
+		<mat-form-field>
+			<input [formControl]="control" matInput type="datetime-local">
+		</mat-form-field>
+	</div>
+</div>
+<mat-slider
+	(input)="addMinutes($event.value)"
+	[displayWith]="formatSlider"
+	[style.width]="'99%'"
+	max="120"
+	min="1"
+	thumbLabel
+	tickInterval="1"
+></mat-slider>

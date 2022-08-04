@@ -1,0 +1,17 @@
+:host {
+	.line {
+		align-items: center;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		height: 50px;
+	}
+
+	.right {
+		text-align: right;
+	}
+
+	::ng-deep .mat-slider-thumb-label-text {
+		line-height: 10px;
+		text-align: center;
+	}
+}
