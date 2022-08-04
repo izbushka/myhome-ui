@@ -61,9 +61,7 @@ export class AcControlComponent implements OnChanges {
 
 	public toggleSchedule(): void {
 		this.scheduleMode = !this.scheduleMode;
-		if (!this.scheduleMode) {
-			this.liveUpdate.patchValue(false);
-		}
+		this.liveUpdate.patchValue(false);
 	}
 
 	private updateState(): void {
