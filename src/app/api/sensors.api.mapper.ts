@@ -10,12 +10,20 @@ import {SensorsHelper} from '@shared/helpers/sensors.helper';
 
 export class SensorsApiMapper {
 	public static mapSchedules(data: SchedulesApiItem[]): ScheduledState[] {
-		return data.map((item) => ({
-			id: item.sensor_id,
-			scheduleId: item.schedule_id,
-			timestamp: item.timestamp,
-			state: item.state,
-		}));
+		return data.map((item) => {
+			let state;
+			try {
+				state = JSON.parse(item.state);
+			} catch (_) {
+				state = item.state;
+			}
+			return {
+				id: item.sensor_id,
+				scheduleId: item.schedule_id,
+				timestamp: item.timestamp,
+				state,
+			};
+		});
 	}
 
 	public static mapSensors(data: SensorsApiResponse, icons: MappedIcons): SensorsResponse {

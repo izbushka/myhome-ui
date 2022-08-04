@@ -1,4 +1,4 @@
-<div mat-dialog-content [formGroup]="acForm">
+<div [formGroup]="acForm" mat-dialog-content>
 	<h1 class="title">
         <span class="title-name">
             {{sensor.name}}
@@ -14,15 +14,15 @@
         </span>
 	</div>
 
-	<mat-slider thumbLabel tickInterval="1" min="16" max="30"
-				formControlName="temperature"
-				[displayWith]="acTemperatureFormat"
-				[style.width]="'100%'"
+	<mat-slider [displayWith]="acTemperatureFormat" [style.width]="'100%'" formControlName="temperature" max="30"
+				min="16"
+				thumbLabel
+				tickInterval="1"
 	></mat-slider>
 
 	<mat-radio-group aria-label="Mode" formControlName="mode">
 		<div class="flex rpi-margin-bottom">
-			<div class="ac-modes" *ngFor="let i of (modes | keyvalue)">
+			<div *ngFor="let i of (modes | keyvalue)" class="ac-modes">
 				<mat-radio-button [value]="i.value">{{i.key}}</mat-radio-button>
 			</div>
 		</div>
@@ -30,45 +30,46 @@
 
 
 	<div class="rpi-grid">
-		<div>
-			<mat-form-field>
-				<mat-label>Fan speed</mat-label>
-				<mat-select formControlName="fan">
-					<mat-option *ngFor="let i of (fan | keyvalue)" [value]="i.value">
-						{{i.key}}
-					</mat-option>
-				</mat-select>
-			</mat-form-field>
-
-		</div>
+		<mat-form-field class="select-box">
+			<mat-label>Fan speed</mat-label>
+			<mat-select formControlName="fan">
+				<mat-option *ngFor="let i of (fan | keyvalue)" [value]="i.value">
+					{{i.key}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
 		<div>
 			Turbo
 			<mat-slide-toggle formControlName="turbo"></mat-slide-toggle>
 		</div>
-
-		<div>
-			<mat-form-field>
-				<mat-label>Swing</mat-label>
-				<mat-select formControlName="swing">
-					<mat-option *ngFor="let i of (swing | keyvalue)" [value]="i.value">
-						{{i.key}}
-					</mat-option>
-				</mat-select>
-			</mat-form-field>
-		</div>
-
+		<mat-form-field class="select-box">
+			<mat-label>Swing</mat-label>
+			<mat-select formControlName="swing">
+				<mat-option *ngFor="let i of (swing | keyvalue)" [value]="i.value">
+					{{i.key}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
 	</div>
+
+	<rpi-schedule-date-picker [class.visible]="scheduleMode" [control]="scheduleFormControl"
+							  class="schedule"></rpi-schedule-date-picker>
+	<rpi-list-of-schedules [sensorId]="sensor.id"></rpi-list-of-schedules>
 </div>
 
 
 <div mat-dialog-actions>
 	<div class="flex buttons">
 		<div>
-			<button mat-button (click)="onOkClick()">Ok</button>
+			<button (click)="onOkClick()" mat-button>Ok</button>
 		</div>
-		<mat-slide-toggle class="middle" [formControl]="liveUpdate">Live</mat-slide-toggle>
+		<mat-slide-toggle *ngIf="!scheduleMode" [formControl]="liveUpdate">Live</mat-slide-toggle>
+		<div class="middle"></div>
 		<div>
-			<button mat-button (click)="onNoClick()">Cancel</button>
+			<button (click)="toggleSchedule()" mat-button>Schedule</button>
+		</div>
+		<div>
+			<button (click)="onNoClick()" mat-button>Cancel</button>
 		</div>
 	</div>
 </div>

@@ -46,5 +46,26 @@
 		padding: 0;
 		text-align: center;
 	}
+
+	.schedule {
+		visibility: hidden;
+
+		&.visible {
+			visibility: visible;
+		}
+	}
+
+	.select-box {
+		width: 5rem;
+	}
+
+	.rpi-grid {
+		align-content: center;
+		align-items: center;
+		grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+		justify-content: space-between;
+		justify-items: center;
+	}
+
 }
 

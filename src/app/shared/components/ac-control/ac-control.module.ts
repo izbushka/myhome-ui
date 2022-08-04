@@ -13,6 +13,10 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatOptionModule} from '@angular/material/core';
 import {MatButtonModule} from '@angular/material/button';
+import {ScheduleStateModule} from '@shared/components/schedule-state/schedule-state.module';
+import {MatInputModule} from '@angular/material/input';
+import {ScheduleDatePickerModule} from '@shared/components/schedule-date-picker/schedule-date-picker.module';
+import {ListOfSchedulesModule} from '@shared/components/list-of-schedules/list-of-schedules.module';
 
 @NgModule({
 	declarations: [AcControlComponent, AcControlContainer],
@@ -29,6 +33,10 @@ import {MatButtonModule} from '@angular/material/button';
 		MatSelectModule,
 		MatOptionModule,
 		MatButtonModule,
+		ScheduleStateModule,
+		MatInputModule,
+		ScheduleDatePickerModule,
+		ListOfSchedulesModule,
 	],
 	exports: [AcControlContainer],
 })

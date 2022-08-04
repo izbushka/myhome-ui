@@ -39,8 +39,13 @@ export class SensorsApiService {
 
 	public addSchedule(data: ScheduledState): Observable<ScheduledState[]> {
 		const url = `${API_BASE_URL}/schedules`;
+		const apiData = {
+			sensor_id: data.id,
+			timestamp: data.timestamp,
+			state: JSON.stringify(data.state),
+		};
 
-		return this.http.post<SchedulesApiItem[]>(url, data).pipe(take(1), map(SensorsApiMapper.mapSchedules));
+		return this.http.post<SchedulesApiItem[]>(url, apiData).pipe(take(1), map(SensorsApiMapper.mapSchedules));
 	}
 
 	public deleteSchedule(scheduleId: ScheduledState['scheduleId']): Observable<ScheduledState[]> {

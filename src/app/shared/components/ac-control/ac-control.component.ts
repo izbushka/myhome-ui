@@ -1,9 +1,10 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {AcFan, AcMode, AcState, AcSwing, Sensor, SensorState} from '@entities/sensors.interfaces';
+import {AcFan, AcMode, AcState, AcSwing, ScheduledState, Sensor, SensorState} from '@entities/sensors.interfaces';
 import {NgChanges} from '@entities/ng-changes.types';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {filter} from 'rxjs/operators';
+import * as moment from 'moment';
 
 @UntilDestroy()
 @Component({
@@ -16,15 +17,18 @@ export class AcControlComponent implements OnChanges {
 	@Input() sensor: Sensor;
 
 	@Output() setState = new EventEmitter<AcState>();
+	@Output() addSchedule = new EventEmitter<ScheduledState<AcState>>();
 	@Output() closeModal = new EventEmitter<void>();
 
 	readonly states = SensorState;
+	readonly scheduleFormControl = new FormControl<string>(moment().format('YYYY-MM-DD HH:mm:00'));
 	liveUpdate = new FormControl<boolean>(true);
 	acForm: FormGroup;
 	state: AcState;
 	modes = AcMode;
 	swing = AcSwing;
 	fan = AcFan;
+	scheduleMode = false;
 
 	public ngOnChanges(changes: NgChanges<AcControlComponent>): void {
 		if (changes.sensor?.currentValue) {
@@ -37,6 +41,14 @@ export class AcControlComponent implements OnChanges {
 	}
 
 	public onOkClick(): void {
+		if (this.scheduleMode) {
+			this.addSchedule.emit({
+				state: this.getAcState(this.acForm.value),
+				id: this.sensor.id,
+				timestamp: moment(this.scheduleFormControl.value).unix(),
+			});
+			return;
+		}
 		if (!this.liveUpdate.value) {
 			this.setAcState(this.acForm.value);
 		}
@@ -45,6 +57,13 @@ export class AcControlComponent implements OnChanges {
 
 	public acTemperatureFormat(v: number): string {
 		return `${v}°C`;
+	}
+
+	public toggleSchedule(): void {
+		this.scheduleMode = !this.scheduleMode;
+		if (!this.scheduleMode) {
+			this.liveUpdate.patchValue(false);
+		}
 	}
 
 	private updateState(): void {
@@ -82,11 +101,15 @@ export class AcControlComponent implements OnChanges {
 			});
 	}
 
-	private setAcState(state: AcState): void {
-		this.setState.emit({
+	private getAcState(state: AcState): AcState {
+		return {
 			...state,
 			turbo: state.turbo ? SensorState.On : SensorState.Off,
 			state: state.state ? SensorState.On : SensorState.Off,
-		});
+		};
+	}
+
+	private setAcState(state: AcState): void {
+		this.setState.emit(this.getAcState(state));
 	}
 }

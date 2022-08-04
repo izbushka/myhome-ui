@@ -15,23 +15,7 @@
 					<mat-slide-toggle formControlName="state"></mat-slide-toggle>
 				</div>
 			</div>
-			<div class="line">
-				<div>Schedule Time</div>
-				<div class="right">
-					<mat-form-field>
-						<input formControlName="date" matInput type="datetime-local">
-					</mat-form-field>
-				</div>
-			</div>
-			<mat-slider
-				(input)="addMinutes($event.value)"
-				[displayWith]="formatSlider"
-				[style.width]="'99%'"
-				max="120"
-				min="1"
-				thumbLabel
-				tickInterval="1"
-			></mat-slider>
+			<rpi-schedule-date-picker [control]="form.controls.date"></rpi-schedule-date-picker>
 		</div>
 	</div>
 	<rpi-list-of-schedules [sensorId]="sensor.id"></rpi-list-of-schedules>

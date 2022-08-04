@@ -13,8 +13,8 @@
 	<div class="date">
 		{{schedule.timestamp * 1000 | date: 'YYYY-MM-dd HH:mm'}}
 	</div>
-	<div class="state">
-		{{schedule.state}}
+	<div [matTooltip]="schedule.state | json" class="state">
+		{{getState(schedule.state)}}
 	</div>
 	<mat-icon (click)="deleteSchedule.emit(schedule.scheduleId)" class="actions">
 		delete

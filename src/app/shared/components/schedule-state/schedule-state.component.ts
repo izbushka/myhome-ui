@@ -29,13 +29,4 @@ export class ScheduleStateComponent {
 		};
 		this.setState.emit(schedule);
 	}
-
-	public formatSlider(v: number): string {
-		return `${v} min`;
-	}
-
-	public addMinutes(minutes: number): void {
-		const now = moment();
-		this.form.controls.date.patchValue(now.add(minutes, 'minutes').format('YYYY-MM-DD HH:mm:00'));
-	}
 }

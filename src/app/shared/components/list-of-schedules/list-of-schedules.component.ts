@@ -14,4 +14,11 @@ export class ListOfSchedulesComponent {
 	@Output() closeModal = new EventEmitter<void>();
 
 	@Output() readonly deleteSchedule = new EventEmitter<ScheduledState['scheduleId']>();
+
+	public getState(state: ScheduledState['state']): string {
+		if (typeof state === 'object') {
+			return `${state.state} ⚙`;
+		}
+		return state;
+	}
 }
