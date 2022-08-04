@@ -4,8 +4,8 @@
 
 export const environment = {
 	production: false,
-	releaseVersion: '3.0.2.210437',
-	releaseDate: '2022.07.29 07:17',
+	releaseVersion: '3.0.2.216397',
+	releaseDate: '2022.08.04 06:37',
 };
 
 /*
