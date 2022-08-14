@@ -39,10 +39,11 @@ export class SensorsApiService {
 
 	public addSchedule(data: ScheduledState): Observable<ScheduledState[]> {
 		const url = `${API_BASE_URL}/schedules`;
+		const state = typeof data.state === 'string' ? data.state : JSON.stringify(data.state);
 		const apiData = {
 			sensor_id: data.id,
 			timestamp: data.timestamp,
-			state: JSON.stringify(data.state),
+			state,
 		};
 
 		return this.http.post<SchedulesApiItem[]>(url, apiData).pipe(take(1), map(SensorsApiMapper.mapSchedules));
