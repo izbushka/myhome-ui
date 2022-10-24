@@ -46,7 +46,7 @@
 		"angular-highcharts": "~14.1.5",
 		"highcharts": "~9.0.1",
 		"moment": "^2.29.1",
-		"moment-timezone": "^0.5.33",
+		"moment-timezone": "^0.5.35",
 		"ngx-webstorage": "^8.0.0",
 		"rxjs": "~6.6.0",
 		"tslib": "^2.2.0",
