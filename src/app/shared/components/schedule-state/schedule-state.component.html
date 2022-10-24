@@ -12,10 +12,21 @@
 			<div class="line">
 				<div>State</div>
 				<div class="right">
-					<mat-slide-toggle formControlName="state"></mat-slide-toggle>
+					<mat-slide-toggle [formControl]="form.controls.state"></mat-slide-toggle>
+				</div>
+			</div>
+			<div class="line">
+				<div>Repeat</div>
+				<div class="right">
+					<mat-select [formControl]="form.controls.repeat">
+						<mat-option *ngFor="let val of repeatValues" [value]="val">
+							{{val ? val : 'no repeat'}}
+						</mat-option>
+					</mat-select>
 				</div>
 			</div>
 			<rpi-schedule-date-picker [control]="form.controls.date"></rpi-schedule-date-picker>
+
 		</div>
 	</div>
 	<rpi-list-of-schedules [sensorId]="sensor.id"></rpi-list-of-schedules>

@@ -12,6 +12,7 @@
 	</div>
 	<div class="date">
 		{{schedule.timestamp * 1000 | date: 'YYYY-MM-dd HH:mm'}}
+		<span *ngIf="schedule.repeat" class="mat-small">({{schedule.repeat}})</span>
 	</div>
 	<div [matTooltip]="schedule.state | json" class="state">
 		{{getState(schedule.state)}}

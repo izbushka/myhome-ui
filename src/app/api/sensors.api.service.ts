@@ -44,6 +44,7 @@ export class SensorsApiService {
 			sensor_id: data.id,
 			timestamp: data.timestamp,
 			state,
+			repeat: data.repeat,
 		};
 
 		return this.http.post<SchedulesApiItem[]>(url, apiData).pipe(take(1), map(SensorsApiMapper.mapSchedules));

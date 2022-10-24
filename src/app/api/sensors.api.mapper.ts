@@ -22,6 +22,7 @@ export class SensorsApiMapper {
 				scheduleId: item.schedule_id,
 				timestamp: item.timestamp,
 				state,
+				repeat: item.repeat,
 			};
 		});
 	}

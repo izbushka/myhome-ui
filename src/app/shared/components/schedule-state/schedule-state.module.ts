@@ -12,6 +12,7 @@ import {MatSliderModule} from '@angular/material/slider';
 import {ListOfSchedulesModule} from '@shared/components/list-of-schedules/list-of-schedules.module';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {ScheduleDatePickerModule} from '@shared/components/schedule-date-picker/schedule-date-picker.module';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
 	declarations: [ScheduleStateComponent, ScheduleStateContainer],
@@ -27,6 +28,7 @@ import {ScheduleDatePickerModule} from '@shared/components/schedule-date-picker/
 		ListOfSchedulesModule,
 		MatSnackBarModule,
 		ScheduleDatePickerModule,
+		MatSelectModule,
 	],
 	exports: [ScheduleStateContainer],
 })

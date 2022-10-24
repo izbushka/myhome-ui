@@ -88,6 +88,14 @@ export interface ScheduledState<T = SensorState | AcState | string> {
 	id: Sensor['id'];
 	timestamp: number;
 	state: T;
+	repeat?: ScheduleRepeat;
+}
+
+export enum ScheduleRepeat {
+	NoRepeat = '',
+	Daily = 'daily',
+	Weekly = 'weekly',
+	Monthly = 'monthly',
 }
 
 export interface SchedulesApiItem<T = SensorState | string> {
@@ -95,6 +103,7 @@ export interface SchedulesApiItem<T = SensorState | string> {
 	sensor_id: Sensor['id'];
 	timestamp: number;
 	state: T;
+	repeat: ScheduleRepeat;
 }
 
 export enum SensorState {
